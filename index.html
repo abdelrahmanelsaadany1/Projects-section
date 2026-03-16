@@ -3,1066 +3,825 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Contact — Neural Transmission</title>
-<link href="https://fonts.googleapis.com/css2?family=Rajdhani:wght@400;600;700&family=Share+Tech+Mono&family=Inter:wght@300;400&display=swap" rel="stylesheet">
+<title>Selected Work</title>
+<link href="https://fonts.googleapis.com/css2?family=Rajdhani:wght@400;600;700&family=Share+Tech+Mono&family=Inter:wght@300;400;500&display=swap" rel="stylesheet">
 <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollTrigger.min.js"></script>
 <style>
 
-/* ══════════════════════════════════════════════
-   TOKENS & RESET
-══════════════════════════════════════════════ */
-*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+/* ══════════════════════════════════════════
+   TOKENS
+══════════════════════════════════════════ */
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
 
-:root {
-  --bg:       #03060e;
-  --teal:     #00ddc8;
-  --t06:      rgba(0,221,200,0.06);
-  --t12:      rgba(0,221,200,0.12);
-  --t20:      rgba(0,221,200,0.20);
-  --t40:      rgba(0,221,200,0.40);
-  --t70:      rgba(0,221,200,0.70);
-  --text:     rgba(224,232,228,0.92);
-  --textmid:  rgba(224,232,228,0.52);
-  --textdim:  rgba(224,232,228,0.22);
-  --amber:    #f0a04b;
-  --disp:     'Rajdhani', sans-serif;
-  --mono:     'Share Tech Mono', monospace;
-  --body:     'Inter', sans-serif;
-  --eout:     cubic-bezier(0.16,1,0.3,1);
+:root{
+  --bg:#03060e;
+  --bg2:#060d1a;
+  --teal:#00ddc8;
+  --t06:rgba(0,221,200,.06);
+  --t12:rgba(0,221,200,.12);
+  --t20:rgba(0,221,200,.20);
+  --t40:rgba(0,221,200,.40);
+  --t70:rgba(0,221,200,.70);
+  --text:rgba(224,232,228,.92);
+  --mid:rgba(224,232,228,.50);
+  --dim:rgba(224,232,228,.18);
+  --amber:#f0a04b;
+  --disp:'Rajdhani',sans-serif;
+  --mono:'Share Tech Mono',monospace;
+  --body:'Inter',sans-serif;
+  --eout:cubic-bezier(.16,1,.3,1);
 }
 
-html, body {
-  width:100%; height:100%;
-  background: var(--bg);
-  color: var(--text);
-  font-family: var(--body);
-  -webkit-font-smoothing: antialiased;
-  overflow: hidden;
+html{scroll-behavior:smooth}
+body{
+  background:var(--bg);color:var(--text);
+  font-family:var(--body);
+  -webkit-font-smoothing:antialiased;
+  overflow-x:hidden;
 }
 
-/* grain overlay */
-body::after {
-  content:''; position:fixed; inset:0;
-  pointer-events:none; z-index:9999; opacity:0.03;
-  background-image:url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+body::after{
+  content:'';position:fixed;inset:0;
+  pointer-events:none;z-index:9999;opacity:.028;
+  background-image:url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.85' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
   background-size:200px 200px;
 }
 
-/* ══════════════════════════════════════════════
-   LAYOUT — perfect 50/50 split
-══════════════════════════════════════════════ */
-#page {
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-  height: 100vh;
-  width: 100vw;
-  overflow: hidden;
+.demo-hero{
+  height:100vh;display:flex;align-items:center;justify-content:center;
+  font-family:var(--mono);font-size:11px;letter-spacing:3px;
+  color:var(--dim);text-transform:uppercase;
+  border-bottom:1px solid var(--t12);
 }
 
-/* ══════════════════════════════════════════════
-   LEFT PANEL — identity
-══════════════════════════════════════════════ */
-#left {
-  position: relative;
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  padding: 64px 56px 64px 72px;
-  overflow: hidden;
-  z-index: 2;
-}
-
-/* glowing right divider */
-#left::after {
-  content:'';
-  position:absolute; top:12%; bottom:12%; right:0; width:1px;
-  background: linear-gradient(180deg,
-    transparent,
-    var(--t20) 25%, var(--t40) 50%, var(--t20) 75%,
-    transparent);
-  animation: div-breathe 4s ease-in-out infinite;
-}
-@keyframes div-breathe { 0%,100%{opacity:.7} 50%{opacity:1} }
-
-/* constellation canvas behind left content */
-#constellation {
-  position:absolute; inset:0;
-  pointer-events:none; z-index:0; opacity:0.38;
-}
-#left > *:not(#constellation) { position:relative; z-index:1; }
-
-.eyebrow {
-  font-family: var(--mono); font-size:11px;
-  letter-spacing:3px; color:var(--teal); text-transform:uppercase;
-  margin-bottom:28px;
-  display:flex; align-items:center; gap:12px;
-  opacity:0; transform:translateY(16px);
-}
-.eyebrow::before {
-  content:''; width:24px; height:1px;
-  background:var(--teal); box-shadow:0 0 8px var(--teal);
-  display:inline-block;
-}
-
-.headline {
-  font-family: var(--disp); font-weight:700;
-  font-size: clamp(38px,4.6vw,64px);
-  line-height:1.02; letter-spacing:-0.5px;
-  margin-bottom:24px;
-  opacity:0; transform:translateY(20px);
-}
-.headline em {
-  font-style:normal; color:var(--teal);
-  position:relative; display:inline-block;
-}
-.headline em::after {
-  content:'';
-  position:absolute; bottom:2px; left:0; right:0; height:2px;
-  background:linear-gradient(90deg,var(--teal),transparent);
-  transform:scaleX(0); transform-origin:left;
-  transition:transform .8s var(--eout);
-  box-shadow:0 0 10px rgba(0,221,200,0.4);
-}
-.headline em.lit::after { transform:scaleX(1); }
-
-.subtext {
-  font-size:15px; line-height:1.72; font-weight:300;
-  color:var(--textmid); max-width:340px; margin-bottom:44px;
-  opacity:0; transform:translateY(16px);
-}
-
-.contact-links {
-  display:flex; flex-direction:column; gap:14px;
-  opacity:0; transform:translateY(16px);
-}
-.c-link {
-  display:flex; align-items:center; gap:14px;
-  font-family:var(--mono); font-size:12px;
-  color:var(--textmid); text-decoration:none; transition:color .25s;
-}
-.c-link:hover { color:var(--teal); }
-.c-link:hover .c-icon { border-color:var(--teal); background:var(--t06); box-shadow:0 0 14px rgba(0,221,200,0.12); }
-.c-icon {
-  width:34px; height:34px; border-radius:9px;
-  border:1px solid rgba(224,232,228,0.12);
-  display:flex; align-items:center; justify-content:center;
-  transition:border-color .25s,background .25s,box-shadow .25s; flex-shrink:0;
-}
-.c-icon svg { width:14px; height:14px; stroke:currentColor; fill:none; stroke-width:1.5; stroke-linecap:round; stroke-linejoin:round; }
-
-/* ══════════════════════════════════════════════
-   RIGHT PANEL — neural net + form
-══════════════════════════════════════════════ */
-#right {
+/* ══════════════════════════════════════════
+   SECTION
+══════════════════════════════════════════ */
+#works{
   position:relative;
-  display:flex; align-items:center; justify-content:center;
+  padding:120px 0 140px;
   overflow:hidden;
 }
 
-/* neural net svg fills right panel */
-#nn-svg {
-  position:absolute; inset:0;
-  width:100%; height:100%;
+/* ── HEADER ── */
+.w-header{
+  display:flex;align-items:flex-end;justify-content:space-between;
+  padding:0 clamp(24px,5vw,80px);
+  margin-bottom:52px;
+  gap:20px;flex-wrap:wrap;
+}
+
+.w-label{display:flex;flex-direction:column;gap:10px}
+
+.w-eyebrow{
+  font-family:var(--mono);font-size:10px;
+  letter-spacing:4px;color:var(--teal);text-transform:uppercase;
+  display:flex;align-items:center;gap:10px;
+  opacity:0;transform:translateY(12px);
+}
+.w-eyebrow::before{
+  content:'';display:inline-block;
+  width:20px;height:1px;
+  background:var(--teal);box-shadow:0 0 6px var(--teal);
+}
+
+.w-title{
+  font-family:var(--disp);font-weight:700;
+  font-size:clamp(42px,6vw,82px);
+  line-height:.95;letter-spacing:-1.5px;
+  opacity:0;transform:translateY(16px);
+}
+.w-title span{color:var(--teal)}
+
+/* ── NAV ROW (right side of header) ── */
+.w-nav{
+  display:flex;align-items:center;gap:20px;
+  padding-bottom:6px;
+}
+
+/* progress bar */
+.w-progress{
+  display:flex;align-items:center;gap:10px;
+  opacity:0;
+}
+.prog-nums{
+  font-family:var(--mono);font-size:10px;letter-spacing:2px;color:var(--dim);
+  white-space:nowrap;
+}
+.prog-track{
+  width:80px;height:2px;
+  background:var(--t12);border-radius:2px;overflow:hidden;
+}
+.prog-fill{
+  height:100%;width:0%;
+  background:linear-gradient(90deg,var(--t40),var(--teal));
+  border-radius:2px;
+  transition:width .5s var(--eout);
+  box-shadow:0 0 8px var(--t40);
+}
+
+/* arrows */
+.w-arrows{
+  display:flex;gap:8px;
+  opacity:0;
+}
+.arr-btn{
+  width:38px;height:38px;border-radius:9px;
+  border:1px solid var(--t12);background:transparent;
+  display:flex;align-items:center;justify-content:center;
+  cursor:pointer;
+  transition:border-color .25s,background .25s,transform .15s;
+}
+.arr-btn:hover{border-color:var(--teal);background:var(--t06)}
+.arr-btn:active{transform:scale(.93)}
+.arr-btn:disabled{opacity:.22;cursor:not-allowed;pointer-events:none}
+.arr-btn svg{width:14px;height:14px;stroke:var(--mid);fill:none;stroke-width:2;stroke-linecap:round;stroke-linejoin:round}
+.arr-btn:hover svg{stroke:var(--teal)}
+
+/* ── TRACK WRAPPER ── */
+/* left/right fade-out masks */
+.track-wrapper{
+  position:relative;
+  padding:0 clamp(24px,5vw,80px);
+}
+.track-wrapper::before,
+.track-wrapper::after{
+  content:'';
+  position:absolute;top:0;bottom:0;width:clamp(24px,5vw,80px);
+  pointer-events:none;z-index:2;
+}
+.track-wrapper::before{
+  left:0;
+  background:linear-gradient(90deg,var(--bg) 0%,transparent 100%);
+}
+.track-wrapper::after{
+  right:0;
+  background:linear-gradient(270deg,var(--bg) 0%,transparent 100%);
+}
+
+/* ── SCROLL TRACK ── */
+.track{
+  display:flex;gap:20px;
+  overflow-x:auto;
+  scroll-snap-type:x mandatory;
+  -webkit-overflow-scrolling:touch;
+  scrollbar-width:none;
+  cursor:grab;
+  padding-bottom:4px; /* prevent clipping box-shadow */
+}
+.track::-webkit-scrollbar{display:none}
+.track.grabbing{cursor:grabbing}
+
+/* ── CARD ── */
+.proj-card{
+  flex:0 0 calc((100% - 40px) / 3);
+  min-width:280px;
+  scroll-snap-align:start;
+  background:rgba(6,13,26,.82);
+  border:1px solid var(--t12);
+  border-radius:16px;
+  overflow:hidden;
+  cursor:pointer;
+  transition:border-color .35s,box-shadow .35s;
+  will-change:transform;
+  transform-style:preserve-3d;
+  opacity:0;transform:translateY(32px);
+}
+.proj-card:hover{
+  border-color:rgba(0,221,200,.38);
+  box-shadow:0 20px 60px rgba(0,0,0,.55),0 0 0 1px rgba(0,221,200,.07);
+}
+
+/* card art */
+.card-art{
+  height:176px;position:relative;overflow:hidden;
+  background:var(--bg2);
+}
+.card-art svg{width:100%;height:100%}
+.card-art::after{
+  content:'';
+  position:absolute;bottom:0;left:0;right:0;height:64px;
+  background:linear-gradient(transparent,rgba(6,13,26,.82));
   pointer-events:none;
 }
 
-/* form sits on top */
-#form-wrap {
-  position:relative; z-index:10;
-  width: min(340px, 88%);
-  opacity:0; transform:translateY(20px);
+/* card body */
+.card-body{
+  padding:20px 22px 18px;
+  display:flex;flex-direction:column;gap:8px;
+}
+.card-num{
+  font-family:var(--mono);font-size:9px;
+  letter-spacing:3px;color:var(--teal);opacity:.55;
+}
+.card-title{
+  font-family:var(--disp);font-weight:700;
+  font-size:clamp(17px,2vw,24px);
+  line-height:1.08;letter-spacing:-.2px;
+  transition:color .3s;
+}
+.proj-card:hover .card-title{color:var(--teal)}
+.card-desc{
+  font-size:13px;line-height:1.62;
+  color:var(--mid);font-weight:300;
+  display:-webkit-box;-webkit-line-clamp:3;-webkit-box-orient:vertical;overflow:hidden;
+}
+.card-tags{
+  display:flex;flex-wrap:wrap;gap:5px;margin-top:2px;
+}
+.ctag{
+  font-family:var(--mono);font-size:9px;letter-spacing:1.5px;
+  text-transform:uppercase;color:var(--teal);
+  padding:2px 7px;border:1px solid var(--t20);border-radius:3px;background:var(--t06);
+}
+.card-footer{
+  display:flex;align-items:center;justify-content:space-between;
+  padding-top:10px;border-top:1px solid var(--t12);margin-top:2px;
+}
+.card-links{display:flex;gap:10px}
+.cl{
+  font-family:var(--mono);font-size:9px;letter-spacing:2px;
+  color:var(--mid);text-decoration:none;text-transform:uppercase;
+  display:flex;align-items:center;gap:5px;transition:color .25s;
+}
+.cl:hover{color:var(--teal)}
+.cl svg{width:11px;height:11px;stroke:currentColor;fill:none;stroke-width:2;stroke-linecap:round;stroke-linejoin:round}
+.cl.live{
+  color:var(--teal);background:var(--t06);
+  border:1px solid var(--t20);padding:3px 9px;border-radius:4px;
+}
+.cl.live:hover{background:var(--t12)}
+.open-hint{
+  font-family:var(--mono);font-size:8px;letter-spacing:2px;
+  color:var(--dim);text-transform:uppercase;
+  opacity:0;transition:opacity .3s;
+  display:flex;align-items:center;gap:4px;
+}
+.open-hint svg{width:9px;height:9px;stroke:currentColor;fill:none;stroke-width:2;stroke-linecap:round;stroke-linejoin:round}
+.proj-card:hover .open-hint{opacity:1}
+
+/* ── DOT INDICATORS ── */
+.dot-row{
+  display:flex;justify-content:center;gap:6px;
+  margin-top:32px;
+  opacity:0;
+}
+.dot{
+  width:5px;height:5px;border-radius:50%;
+  background:var(--t12);border:1px solid var(--t20);
+  transition:background .35s,box-shadow .35s,transform .35s var(--eout),width .35s var(--eout);
+  cursor:pointer;
+}
+.dot.active{
+  width:20px;border-radius:3px;
+  background:var(--teal);border-color:var(--teal);
+  box-shadow:0 0 8px var(--teal);
 }
 
-/* ── progress bar ── */
-.prog-row {
-  display:flex; align-items:center; gap:10px; margin-bottom:28px;
+/* ══════════════════════════════════════════
+   MODAL
+══════════════════════════════════════════ */
+#modal-overlay{
+  position:fixed;inset:0;z-index:10000;
+  background:rgba(3,6,14,.94);
+  backdrop-filter:blur(24px);
+  display:flex;align-items:center;justify-content:center;
+  padding:24px;
+  opacity:0;pointer-events:none;
+  transition:opacity .3s;
 }
-.prog-track {
-  flex:1; height:2px; background:var(--t12); border-radius:2px; overflow:hidden;
-}
-.prog-fill {
-  height:100%; width:0%;
-  background:linear-gradient(90deg, var(--t40), var(--teal));
-  border-radius:2px; transition:width .7s var(--eout);
-  box-shadow:0 0 10px var(--t40);
-}
-.prog-label {
-  font-family:var(--mono); font-size:10px; letter-spacing:2px;
-  color:var(--textdim); min-width:54px; text-align:right; transition:color .4s;
-}
-.prog-label.on { color:var(--teal); }
-.pdots { display:flex; gap:5px; }
-.pd {
-  width:6px; height:6px; border-radius:50%;
-  background:var(--t12); border:1px solid var(--t20);
-  transition:background .4s, box-shadow .4s, transform .4s var(--eout);
-}
-.pd.lit {
-  background:var(--teal); border-color:var(--teal);
-  box-shadow:0 0 10px var(--teal),0 0 20px rgba(0,221,200,0.35);
-  transform:scale(1.3);
-}
+#modal-overlay.open{opacity:1;pointer-events:all}
 
-/* ── fields ── */
-.field { margin-bottom:20px; position:relative; }
+#modal{
+  position:relative;
+  width:100%;max-width:700px;max-height:88vh;
+  background:rgba(6,13,26,.97);
+  border:1px solid var(--t20);border-radius:20px;
+  overflow-y:auto;overflow-x:hidden;
+  transform:translateY(24px) scale(.97);
+  transition:transform .4s var(--eout);
+  box-shadow:0 48px 96px rgba(0,0,0,.7),0 0 0 1px rgba(0,221,200,.05);
+  scrollbar-width:none;
+}
+#modal::-webkit-scrollbar{display:none}
+#modal::before{
+  content:'';position:absolute;top:0;left:40px;right:40px;height:1px;
+  background:linear-gradient(90deg,transparent,var(--t40),transparent);
+}
+#modal-overlay.open #modal{transform:translateY(0) scale(1)}
 
-.field label {
-  display:flex; align-items:center; gap:8px;
-  font-family:var(--mono); font-size:10px; letter-spacing:2.5px;
-  color:var(--textdim); text-transform:uppercase;
-  margin-bottom:8px; transition:color .3s; user-select:none;
+.m-art{height:220px;position:relative;overflow:hidden;border-radius:20px 20px 0 0;background:var(--bg2)}
+.m-art svg{width:100%;height:100%}
+.m-body{padding:38px 44px 44px}
+.m-eyebrow{display:flex;align-items:center;gap:10px;margin-bottom:6px}
+.m-num{font-family:var(--mono);font-size:9px;letter-spacing:3px;color:var(--teal);opacity:.65}
+.m-badge{
+  font-family:var(--mono);font-size:9px;letter-spacing:2px;
+  color:var(--bg);background:var(--teal);
+  padding:2px 8px;border-radius:4px;text-transform:uppercase;
 }
-.field label::before {
-  content:''; width:5px; height:5px; border-radius:50%;
-  background:var(--textdim); border:1px solid currentColor;
-  flex-shrink:0; transition:background .3s,box-shadow .3s,border-color .3s,transform .35s var(--eout);
+.m-title{
+  font-family:var(--disp);font-weight:700;
+  font-size:clamp(26px,4vw,48px);
+  line-height:1;letter-spacing:-.5px;margin-bottom:18px;
 }
-.field.valid label { color:var(--teal); }
-.field.valid label::before {
-  background:var(--teal); border-color:var(--teal);
-  box-shadow:0 0 8px var(--teal); transform:scale(1.4);
+.m-desc{
+  font-size:15px;line-height:1.78;color:var(--mid);
+  font-weight:300;margin-bottom:26px;
 }
-.field.err label { color:var(--amber); }
-.field.err label::before { background:var(--amber); border-color:var(--amber); }
+.m-tags{display:flex;flex-wrap:wrap;gap:8px;margin-bottom:32px}
+.m-tag{
+  font-family:var(--mono);font-size:10px;letter-spacing:1.5px;
+  text-transform:uppercase;color:var(--teal);
+  padding:4px 12px;border:1px solid var(--t20);border-radius:6px;background:var(--t06);
+}
+.m-links{display:flex;gap:12px;flex-wrap:wrap}
+.m-gh{
+  font-family:var(--mono);font-size:11px;letter-spacing:2px;
+  color:var(--mid);text-decoration:none;text-transform:uppercase;
+  display:flex;align-items:center;gap:8px;
+  border:1px solid var(--t20);border-radius:8px;
+  padding:11px 22px;transition:color .25s,border-color .25s,background .25s;
+}
+.m-gh:hover{color:var(--teal);border-color:var(--teal);background:var(--t06)}
+.m-gh svg{width:14px;height:14px;stroke:currentColor;fill:none;stroke-width:1.8;stroke-linecap:round;stroke-linejoin:round}
+.m-demo{
+  font-family:var(--mono);font-size:11px;letter-spacing:2px;
+  color:var(--bg);background:var(--teal);text-decoration:none;text-transform:uppercase;
+  display:flex;align-items:center;gap:8px;
+  border-radius:8px;padding:11px 22px;font-weight:600;
+  transition:box-shadow .3s,transform .2s;
+}
+.m-demo:hover{box-shadow:0 0 28px rgba(0,221,200,.45);transform:translateY(-1px)}
+.m-demo svg{width:13px;height:13px;stroke:var(--bg);fill:none;stroke-width:2;stroke-linecap:round;stroke-linejoin:round}
+.m-close{
+  position:absolute;top:18px;right:18px;
+  width:36px;height:36px;border-radius:50%;
+  border:1px solid var(--t20);background:rgba(3,9,22,.85);
+  display:flex;align-items:center;justify-content:center;
+  cursor:pointer;transition:border-color .25s,background .25s;z-index:5;
+}
+.m-close:hover{border-color:var(--teal);background:var(--t06)}
+.m-close svg{width:13px;height:13px;stroke:var(--mid);fill:none;stroke-width:2;stroke-linecap:round}
 
-.field input, .field textarea {
-  width:100%;
-  background:rgba(3,9,22,0.80);
-  border:1px solid var(--t12); border-radius:10px;
-  color:var(--text); font-family:var(--mono); font-size:13px;
-  padding:12px 40px 12px 15px; outline:none; resize:none;
-  -webkit-appearance:none; appearance:none;
-  backdrop-filter:blur(14px); -webkit-backdrop-filter:blur(14px);
-  transition:border-color .3s,box-shadow .3s,background .3s,transform .2s var(--eout);
-}
-.field textarea { height:88px; padding:12px 15px; line-height:1.6; }
-.field input::placeholder, .field textarea::placeholder { color:var(--textdim); }
-.field input:focus, .field textarea:focus {
-  border-color:var(--t40); background:rgba(0,221,200,0.04);
-  box-shadow:0 0 0 3px rgba(0,221,200,0.07),inset 0 1px 0 rgba(0,221,200,0.06);
-  transform:translateY(-1px);
-}
-.field.valid input, .field.valid textarea {
-  border-color:rgba(0,221,200,0.52); background:rgba(0,221,200,0.055);
-  box-shadow:0 0 0 3px rgba(0,221,200,0.08),0 0 22px rgba(0,221,200,0.06);
-}
-.field.err input, .field.err textarea {
-  border-color:rgba(240,160,75,0.45);
-  box-shadow:0 0 0 3px rgba(240,160,75,0.07);
-}
-
-/* check icon */
-.fchk {
-  position:absolute; right:13px; top:37px;
-  opacity:0; transform:scale(.5) rotate(-10deg);
-  transition:opacity .3s,transform .4s var(--eout); pointer-events:none;
-}
-.field.ta-field .fchk { top:40px; }
-.field.valid .fchk { opacity:1; transform:scale(1) rotate(0deg); }
-.fchk svg { width:13px; height:13px; stroke:var(--teal); fill:none; stroke-width:2; stroke-linecap:round; stroke-linejoin:round; }
-
-/* hint */
-.fhint {
-  position:absolute; bottom:-17px; left:0;
-  font-size:11px; color:var(--amber);
-  opacity:0; transform:translateY(-4px);
-  transition:opacity .22s,transform .22s; pointer-events:none; white-space:nowrap;
-}
-.fhint.show { opacity:1; transform:translateY(0); }
-
-/* ── submit ── */
-#btn {
-  width:100%; margin-top:22px; padding:15px 24px;
-  border-radius:10px; border:1px solid var(--t12);
-  background:transparent; color:var(--textdim);
-  font-family:var(--disp); font-size:17px; font-weight:700;
-  letter-spacing:5px; text-transform:uppercase;
-  cursor:not-allowed; position:relative; overflow:hidden;
-  transition:border-color .5s var(--eout),color .5s var(--eout),
-             box-shadow .5s var(--eout),background .3s,transform .15s;
-}
-#btn::before {
-  content:''; position:absolute; inset:0;
-  background:linear-gradient(90deg,transparent,rgba(0,221,200,0.08),transparent);
-  transform:translateX(-100%);
-}
-#btn.ready {
-  border-color:var(--t70); color:var(--teal); cursor:pointer;
-  box-shadow:0 0 28px rgba(0,221,200,0.18),inset 0 1px 0 rgba(0,221,200,0.12);
-}
-#btn.ready::before { animation:bsweep 2.5s ease-in-out infinite; }
-#btn.ready:hover {
-  background:rgba(0,221,200,0.07); transform:translateY(-2px);
-  box-shadow:0 0 48px rgba(0,221,200,0.28),inset 0 1px 0 rgba(0,221,200,0.16);
-}
-#btn.ready:active { transform:scale(.99); }
-@keyframes bsweep { 0%{transform:translateX(-100%)} 55%,100%{transform:translateX(100%)} }
-
-/* ══════════════════════════════════════════════
-   SUCCESS
-══════════════════════════════════════════════ */
-#success {
-  position:fixed; inset:0; z-index:500;
-  background:var(--bg);
-  display:flex; flex-direction:column; align-items:center; justify-content:center;
-  text-align:center; padding:32px;
-  opacity:0; pointer-events:none;
-}
-#success.show { pointer-events:all; }
-.s-ring {
-  width:84px; height:84px; border-radius:50%;
-  border:1px solid var(--t40);
-  display:flex; align-items:center; justify-content:center;
-  margin:0 auto 28px; position:relative;
-  box-shadow:0 0 40px rgba(0,221,200,0.22),inset 0 0 24px rgba(0,221,200,0.06);
-}
-.s-ring::before {
-  content:''; position:absolute; inset:-12px; border-radius:50%;
-  border:1px solid rgba(0,221,200,0.13);
-  animation:sspin 9s linear infinite;
-}
-.s-ring::after {
-  content:''; position:absolute; inset:-24px; border-radius:50%;
-  border:1px solid rgba(0,221,200,0.06);
-}
-@keyframes sspin { to{transform:rotate(360deg)} }
-.s-ring svg { width:28px; height:28px; stroke:var(--teal); fill:none; stroke-width:2.2; stroke-linecap:round; stroke-linejoin:round; }
-#success h2 {
-  font-family:var(--disp); font-size:clamp(26px,5vw,48px);
-  font-weight:700; line-height:1.1; margin-bottom:10px; color:var(--text);
-}
-#success h2 span { color:var(--teal); }
-#success p {
-  font-family:var(--mono); font-size:11px; letter-spacing:1.5px;
-  color:var(--textmid); margin-bottom:32px;
-}
-#btn-reset {
-  font-family:var(--mono); font-size:11px; letter-spacing:2px;
-  color:var(--textmid); background:none;
-  border:1px solid var(--t20); border-radius:8px;
-  padding:11px 28px; cursor:pointer; transition:all .3s; text-transform:uppercase;
-}
-#btn-reset:hover { color:var(--teal); border-color:var(--teal); background:var(--t06); }
-
-#flash { position:fixed; inset:0; z-index:400; background:var(--teal); opacity:0; pointer-events:none; }
-
-/* ══════════════════════════════════════════════
+/* ══════════════════════════════════════════
    MOBILE
-══════════════════════════════════════════════ */
-@media (max-width:768px) {
-  body { overflow-y:auto; overflow-x:hidden; height:auto; }
-  #page { grid-template-columns:1fr; grid-template-rows:auto auto; height:auto; min-height:100vh; }
-  #left { padding:52px 28px 36px; min-height:auto; }
-  #left::after { display:none; }
-  #constellation { display:none; }
-  .headline { font-size:clamp(34px,9vw,48px); }
-  .subtext { max-width:100%; font-size:14px; margin-bottom:32px; }
-  #right { padding:20px 28px 64px; min-height:60vh; }
-  #nn-svg { opacity:0.35; }
-  #form-wrap { width:100%; }
-  .field { margin-bottom:18px; }
+══════════════════════════════════════════ */
+@media(max-width:768px){
+  .proj-card{flex:0 0 78vw;min-width:260px}
+  .w-nav{gap:12px}
+  .prog-track{width:56px}
+  .m-body{padding:24px 22px 32px}
+  .m-art{height:170px}
+  #works{padding:80px 0 100px}
+}
+@media(max-width:480px){
+  .proj-card{flex:0 0 88vw}
+  .w-header{margin-bottom:32px}
 }
 </style>
 </head>
 <body>
 
-<div id="flash"></div>
+<div class="demo-hero">↓ scroll to projects</div>
 
-<div id="success">
-  <div class="s-ring">
-    <svg viewBox="0 0 28 28"><polyline points="4,14 10,20 24,7"/></svg>
-  </div>
-  <h2>Thanks! You'll hear<br>from me <span>shortly.</span></h2>
-  <p>MESSAGE TRANSMITTED SUCCESSFULLY</p>
-  <button id="btn-reset">Send another message</button>
-</div>
+<section id="works">
 
-<div id="page">
-
-  <!-- ═══════════ LEFT ═══════════ -->
-  <div id="left">
-    <canvas id="constellation"></canvas>
-
-    <p class="eyebrow" id="ey">Get in touch</p>
-
-    <h1 class="headline" id="hl">
-      Let's build<br>something<br><em id="em-word">great</em>.
-    </h1>
-
-    <p class="subtext" id="sub">
-      I'm a full-stack developer open to new projects,
-      collaborations, and opportunities. Drop me a message
-      and let's talk.
-    </p>
-
-    <div class="contact-links" id="clinks">
-      <span class="c-link">
-        <span class="c-icon">
-          <svg viewBox="0 0 24 24"><rect x="2" y="4" width="20" height="16" rx="2"/><polyline points="2,4 12,13 22,4"/></svg>
-        </span>
-        hello@yourname.dev
-      </span>
-      <span class="c-link">
-        <span class="c-icon">
-          <svg viewBox="0 0 24 24"><path d="M9 19c-5 1.5-5-2.5-7-3m14 6v-3.87a3.37 3.37 0 0 0-.94-2.61c3.14-.35 6.44-1.54 6.44-7A5.44 5.44 0 0 0 20 4.77 5.07 5.07 0 0 0 19.91 1S18.73.65 16 2.48a13.38 13.38 0 0 0-7 0C6.27.65 5.09 1 5.09 1A5.07 5.07 0 0 0 5 4.77a5.44 5.44 0 0 0-1.5 3.78c0 5.42 3.3 6.61 6.44 7A3.37 3.37 0 0 0 9 18.13V22"/></svg>
-        </span>
-        github.com/yourname
-      </span>
-      <span class="c-link">
-        <span class="c-icon">
-          <svg viewBox="0 0 24 24"><path d="M16 8a6 6 0 0 1 6 6v7h-4v-7a2 2 0 0 0-2-2 2 2 0 0 0-2 2v7h-4v-7a6 6 0 0 1 6-6z"/><rect x="2" y="9" width="4" height="12"/><circle cx="4" cy="4" r="2"/></svg>
-        </span>
-        linkedin.com/in/yourname
-      </span>
+  <!-- HEADER -->
+  <div class="w-header">
+    <div class="w-label">
+      <div class="w-eyebrow" id="w-eye">Portfolio</div>
+      <h2 class="w-title" id="w-ttl">Selected<br><span>Work</span></h2>
+    </div>
+    <div class="w-nav">
+      <div class="w-progress" id="w-prog">
+        <span class="prog-nums"><span id="pn-cur">01</span> / <span id="pn-tot">08</span></span>
+        <div class="prog-track"><div class="prog-fill" id="prog-fill"></div></div>
+      </div>
+      <div class="w-arrows" id="w-arr">
+        <button class="arr-btn" id="btn-prev" disabled>
+          <svg viewBox="0 0 14 14"><polyline points="9,2 4,7 9,12"/></svg>
+        </button>
+        <button class="arr-btn" id="btn-next">
+          <svg viewBox="0 0 14 14"><polyline points="5,2 10,7 5,12"/></svg>
+        </button>
+      </div>
     </div>
   </div>
 
-  <!-- ═══════════ RIGHT ═══════════ -->
-  <div id="right">
+  <!-- TRACK -->
+  <div class="track-wrapper">
+    <div class="track" id="track"></div>
+  </div>
 
-    <!-- Neural Net SVG — redrawn by JS into the canvas element -->
-    <svg id="nn-svg" viewBox="0 0 500 600" preserveAspectRatio="xMidYMid meet" xmlns="http://www.w3.org/2000/svg">
-      <defs>
-        <filter id="glow-node" x="-60%" y="-60%" width="220%" height="220%">
-          <feGaussianBlur stdDeviation="4" result="b"/>
-          <feMerge><feMergeNode in="b"/><feMergeNode in="SourceGraphic"/></feMerge>
-        </filter>
-        <filter id="glow-edge" x="-40%" y="-40%" width="180%" height="180%">
-          <feGaussianBlur stdDeviation="2.5" result="b"/>
-          <feMerge><feMergeNode in="b"/><feMergeNode in="SourceGraphic"/></feMerge>
-        </filter>
-        <filter id="glow-burst" x="-100%" y="-100%" width="300%" height="300%">
-          <feGaussianBlur stdDeviation="10" result="b"/>
-          <feMerge><feMergeNode in="b"/><feMergeNode in="SourceGraphic"/></feMerge>
-        </filter>
-        <!-- pulse gradient along edge -->
-        <linearGradient id="pulse-grad" x1="0%" y1="0%" x2="100%" y2="0%">
-          <stop offset="0%"   stop-color="#00ddc8" stop-opacity="0"/>
-          <stop offset="50%"  stop-color="#00ddc8" stop-opacity="1"/>
-          <stop offset="100%" stop-color="#00ddc8" stop-opacity="0"/>
-        </linearGradient>
-      </defs>
+  <!-- DOTS -->
+  <div class="dot-row" id="dot-row"></div>
 
-      <!-- edges group (drawn by JS) -->
-      <g id="nn-edges"></g>
-      <!-- pulse dots group (animated by JS) -->
-      <g id="nn-pulses"></g>
-      <!-- nodes group (drawn by JS) -->
-      <g id="nn-nodes"></g>
+</section>
 
-      <!-- layer labels -->
-      <g font-family="'Share Tech Mono'" font-size="9" fill="#00ddc8" letter-spacing="1.5" opacity="0.35">
-        <text id="lbl-input"  x="60"  y="570" text-anchor="middle">INPUT</text>
-        <text id="lbl-h1"     x="196" y="570" text-anchor="middle">LAYER 1</text>
-        <text id="lbl-h2"     x="316" y="570" text-anchor="middle">LAYER 2</text>
-        <text id="lbl-output" x="440" y="570" text-anchor="middle">OUTPUT</text>
-      </g>
-
-      <!-- corner decorations -->
-      <g opacity="0.15" stroke="#00ddc8" fill="none" stroke-width="1">
-        <line x1="15" y1="24" x2="50" y2="24"/><line x1="15" y1="14" x2="15" y2="50"/>
-        <line x1="450" y1="24" x2="485" y2="24"/><line x1="485" y1="14" x2="485" y2="50"/>
-        <line x1="15" y1="530" x2="50" y2="530"/><line x1="15" y1="530" x2="15" y2="560"/>
-        <line x1="450" y1="530" x2="485" y2="530"/><line x1="485" y1="530" x2="485" y2="560"/>
-      </g>
-
-      <!-- subtle bg grid -->
-      <g opacity="0.04" stroke="#00ddc8" stroke-width="0.5">
-        <line x1="0" y1="100" x2="500" y2="100"/>
-        <line x1="0" y1="200" x2="500" y2="200"/>
-        <line x1="0" y1="300" x2="500" y2="300"/>
-        <line x1="0" y1="400" x2="500" y2="400"/>
-        <line x1="0" y1="500" x2="500" y2="500"/>
-        <line x1="100" y1="0" x2="100" y2="600"/>
-        <line x1="200" y1="0" x2="200" y2="600"/>
-        <line x1="300" y1="0" x2="300" y2="600"/>
-        <line x1="400" y1="0" x2="400" y2="600"/>
-      </g>
-    </svg>
-
-    <!-- FORM -->
-    <div id="form-wrap">
-      <div class="prog-row">
-        <div class="pdots">
-          <div class="pd" id="d0"></div>
-          <div class="pd" id="d1"></div>
-          <div class="pd" id="d2"></div>
-        </div>
-        <div class="prog-track"><div class="prog-fill" id="pfill"></div></div>
-        <span class="prog-label" id="plbl">0 / 3</span>
+<!-- MODAL -->
+<div id="modal-overlay">
+  <div id="modal">
+    <button class="m-close" id="m-close">
+      <svg viewBox="0 0 13 13"><line x1="2" y1="2" x2="11" y2="11"/><line x1="11" y1="2" x2="2" y2="11"/></svg>
+    </button>
+    <div class="m-art" id="m-art"></div>
+    <div class="m-body">
+      <div class="m-eyebrow">
+        <span class="m-num" id="m-num"></span>
+        <span class="m-badge" id="m-badge" style="display:none">Live</span>
       </div>
-
-      <div class="field" id="f-name">
-        <label for="i-name">Name</label>
-        <input type="text" id="i-name" placeholder="Your name" autocomplete="off" spellcheck="false"/>
-        <span class="fchk"><svg viewBox="0 0 13 13"><polyline points="2,6.5 5,9.5 11,3"/></svg></span>
-        <span class="fhint" id="h-name"></span>
-      </div>
-
-      <div class="field" id="f-email">
-        <label for="i-email">Email</label>
-        <input type="email" id="i-email" placeholder="your@email.com" autocomplete="off" spellcheck="false"/>
-        <span class="fchk"><svg viewBox="0 0 13 13"><polyline points="2,6.5 5,9.5 11,3"/></svg></span>
-        <span class="fhint" id="h-email"></span>
-      </div>
-
-      <div class="field ta-field" id="f-msg">
-        <label for="i-msg">Message</label>
-        <textarea id="i-msg" placeholder="What's on your mind?"></textarea>
-        <span class="fchk"><svg viewBox="0 0 13 13"><polyline points="2,6.5 5,9.5 11,3"/></svg></span>
-        <span class="fhint" id="h-msg"></span>
-      </div>
-
-      <button id="btn" disabled>Send Message</button>
+      <div class="m-title" id="m-title"></div>
+      <div class="m-desc"  id="m-desc"></div>
+      <div class="m-tags"  id="m-tags"></div>
+      <div class="m-links" id="m-links"></div>
     </div>
   </div>
 </div>
 
 <script>
-/* ══════════════════════════════════════════════════
-   NEURAL NETWORK LAYOUT
-   Layers:  INPUT(3) → H1(4) → H2(4) → OUTPUT(1)
-   Coords in SVG viewBox 500×600
-══════════════════════════════════════════════════ */
-const NN = {
-  layers: [
-    // [x, [y positions]]
-    { x: 60,  nodes: [140, 290, 440] },         // 3 input nodes
-    { x: 196, nodes: [90, 220, 360, 490] },      // 4 hidden layer 1
-    { x: 316, nodes: [90, 220, 360, 490] },      // 4 hidden layer 2
-    { x: 440, nodes: [290] }                     // 1 output node
-  ],
-  // activation state per node: 0=idle, 0-1=partial, 1=full
-  activation: [],
-  // which input nodes are active (0,1,2)
-  inputs: [false, false, false],
-};
+gsap.registerPlugin(ScrollTrigger);
 
-// build flat activation array
-NN.layers.forEach(l => l.nodes.forEach(() => NN.activation.push(0)));
+/* ══════════════════════════════════════════
+   DATA
+══════════════════════════════════════════ */
+const PROJECTS = [
+  {
+    title:"Orbit Dashboard",
+    desc:"Real-time analytics for satellite telemetry. WebSocket-driven with a canvas visualization engine that handles 50k+ data points per second.",
+    longDesc:"Orbit Dashboard processes live telemetry streams from orbital assets and renders them in a performant canvas visualization. The system handles 50k+ data points per second with sub-100ms latency. Features include anomaly detection, historical playback, and configurable alert thresholds.",
+    tags:["React","Node.js","WebSocket","Canvas API","PostgreSQL"],
+    github:"#",demo:"#",hasDemo:true,hue:185,
+  },
+  {
+    title:"DeepForm",
+    desc:"Intelligent form builder that generates validation logic and accessible markup from natural language descriptions.",
+    longDesc:"DeepForm takes plain-English descriptions of forms and outputs production-ready HTML, validation logic, and accessibility attributes. Powered by a fine-tuned language model with a post-processing pipeline that enforces WCAG 2.1 compliance.",
+    tags:["Next.js","TypeScript","OpenAI API","Tailwind","Vercel"],
+    github:"#",demo:"#",hasDemo:true,hue:160,
+  },
+  {
+    title:"NightWatch",
+    desc:"Open-source uptime monitoring with a beautiful status page and multi-channel incident alerts.",
+    longDesc:"NightWatch pings endpoints on configurable intervals, tracks response times, and publishes a public status page. Supports Slack, email, and webhook notifications. Handles hundreds of monitors with a lightweight Go backend.",
+    tags:["Go","React","SQLite","Docker","REST API"],
+    github:"#",demo:null,hasDemo:false,hue:210,
+  },
+  {
+    title:"Chroma UI",
+    desc:"Headless React component library focused on motion and accessibility. Zero runtime CSS, fully tree-shakeable.",
+    longDesc:"Chroma UI provides 40+ accessible, unstyled React components with built-in ARIA roles and keyboard navigation. Animation primitives are built on the Web Animations API. Ships as tree-shakeable ESM with full TypeScript generics support.",
+    tags:["React","TypeScript","Web Animations API","Rollup","Storybook"],
+    github:"#",demo:"#",hasDemo:true,hue:270,
+  },
+  {
+    title:"Cartographer",
+    desc:"Collaborative map annotation for field researchers. Works offline-first with automatic conflict resolution.",
+    longDesc:"Cartographer lets teams drop pins, draw regions, and annotate geographic data — even without internet. Built on CRDTs for conflict-free offline merging. The backend syncs changes when connectivity returns. Supports GeoJSON import/export.",
+    tags:["Vue 3","Mapbox GL","CRDT","IndexedDB","Express"],
+    github:"#",demo:null,hasDemo:false,hue:140,
+  },
+  {
+    title:"Pulse API",
+    desc:"Rate-limiting and request-shaping middleware for high-traffic Node.js APIs with per-route granularity.",
+    longDesc:"Pulse API provides adaptive rate limiting that shapes traffic rather than simply rejecting it. Supports sliding window, token bucket, and leaky bucket algorithms. Per-route configuration, Redis-backed state, and a real-time metrics dashboard built in.",
+    tags:["Node.js","Redis","TypeScript","Express","Prometheus"],
+    github:"#",demo:null,hasDemo:false,hue:20,
+  },
+  {
+    title:"Void CMS",
+    desc:"Minimal headless CMS with a Git-based content store. No database, no lock-in, just Markdown.",
+    longDesc:"Void CMS stores all content as Markdown files in a Git repository, giving teams a full edit history and familiar PR-based workflows. A lightweight REST and GraphQL API serves content to any frontend. Webhooks trigger rebuilds on merge.",
+    tags:["TypeScript","Git API","GraphQL","REST","Markdown"],
+    github:"#",demo:"#",hasDemo:true,hue:300,
+  },
+  {
+    title:"Threadline",
+    desc:"Visual thread manager for Twitter power users. Draft, schedule, and track post analytics in one place.",
+    longDesc:"Threadline reimagines the Twitter compose experience for long-form thinkers. Write threads visually, preview as they'll appear in timeline, schedule with timezone awareness, and track engagement analytics post-publish.",
+    tags:["Next.js","Twitter API v2","Prisma","Supabase","Tailwind"],
+    github:"#",demo:null,hasDemo:false,hue:200,
+  },
+];
 
-// helper: get flat index of node
-function nodeIdx(li, ni) {
-  let idx = 0;
-  for (let i = 0; i < li; i++) idx += NN.layers[i].nodes.length;
-  return idx + ni;
-}
+/* ══════════════════════════════════════════
+   ART GENERATOR
+══════════════════════════════════════════ */
+function makeArt(p, w=460, h=190) {
+  const {hue} = p;
+  const s = (x,o=0) => { const v=Math.sin(hue*.09+x+o)*1e4; return v-Math.floor(v); };
+  const r = (mn,mx,o=0) => mn+s(o)*(mx-mn);
+  const c = `hsl(${hue},88%,52%)`;
+  const cf = `hsla(${hue},60%,52%,.06)`;
+  const id = `a${hue}`;
 
-// all edges: array of {x1,y1,x2,y2, fromLayer,fromNode,toLayer,toNode, el, pulseEl}
-const EDGES = [];
-// all node elements
-const NODE_ELS = [];
+  let svg = `<svg viewBox="0 0 ${w} ${h}" xmlns="http://www.w3.org/2000/svg">
+<defs>
+  <filter id="${id}gl"><feGaussianBlur stdDeviation="3" result="b"/><feMerge><feMergeNode in="b"/><feMergeNode in="SourceGraphic"/></feMerge></filter>
+  <radialGradient id="${id}bg" cx="60%" cy="38%" r="65%">
+    <stop offset="0%" stop-color="hsl(${hue},50%,7%)"/>
+    <stop offset="100%" stop-color="#03060e"/>
+  </radialGradient>
+</defs>
+<rect width="${w}" height="${h}" fill="url(#${id}bg)"/>
+<g opacity=".055" stroke="${c}" stroke-width=".5">`;
+  for(let x=30;x<w;x+=30) svg+=`<line x1="${x}" y1="0" x2="${x}" y2="${h}"/>`;
+  for(let y=30;y<h;y+=30) svg+=`<line x1="0" y1="${y}" x2="${w}" y2="${y}"/>`;
+  svg+=`</g>`;
 
-/* ── BUILD SVG ELEMENTS ── */
-function buildNN() {
-  const edgesG  = document.getElementById('nn-edges');
-  const nodesG  = document.getElementById('nn-nodes');
-  const pulsesG = document.getElementById('nn-pulses');
-
-  // Draw edges first (behind nodes)
-  for (let li = 0; li < NN.layers.length - 1; li++) {
-    const lA = NN.layers[li], lB = NN.layers[li + 1];
-    lA.nodes.forEach((yA, ni) => {
-      lB.nodes.forEach((yB, nj) => {
-        const line = document.createElementNS('http://www.w3.org/2000/svg','line');
-        line.setAttribute('x1', lA.x); line.setAttribute('y1', yA);
-        line.setAttribute('x2', lB.x); line.setAttribute('y2', yB);
-        line.setAttribute('stroke', '#00ddc8');
-        line.setAttribute('stroke-width', '0.8');
-        line.setAttribute('opacity', '0.07');
-        line.setAttribute('stroke-linecap','round');
-        edgesG.appendChild(line);
-
-        // pulse dot (travels along edge on activation)
-        const circ = document.createElementNS('http://www.w3.org/2000/svg','circle');
-        circ.setAttribute('r','3');
-        circ.setAttribute('fill','#00ddc8');
-        circ.setAttribute('opacity','0');
-        circ.setAttribute('filter','url(#glow-edge)');
-        pulsesG.appendChild(circ);
-
-        EDGES.push({
-          x1:lA.x, y1:yA, x2:lB.x, y2:yB,
-          fromLayer:li, fromNode:ni, toLayer:li+1, toNode:nj,
-          el:line, pulseEl:circ
-        });
-      });
-    });
+  const v=Math.floor(hue/45)%4;
+  if(v===0){
+    svg+=`<g filter="url(#${id}gl)">`;
+    for(let i=4;i>=1;i--)
+      svg+=`<circle cx="${w*.7}" cy="${h*.5}" r="${i*22}" fill="none" stroke="${c}" stroke-width="${1.3-i*.2}" opacity="${.1+i*.1}"/>`;
+    svg+=`<circle cx="${w*.7}" cy="${h*.5}" r="7" fill="${c}" opacity=".85"/></g>`;
+  } else if(v===1){
+    svg+=`<g stroke="${c}" fill="none" stroke-linecap="round">`;
+    const paths=[`M${w*.48},${h*.5} h38 v-48 h72`,`M${w*.48},${h*.5} h38 v36 h56`,`M${w*.48+38+72},${h*.5-48} h40`,`M${w*.48+38+56},${h*.5+36} h40 v-18`];
+    paths.forEach((d,i)=>{svg+=`<path d="${d}" stroke-width="${1+i*.15}" opacity="${.28+i*.1}"/>`;});
+    svg+=`</g>`;
+  } else if(v===2){
+    let pts='';
+    for(let x=16;x<w-16;x+=2){const y=h/2+Math.sin(x/20)*26+Math.sin(x/7)*9;pts+=`${x},${y} `;}
+    svg+=`<g filter="url(#${id}gl)"><polyline points="${pts}" fill="none" stroke="${c}" stroke-width="1.8" opacity=".55"/></g>`;
+  } else {
+    const cx=w*.7,cy=h*.5,R=44;
+    const hex=(r2)=>Array.from({length:6},(_,i)=>{const a=Math.PI/3*i-Math.PI/6;return `${cx+r2*Math.cos(a)},${cy+r2*Math.sin(a)}`;}).join(' ');
+    svg+=`<g filter="url(#${id}gl)">
+      <polygon points="${hex(R)}" fill="${cf}" stroke="${c}" stroke-width="1.2" opacity=".5"/>
+      <polygon points="${hex(R*.6)}" fill="rgba(0,221,200,.08)" stroke="${c}" stroke-width=".8" opacity=".6"/>
+      <circle cx="${cx}" cy="${cy}" r="6" fill="${c}" opacity=".9"/>
+    </g>`;
   }
 
-  // Draw nodes
-  NN.layers.forEach((layer, li) => {
-    const layerEls = [];
-    layer.nodes.forEach((y, ni) => {
-      const g = document.createElementNS('http://www.w3.org/2000/svg','g');
-
-      // outer ring (faint, always visible)
-      const outerCirc = document.createElementNS('http://www.w3.org/2000/svg','circle');
-      outerCirc.setAttribute('cx', layer.x); outerCirc.setAttribute('cy', y);
-      outerCirc.setAttribute('r', li === NN.layers.length-1 ? '22' : '16');
-      outerCirc.setAttribute('fill','rgba(3,9,22,0.9)');
-      outerCirc.setAttribute('stroke','#00ddc8');
-      outerCirc.setAttribute('stroke-width','1');
-      outerCirc.setAttribute('opacity','0.25');
-      g.appendChild(outerCirc);
-
-      // inner fill (lights up on activation)
-      const innerCirc = document.createElementNS('http://www.w3.org/2000/svg','circle');
-      innerCirc.setAttribute('cx', layer.x); innerCirc.setAttribute('cy', y);
-      innerCirc.setAttribute('r', li === NN.layers.length-1 ? '14' : '9');
-      innerCirc.setAttribute('fill','#00ddc8');
-      innerCirc.setAttribute('opacity','0');
-      g.appendChild(innerCirc);
-
-      // glow ring (appears on activation)
-      const glowRing = document.createElementNS('http://www.w3.org/2000/svg','circle');
-      glowRing.setAttribute('cx', layer.x); glowRing.setAttribute('cy', y);
-      glowRing.setAttribute('r', li === NN.layers.length-1 ? '28' : '22');
-      glowRing.setAttribute('fill','none');
-      glowRing.setAttribute('stroke','#00ddc8');
-      glowRing.setAttribute('stroke-width', li === NN.layers.length-1 ? '1.5' : '1');
-      glowRing.setAttribute('opacity','0');
-      glowRing.setAttribute('filter','url(#glow-node)');
-      g.appendChild(glowRing);
-
-      // node label (input nodes only)
-      if (li === 0) {
-        const txt = document.createElementNS('http://www.w3.org/2000/svg','text');
-        txt.setAttribute('x', layer.x - 26);
-        txt.setAttribute('y', y + 4);
-        txt.setAttribute('text-anchor','end');
-        txt.setAttribute('font-family',"'Share Tech Mono'");
-        txt.setAttribute('font-size','8');
-        txt.setAttribute('fill','#00ddc8');
-        txt.setAttribute('opacity','0.3');
-        txt.setAttribute('letter-spacing','1');
-        txt.textContent = ['NAME','EMAIL','MSG'][ni];
-        g.appendChild(txt);
-      }
-
-      // output node extra detail
-      if (li === NN.layers.length - 1) {
-        const outerRing2 = document.createElementNS('http://www.w3.org/2000/svg','circle');
-        outerRing2.setAttribute('cx', layer.x); outerRing2.setAttribute('cy', y);
-        outerRing2.setAttribute('r','34');
-        outerRing2.setAttribute('fill','none');
-        outerRing2.setAttribute('stroke','#00ddc8');
-        outerRing2.setAttribute('stroke-width','0.5');
-        outerRing2.setAttribute('opacity','0.1');
-        g.appendChild(outerRing2);
-      }
-
-      nodesG.appendChild(g);
-      layerEls.push({ g, outer:outerCirc, inner:innerCirc, glowRing });
-    });
-    NODE_ELS.push(layerEls);
-  });
-
-  // Add burst circle for output node
-  const burstCirc = document.createElementNS('http://www.w3.org/2000/svg','circle');
-  const outNode = NN.layers[3];
-  burstCirc.setAttribute('cx', outNode.x);
-  burstCirc.setAttribute('cy', outNode.nodes[0]);
-  burstCirc.setAttribute('r','22'); burstCirc.setAttribute('fill','#00ddc8');
-  burstCirc.setAttribute('opacity','0'); burstCirc.setAttribute('filter','url(#glow-burst)');
-  burstCirc.id = 'output-burst';
-  document.getElementById('nn-nodes').appendChild(burstCirc);
-}
-
-buildNN();
-
-/* ══════════════════════════════════════════════════
-   ACTIVATION PROPAGATION
-   When input n is activated:
-   - input node n → full
-   - each H1 node gets partial glow proportional to active inputs
-   - each H2 node gets glow if H1 has enough signal
-   - output node glows only when all 3 inputs are active
-══════════════════════════════════════════════════ */
-function computeActivations() {
-  const activeCount = NN.inputs.filter(Boolean).length;
-  const inputAct    = [
-    NN.inputs[0] ? 1 : 0,
-    NN.inputs[1] ? 1 : 0,
-    NN.inputs[2] ? 1 : 0,
-  ];
-
-  // H1: each node averages weighted inputs
-  const h1Act = NN.layers[1].nodes.map((_, ni) => {
-    // simple: weighted sum — each H1 node gets signal from all inputs
-    // weights vary slightly per node for visual interest
-    const w = [[0.8,0.5,0.3],[0.4,0.9,0.4],[0.3,0.5,0.8],[0.5,0.6,0.7]][ni];
-    const raw = inputAct.reduce((s,a,i) => s + a*w[i], 0) / w.reduce((a,b)=>a+b,0);
-    return Math.min(1, raw);
-  });
-
-  // H2: signal from H1
-  const h2Act = NN.layers[2].nodes.map((_, ni) => {
-    const w = [[0.7,0.6,0.4,0.3],[0.3,0.5,0.7,0.5],[0.4,0.6,0.5,0.7],[0.6,0.4,0.6,0.8]][ni];
-    const raw = h1Act.reduce((s,a,i) => s + a*w[i], 0) / w.reduce((a,b)=>a+b,0);
-    return Math.min(1, raw);
-  });
-
-  // Output: only fully active when all 3 inputs are on
-  const outAct = activeCount === 3 ? 1 : activeCount * 0.25;
-
-  return { inputAct, h1Act, h2Act, outAct };
-}
-
-function applyActivations(anim = true) {
-  const { inputAct, h1Act, h2Act, outAct } = computeActivations();
-  const dur = anim ? 0.6 : 0;
-
-  // Input nodes
-  NN.layers[0].nodes.forEach((_, ni) => {
-    const v = inputAct[ni];
-    const el = NODE_ELS[0][ni];
-    gsap.to(el.inner,    { attr:{opacity: v * 0.85}, duration:dur });
-    gsap.to(el.glowRing, { attr:{opacity: v * 0.7},  duration:dur });
-    gsap.to(el.outer,    { attr:{opacity: 0.12 + v * 0.65, 'stroke-width': 1 + v * 1.2}, duration:dur });
-  });
-
-  // H1 nodes
-  h1Act.forEach((v, ni) => {
-    const el = NODE_ELS[1][ni];
-    gsap.to(el.inner,    { attr:{opacity: v * 0.65}, duration:dur });
-    gsap.to(el.glowRing, { attr:{opacity: v * 0.5},  duration:dur });
-    gsap.to(el.outer,    { attr:{opacity: 0.12 + v * 0.5, 'stroke-width': 1 + v * 0.8}, duration:dur });
-  });
-
-  // H2 nodes
-  h2Act.forEach((v, ni) => {
-    const el = NODE_ELS[2][ni];
-    gsap.to(el.inner,    { attr:{opacity: v * 0.65}, duration:dur });
-    gsap.to(el.glowRing, { attr:{opacity: v * 0.5},  duration:dur });
-    gsap.to(el.outer,    { attr:{opacity: 0.12 + v * 0.5, 'stroke-width': 1 + v * 0.8}, duration:dur });
-  });
-
-  // Output node
-  const outEl = NODE_ELS[3][0];
-  gsap.to(outEl.inner,    { attr:{opacity: outAct * 0.9}, duration:dur });
-  gsap.to(outEl.glowRing, { attr:{opacity: outAct * 0.85}, duration:dur });
-  gsap.to(outEl.outer,    { attr:{opacity: 0.15 + outAct * 0.7, 'stroke-width': 1 + outAct * 1.5}, duration:dur });
-
-  // Edges
-  EDGES.forEach(e => {
-    let fromAct = 0, toAct = 0;
-    if (e.fromLayer === 0) fromAct = inputAct[e.fromNode];
-    else if (e.fromLayer === 1) fromAct = h1Act[e.fromNode];
-    else if (e.fromLayer === 2) fromAct = h2Act[e.fromNode];
-    if (e.toLayer === 1) toAct = h1Act[e.toNode];
-    else if (e.toLayer === 2) toAct = h2Act[e.toNode];
-    else if (e.toLayer === 3) toAct = outAct;
-    const edgeAct = (fromAct + toAct) / 2;
-    gsap.to(e.el, { attr:{opacity: 0.05 + edgeAct * 0.55, 'stroke-width': 0.6 + edgeAct * 1.4}, duration:dur });
-  });
-}
-
-/* ══════════════════════════════════════════════════
-   PULSE ANIMATION — dots travel along edges
-══════════════════════════════════════════════════ */
-const pulseTimelines = new Map();
-
-function firePulse(edge) {
-  const key = `${edge.fromLayer}-${edge.fromNode}-${edge.toLayer}-${edge.toNode}`;
-  if (pulseTimelines.has(key)) return; // already pulsing
-
-  const { x1,y1,x2,y2, pulseEl } = edge;
-  const tl = gsap.timeline({ repeat:-1, repeatDelay: 0.3 + Math.random() * 0.8 });
-  tl.set(pulseEl, { attr:{cx:x1,cy:y1}, opacity:0 });
-  tl.to(pulseEl,  { attr:{cx:x2,cy:y2}, opacity:0.85, duration:0.6+Math.random()*0.3, ease:'none' });
-  tl.to(pulseEl,  { opacity:0, duration:0.15 }, '-=0.1');
-  pulseTimelines.set(key, tl);
-}
-
-function killPulse(edge) {
-  const key = `${edge.fromLayer}-${edge.fromNode}-${edge.toLayer}-${edge.toNode}`;
-  if (pulseTimelines.has(key)) {
-    pulseTimelines.get(key).kill();
-    pulseTimelines.delete(key);
-    gsap.set(edge.pulseEl, { opacity:0 });
+  // scattered dots (left half so they don't overlap main shape)
+  svg+=`<g filter="url(#${id}gl)">`;
+  for(let i=0;i<6;i++){
+    const x=r(18,w*.42,i*5),y=r(12,h-12,i*11),rd=r(1.2,3.2,i*7),op=r(.2,.6,i*3);
+    svg+=`<circle cx="${x.toFixed(1)}" cy="${y.toFixed(1)}" r="${rd.toFixed(1)}" fill="${c}" opacity="${op.toFixed(2)}"/>`;
   }
+  svg+=`</g>`;
+
+  // tag chip
+  svg+=`<rect x="${w-104}" y="${h-28}" width="88" height="18" rx="3" fill="rgba(3,9,22,.85)" stroke="${c}" stroke-width=".5" stroke-opacity=".35"/>
+<text x="${w-60}" y="${h-16}" text-anchor="middle" font-family="'Share Tech Mono'" font-size="7.5" fill="${c}" opacity=".75" letter-spacing="1.2">${p.tags[0].toUpperCase()}</text>
+</svg>`;
+  return svg;
 }
 
-function updatePulses() {
-  const { inputAct, h1Act, h2Act, outAct } = computeActivations();
-  EDGES.forEach(e => {
-    let fromAct = 0;
-    if (e.fromLayer === 0) fromAct = inputAct[e.fromNode];
-    else if (e.fromLayer === 1) fromAct = h1Act[e.fromNode];
-    else if (e.fromLayer === 2) fromAct = h2Act[e.fromNode];
-    if (fromAct > 0.25) firePulse(e);
-    else killPulse(e);
-  });
+/* ══════════════════════════════════════════
+   BUILD CARDS + DOTS
+══════════════════════════════════════════ */
+const track   = document.getElementById('track');
+const dotRow  = document.getElementById('dot-row');
+document.getElementById('pn-tot').textContent = String(PROJECTS.length).padStart(2,'0');
+
+PROJECTS.forEach((p, i) => {
+  // card
+  const card = document.createElement('div');
+  card.className = 'proj-card';
+  card.dataset.index = i;
+  card.innerHTML = `
+    <div class="card-art">${makeArt(p)}</div>
+    <div class="card-body">
+      <div class="card-num">${String(i+1).padStart(2,'0')}</div>
+      <div class="card-title">${p.title}</div>
+      <div class="card-desc">${p.desc}</div>
+      <div class="card-tags">${p.tags.slice(0,3).map(t=>`<span class="ctag">${t}</span>`).join('')}</div>
+      <div class="card-footer">
+        <div class="card-links">
+          <a href="${p.github}" class="cl" onclick="event.stopPropagation()" target="_blank" rel="noopener">
+            <svg viewBox="0 0 24 24"><path d="M9 19c-5 1.5-5-2.5-7-3m14 6v-3.87a3.37 3.37 0 0 0-.94-2.61c3.14-.35 6.44-1.54 6.44-7A5.44 5.44 0 0 0 20 4.77 5.07 5.07 0 0 0 19.91 1S18.73.65 16 2.48a13.38 13.38 0 0 0-7 0C6.27.65 5.09 1 5.09 1A5.07 5.07 0 0 0 5 4.77a5.44 5.44 0 0 0-1.5 3.78c0 5.42 3.3 6.61 6.44 7A3.37 3.37 0 0 0 9 18.13V22"/></svg>
+            Code
+          </a>
+          ${p.hasDemo?`<a href="${p.demo}" class="cl live" onclick="event.stopPropagation()" target="_blank" rel="noopener">
+            <svg viewBox="0 0 24 24"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg>
+            Demo
+          </a>`:''}
+        </div>
+        <div class="open-hint">Details<svg viewBox="0 0 10 10"><polyline points="2,5 8,5"/><polyline points="5,2 8,5 5,8"/></svg></div>
+      </div>
+    </div>`;
+  card.addEventListener('click', ()=>openModal(i));
+  track.appendChild(card);
+
+  // dot
+  const dot = document.createElement('div');
+  dot.className = 'dot' + (i===0?' active':'');
+  dot.dataset.index = i;
+  dot.addEventListener('click', ()=>scrollToCard(i));
+  dotRow.appendChild(dot);
+});
+
+/* ══════════════════════════════════════════
+   SCROLL STATE
+══════════════════════════════════════════ */
+let activeIdx = 0;
+
+function getCardWidth() {
+  const first = track.querySelector('.proj-card');
+  if(!first) return 300;
+  return first.offsetWidth + 20; // card + gap
 }
 
-/* ══════════════════════════════════════════════════
-   AMBIENT — idle breathing on all nodes
-══════════════════════════════════════════════════ */
-function ambient() {
-  NODE_ELS.forEach((layer, li) => {
-    layer.forEach((el, ni) => {
-      gsap.to(el.outer, {
-        attr:{ opacity: li === 3 ? 0.22 : 0.18 },
-        duration: 2 + Math.random() * 2,
-        repeat:-1, yoyo:true, ease:'sine.inOut',
-        delay: Math.random() * 2
-      });
+function scrollToCard(idx) {
+  idx = Math.max(0, Math.min(idx, PROJECTS.length-1));
+  const target = idx * getCardWidth();
+  track.scrollTo({ left: target, behavior: 'smooth' });
+}
+
+function updateState(idx) {
+  if(idx === activeIdx && document.querySelector('.dot.active')) return;
+  activeIdx = idx;
+
+  // dots
+  document.querySelectorAll('.dot').forEach((d,i)=>d.classList.toggle('active', i===idx));
+
+  // progress
+  const pct = (idx / (PROJECTS.length-1)) * 100;
+  document.getElementById('prog-fill').style.width = pct + '%';
+  document.getElementById('pn-cur').textContent = String(idx+1).padStart(2,'0');
+
+  // arrows
+  document.getElementById('btn-prev').disabled = idx===0;
+  document.getElementById('btn-next').disabled = idx===PROJECTS.length-1;
+}
+
+/* ══════════════════════════════════════════
+   BLUR / FADE TRANSITION
+   Each card blurs + dims based on distance
+   from the track center. Center = sharp + full
+   opacity. Edges = blurred + dimmed.
+══════════════════════════════════════════ */
+function applyBlurFade() {
+  const cards   = track.querySelectorAll('.proj-card');
+  const cw      = getCardWidth();
+  const center  = track.scrollLeft + track.clientWidth / 2;
+
+  cards.forEach((card, i) => {
+    const cardCenter = i * cw + card.offsetWidth / 2;
+    const dist = Math.abs(cardCenter - center) / cw;
+
+    const blur    = Math.min(6, dist * 4.8);
+    const opacity = Math.max(0.28, 1 - dist * 0.54);
+    const scale   = Math.max(0.93, 1 - dist * 0.04);
+
+    // Use GSAP for smooth interpolated transitions
+    gsap.to(card, {
+      filter:  `blur(${blur.toFixed(2)}px)`,
+      opacity: opacity,
+      scale:   scale,
+      duration: 0.25,
+      ease:    'power2.out',
+      overwrite: 'auto'
     });
   });
 }
 
-/* ══════════════════════════════════════════════════
-   CONSTELLATION (left panel bg)
-══════════════════════════════════════════════════ */
-(function initConstellation() {
-  const canvas = document.getElementById('constellation');
-  if (!canvas) return;
-  const resize = () => { canvas.width=canvas.offsetWidth; canvas.height=canvas.offsetHeight; };
-  window.addEventListener('resize', resize); resize();
-  const pts = Array.from({length:28}, () => ({
-    x:Math.random()*canvas.width, y:Math.random()*canvas.height,
-    vx:(Math.random()-.5)*.14, vy:(Math.random()-.5)*.14,
-    r:Math.random()*1.3+.3, o:Math.random()*.42+.1,
-  }));
-  const ctx = canvas.getContext('2d');
-  (function draw() {
-    ctx.clearRect(0,0,canvas.width,canvas.height);
-    pts.forEach((p,i) => {
-      p.x+=p.vx; p.y+=p.vy;
-      if(p.x<0||p.x>canvas.width) p.vx*=-1;
-      if(p.y<0||p.y>canvas.height) p.vy*=-1;
-      ctx.beginPath(); ctx.arc(p.x,p.y,p.r,0,Math.PI*2);
-      ctx.fillStyle=`rgba(0,221,200,${p.o})`; ctx.fill();
-      for(let j=i+1;j<pts.length;j++) {
-        const q=pts[j], d=Math.hypot(p.x-q.x,p.y-q.y);
-        if(d<115) {
-          ctx.beginPath(); ctx.moveTo(p.x,p.y); ctx.lineTo(q.x,q.y);
-          ctx.strokeStyle=`rgba(0,221,200,${(1-d/115)*.17})`; ctx.lineWidth=.5; ctx.stroke();
-        }
-      }
+/* ══════════════════════════════════════════
+   SCROLL LISTENER
+══════════════════════════════════════════ */
+let scrollTicking = false;
+track.addEventListener('scroll', ()=>{
+  if(!scrollTicking) {
+    requestAnimationFrame(()=>{
+      const idx = Math.round(track.scrollLeft / getCardWidth());
+      updateState(idx);
+      applyBlurFade();
+      scrollTicking = false;
     });
-    requestAnimationFrame(draw);
-  })();
-})();
-
-/* ══════════════════════════════════════════════════
-   STATE & VALIDATION
-══════════════════════════════════════════════════ */
-const EMAIL_RE = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-const S = { name:false, email:false, msg:false, ready:false, busy:false };
-const LABELS = ['0 / 3','1 / 3','2 / 3','Ready ↗'];
-const timers = {};
-
-function showHint(id,msg) { const e=document.getElementById(id); e.textContent=msg; e.classList.add('show'); }
-function hideHint(id)      { document.getElementById(id).classList.remove('show'); }
-function setFS(fid, state2) {
-  const el = document.getElementById(fid);
-  el.classList.toggle('valid', state2==='valid');
-  el.classList.toggle('err',   state2==='err');
-}
-
-function syncUI() {
-  const n = [S.name,S.email,S.msg].filter(Boolean).length;
-  document.getElementById('d0').classList.toggle('lit', S.name);
-  document.getElementById('d1').classList.toggle('lit', S.email);
-  document.getElementById('d2').classList.toggle('lit', S.msg);
-  document.getElementById('pfill').style.width = (n/3*100)+'%';
-  const lbl = document.getElementById('plbl');
-  lbl.textContent = LABELS[n]; lbl.classList.toggle('on', n>0);
-
-  NN.inputs = [S.name, S.email, S.msg];
-  applyActivations(true);
-  updatePulses();
-
-  const all = S.name && S.email && S.msg;
-  const btn = document.getElementById('btn');
-  if (all && !S.ready) {
-    S.ready = true;
-    btn.classList.add('ready'); btn.removeAttribute('disabled');
-    // Extra pulse on output node
-    gsap.to(NODE_ELS[3][0].outer, { attr:{opacity:1,'stroke-width':3}, duration:0.4 });
-    gsap.to(NODE_ELS[3][0].glowRing, { attr:{opacity:1}, duration:0.4 });
+    scrollTicking = true;
   }
-  if (!all && S.ready) {
-    S.ready = false;
-    btn.classList.remove('ready'); btn.setAttribute('disabled','');
+}, {passive:true});
+
+window.addEventListener('resize', applyBlurFade);
+
+/* ══════════════════════════════════════════
+   DRAG TO SCROLL
+══════════════════════════════════════════ */
+let dragStart = null, dragScrollStart = 0, didDrag = false;
+
+track.addEventListener('mousedown', e=>{
+  dragStart = e.clientX;
+  dragScrollStart = track.scrollLeft;
+  didDrag = false;
+  track.classList.add('grabbing');
+  e.preventDefault();
+});
+
+document.addEventListener('mousemove', e=>{
+  if(dragStart===null) return;
+  const dx = dragStart - e.clientX;
+  if(Math.abs(dx)>4) didDrag=true;
+  track.scrollLeft = dragScrollStart + dx;
+  applyBlurFade();
+});
+
+document.addEventListener('mouseup', e=>{
+  if(dragStart===null) return;
+  track.classList.remove('grabbing');
+  if(didDrag){
+    // snap to nearest
+    const idx = Math.round(track.scrollLeft / getCardWidth());
+    scrollToCard(idx);
   }
-}
-
-// NAME
-document.getElementById('i-name').addEventListener('input', e => {
-  clearTimeout(timers.n); hideHint('h-name');
-  const v = e.target.value.trim(), ok = v.length >= 2;
-  if (ok !== S.name) { S.name=ok; setFS('f-name', ok?'valid':'none'); syncUI(); }
-  if (!ok && v.length>0) timers.n = setTimeout(()=>{ setFS('f-name','err'); showHint('h-name','What should I call you?'); },800);
-  else setFS('f-name', ok?'valid':'none');
+  dragStart=null;
 });
 
-// EMAIL
-document.getElementById('i-email').addEventListener('input', e => {
-  clearTimeout(timers.e); hideHint('h-email');
-  const v = e.target.value.trim(), ok = EMAIL_RE.test(v);
-  if (ok !== S.email) { S.email=ok; setFS('f-email', ok?'valid':'none'); syncUI(); }
-  if (!ok && v.length>4) timers.e = setTimeout(()=>{ setFS('f-email','err'); showHint('h-email','Double-check that email'); },800);
-  else setFS('f-email', ok?'valid':'none');
+/* ══════════════════════════════════════════
+   ARROW BUTTONS
+══════════════════════════════════════════ */
+document.getElementById('btn-prev').addEventListener('click',()=>scrollToCard(activeIdx-1));
+document.getElementById('btn-next').addEventListener('click',()=>scrollToCard(activeIdx+1));
+
+/* keyboard */
+document.addEventListener('keydown', e=>{
+  if(document.getElementById('modal-overlay').classList.contains('open')) return;
+  if(e.key==='ArrowRight') scrollToCard(activeIdx+1);
+  if(e.key==='ArrowLeft')  scrollToCard(activeIdx-1);
 });
 
-// MESSAGE
-document.getElementById('i-msg').addEventListener('input', e => {
-  clearTimeout(timers.m); hideHint('h-msg');
-  const v = e.target.value.trim(), ok = v.length >= 10;
-  if (ok !== S.msg) { S.msg=ok; setFS('f-msg', ok?'valid':'none'); syncUI(); }
-  if (!ok && v.length>0) timers.m = setTimeout(()=>{ setFS('f-msg','err'); showHint('h-msg','Tell me a little more'); },800);
-  else setFS('f-msg', ok?'valid':'none');
-});
-
-/* ══════════════════════════════════════════════════
-   SUBMIT — cascade fire + dissolve
-══════════════════════════════════════════════════ */
-document.getElementById('btn').addEventListener('click', async () => {
-  if (!S.ready || S.busy) return;
-  S.busy = true;
-
-  // ── BACKEND PLACEHOLDER ──────────────────────
-  // Formspree — uncomment and replace YOUR_ID:
-  // await fetch('https://formspree.io/f/YOUR_ID', {
-  //   method:'POST',
-  //   headers:{'Content-Type':'application/json','Accept':'application/json'},
-  //   body: JSON.stringify({
-  //     name:    document.getElementById('i-name').value.trim(),
-  //     email:   document.getElementById('i-email').value.trim(),
-  //     message: document.getElementById('i-msg').value.trim()
-  //   })
-  // });
-  // ────────────────────────────────────────────
-
-  runTransmission();
-});
-
-function runTransmission() {
-  const tl = gsap.timeline();
-
-  // 1. Cascade fire: input → H1 → H2 → output, each layer 0.18s apart
-  tl.call(() => {
-    // Input nodes flash bright
-    NODE_ELS[0].forEach((el,ni) => {
-      gsap.to(el.inner,    { attr:{opacity:1}, duration:0.15, delay:ni*0.04 });
-      gsap.to(el.glowRing, { attr:{opacity:1}, duration:0.15, delay:ni*0.04 });
+/* ══════════════════════════════════════════
+   3D TILT
+══════════════════════════════════════════ */
+function setupTilt(){
+  document.querySelectorAll('.proj-card').forEach(card=>{
+    card.addEventListener('mousemove',e=>{
+      if(dragStart!==null) return;
+      const r=card.getBoundingClientRect();
+      const x=(e.clientX-r.left)/r.width-.5;
+      const y=(e.clientY-r.top)/r.height-.5;
+      gsap.to(card,{rotateX:-y*5,rotateY:x*5,transformPerspective:900,duration:.5,ease:'power2.out'});
+    });
+    card.addEventListener('mouseleave',()=>{
+      gsap.to(card,{rotateX:0,rotateY:0,duration:.7,ease:'power2.out'});
     });
   });
-  tl.call(() => {
-    NODE_ELS[1].forEach((el,ni) => {
-      gsap.to(el.inner,    { attr:{opacity:1}, duration:0.15, delay:ni*0.03 });
-      gsap.to(el.glowRing, { attr:{opacity:1}, duration:0.15, delay:ni*0.03 });
-    });
-    // Edges to H1 flash
-    EDGES.filter(e=>e.toLayer===1).forEach((e,i) => {
-      gsap.to(e.el, { attr:{opacity:0.9,'stroke-width':2.5}, duration:0.12, delay:i*0.02 });
-    });
-  }, [], 0.22);
-  tl.call(() => {
-    NODE_ELS[2].forEach((el,ni) => {
-      gsap.to(el.inner,    { attr:{opacity:1}, duration:0.15, delay:ni*0.03 });
-      gsap.to(el.glowRing, { attr:{opacity:1}, duration:0.15, delay:ni*0.03 });
-    });
-    EDGES.filter(e=>e.toLayer===2).forEach((e,i) => {
-      gsap.to(e.el, { attr:{opacity:0.9,'stroke-width':2.5}, duration:0.12, delay:i*0.02 });
-    });
-  }, [], 0.44);
-
-  // 2. Output node bursts
-  tl.call(() => {
-    EDGES.filter(e=>e.toLayer===3).forEach((e,i) => {
-      gsap.to(e.el, { attr:{opacity:1,'stroke-width':3}, duration:0.1, delay:i*0.02 });
-    });
-  }, [], 0.62);
-  tl.to('#output-burst', { attr:{r:60}, opacity:0.6, duration:0.12, ease:'power4.out' }, 0.66);
-  tl.to('#output-burst', { attr:{r:120}, opacity:0, duration:0.5, ease:'expo.out' }, 0.78);
-  tl.to(NODE_ELS[3][0].inner, { attr:{opacity:1}, duration:0.12 }, 0.66);
-
-  // 3. Flash
-  tl.to('#flash', { opacity:0.14, duration:0.12 }, 0.68);
-  tl.to('#flash', { opacity:0, duration:0.7 }, 0.80);
-
-  // 4. All NN elements dissolve with random stagger (reference style)
-  tl.call(() => {
-    const allEls = [
-      ...document.querySelectorAll('#nn-edges line'),
-      ...document.querySelectorAll('#nn-nodes circle'),
-      ...document.querySelectorAll('#nn-nodes text'),
-      ...document.querySelectorAll('#nn-pulses circle'),
-      ...document.querySelectorAll('#nn-svg text'),
-    ];
-    gsap.to(allEls, {
-      opacity:0, duration:0.12,
-      stagger:{ each:0.04, from:'random' }
-    });
-  }, [], 0.78);
-
-  // 5. Form fades
-  tl.to('#form-wrap', { opacity:0, y:-14, duration:0.5, ease:'power2.in' }, 0.82);
-
-  // 6. Success
-  tl.to('#success', { opacity:1, duration:0.75, ease:'power2.out' }, 1.2);
-  tl.call(() => document.getElementById('success').classList.add('show'), [], 1.2);
 }
 
-/* ══════════════════════════════════════════════════
-   RESET
-══════════════════════════════════════════════════ */
-document.getElementById('btn-reset').addEventListener('click', () => {
-  gsap.to('#success', { opacity:0, duration:0.4, onComplete:() => {
-    document.getElementById('success').classList.remove('show');
-  }});
+/* ══════════════════════════════════════════
+   MODAL
+══════════════════════════════════════════ */
+function openModal(idx){
+  const p=PROJECTS[idx];
+  document.getElementById('m-num').textContent   = `PROJECT ${String(idx+1).padStart(2,'0')}`;
+  document.getElementById('m-title').textContent = p.title;
+  document.getElementById('m-desc').textContent  = p.longDesc;
+  document.getElementById('m-art').innerHTML     = makeArt(p, 700, 220);
+  const badge=document.getElementById('m-badge');
+  badge.style.display = p.hasDemo?'inline-block':'none';
+  document.getElementById('m-tags').innerHTML =
+    p.tags.map(t=>`<span class="m-tag">${t}</span>`).join('');
+  document.getElementById('m-links').innerHTML=`
+    <a href="${p.github}" class="m-gh" target="_blank" rel="noopener">
+      <svg viewBox="0 0 24 24"><path d="M9 19c-5 1.5-5-2.5-7-3m14 6v-3.87a3.37 3.37 0 0 0-.94-2.61c3.14-.35 6.44-1.54 6.44-7A5.44 5.44 0 0 0 20 4.77 5.07 5.07 0 0 0 19.91 1S18.73.65 16 2.48a13.38 13.38 0 0 0-7 0C6.27.65 5.09 1 5.09 1A5.07 5.07 0 0 0 5 4.77a5.44 5.44 0 0 0-1.5 3.78c0 5.42 3.3 6.61 6.44 7A3.37 3.37 0 0 0 9 18.13V22"/></svg>
+      View on GitHub
+    </a>
+    ${p.hasDemo?`<a href="${p.demo}" class="m-demo" target="_blank" rel="noopener">
+      <svg viewBox="0 0 24 24"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg>
+      Live Demo
+    </a>`:`<span style="font-family:var(--mono);font-size:10px;letter-spacing:2px;color:var(--dim);text-transform:uppercase;align-self:center">No live demo</span>`}`;
+  document.getElementById('modal-overlay').classList.add('open');
+  document.body.style.overflow='hidden';
+}
 
-  Object.assign(S, {name:false,email:false,msg:false,ready:false,busy:false});
-  NN.inputs = [false,false,false];
+function closeModal(){
+  document.getElementById('modal-overlay').classList.remove('open');
+  document.body.style.overflow='';
+}
+document.getElementById('m-close').addEventListener('click',closeModal);
+document.getElementById('modal-overlay').addEventListener('click',e=>{
+  if(e.target===document.getElementById('modal-overlay')) closeModal();
+});
+document.addEventListener('keydown',e=>{ if(e.key==='Escape') closeModal(); });
 
-  ['i-name','i-email','i-msg'].forEach(id => document.getElementById(id).value='');
-  ['f-name','f-email','f-msg'].forEach(id => document.getElementById(id).classList.remove('valid','err'));
-  ['h-name','h-email','h-msg'].forEach(id => hideHint(id));
+/* ══════════════════════════════════════════
+   SCROLL ENTRANCE
+══════════════════════════════════════════ */
+ScrollTrigger.create({
+  trigger:'#works', start:'top 75%',
+  onEnter(){
+    gsap.to('#w-eye',   {opacity:1,y:0,duration:.8,ease:'power3.out'});
+    gsap.to('#w-ttl',   {opacity:1,y:0,duration:.9,ease:'power3.out',delay:.1});
+    gsap.to('#w-prog',  {opacity:1,duration:.7,ease:'power2.out',delay:.22});
+    gsap.to('#w-arr',   {opacity:1,duration:.7,ease:'power2.out',delay:.28});
+    gsap.to('#dot-row', {opacity:1,duration:.6,ease:'power2.out',delay:.35});
 
-  document.getElementById('btn').classList.remove('ready');
-  document.getElementById('btn').setAttribute('disabled','');
-
-  gsap.to('#form-wrap', { opacity:1, y:0, duration:0.6 });
-
-  // Restore all NN elements
-  document.querySelectorAll('#nn-edges line, #nn-nodes circle, #nn-nodes text, #nn-svg text').forEach(el => {
-    gsap.to(el, { opacity:parseFloat(el.getAttribute('opacity')||'0.07'), duration:0.8 });
-  });
-
-  // Kill all pulses
-  pulseTimelines.forEach(tl2 => tl2.kill());
-  pulseTimelines.clear();
-  document.querySelectorAll('#nn-pulses circle').forEach(el => gsap.set(el,{opacity:0}));
-
-  // Reset activations
-  applyActivations(false);
-  syncUI();
+    // stagger cards in
+    gsap.to('.proj-card',{
+      opacity:1, y:0, duration:.65,
+      stagger:{each:.1,from:'start'},
+      ease:'power3.out', delay:.2,
+      onComplete: setupTilt
+    });
+  }
 });
 
-/* ══════════════════════════════════════════════════
-   PAGE ENTRANCE
-══════════════════════════════════════════════════ */
-function pageIn() {
-  const tl = gsap.timeline({ defaults:{ ease:'power3.out' } });
-  tl.to('#ey',     { opacity:1, y:0, duration:0.9 }, 0.2);
-  tl.to('#hl',     { opacity:1, y:0, duration:1.0 }, 0.38);
-  tl.to('#sub',    { opacity:1, y:0, duration:0.9 }, 0.55);
-  tl.to('#clinks', { opacity:1, y:0, duration:0.8 }, 0.70);
-  tl.to('#form-wrap', { opacity:1, y:0, duration:1.0 }, 0.45);
-  tl.call(() => document.getElementById('em-word').classList.add('lit'), [], 0.95);
-}
-
-/* ══════════════════════════════════════════════════
-   INIT
-══════════════════════════════════════════════════ */
-ambient();
-applyActivations(false);
-pageIn();
-syncUI();
+/* init */
+updateState(0);
+// slight delay so cards are painted before first blur calc
+requestAnimationFrame(()=>{ requestAnimationFrame(applyBlurFade); });
 </script>
 </body>
 </html>
