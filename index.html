@@ -4,392 +4,519 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Selected Work</title>
-<link href="https://fonts.googleapis.com/css2?family=Rajdhani:wght@400;600;700&family=Share+Tech+Mono&family=Inter:wght@300;400;500&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;500;600;700;800&family=DM+Mono:wght@300;400;500&family=Fraunces:ital,opsz,wght@0,9..144,300;1,9..144,300&display=swap" rel="stylesheet">
 <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollTrigger.min.js"></script>
 <style>
-
-/* ══════════════════════════════════════════
-   TOKENS
-══════════════════════════════════════════ */
+/* ═══════════════════════════════════════
+   RESET & TOKENS
+═══════════════════════════════════════ */
 *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
 
 :root{
-  --bg:#03060e;
-  --bg2:#060d1a;
-  --teal:#00ddc8;
-  --t06:rgba(0,221,200,.06);
-  --t12:rgba(0,221,200,.12);
-  --t20:rgba(0,221,200,.20);
-  --t40:rgba(0,221,200,.40);
-  --t70:rgba(0,221,200,.70);
-  --text:rgba(224,232,228,.92);
-  --mid:rgba(224,232,228,.50);
-  --dim:rgba(224,232,228,.18);
-  --amber:#f0a04b;
-  --disp:'Rajdhani',sans-serif;
-  --mono:'Share Tech Mono',monospace;
-  --body:'Inter',sans-serif;
-  --eout:cubic-bezier(.16,1,.3,1);
+  --bg:      #03060e;
+  --bg2:     #07101f;
+  --surface: rgba(7,16,31,.72);
+  --teal:    #00ddc8;
+  --teal2:   #00b8a6;
+  --t04:     rgba(0,221,200,.04);
+  --t08:     rgba(0,221,200,.08);
+  --t16:     rgba(0,221,200,.16);
+  --t32:     rgba(0,221,200,.32);
+  --t60:     rgba(0,221,200,.60);
+  --white:   #e8f0ed;
+  --mid:     rgba(232,240,237,.48);
+  --dim:     rgba(232,240,237,.18);
+  --faint:   rgba(232,240,237,.07);
+  --disp:    'Syne', sans-serif;
+  --mono:    'DM Mono', monospace;
+  --serif:   'Fraunces', serif;
+  --ease:    cubic-bezier(.19,1,.22,1);
+  --ease2:   cubic-bezier(.76,0,.24,1);
 }
 
-html{scroll-behavior:smooth}
-body{
-  background:var(--bg);color:var(--text);
-  font-family:var(--body);
-  -webkit-font-smoothing:antialiased;
-  overflow-x:hidden;
+html { scroll-behavior: smooth; }
+
+body {
+  background: var(--bg);
+  color: var(--white);
+  font-family: var(--disp);
+  -webkit-font-smoothing: antialiased;
+  overflow-x: hidden;
 }
 
-body::after{
-  content:'';position:fixed;inset:0;
-  pointer-events:none;z-index:9999;opacity:.028;
-  background-image:url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.85' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
-  background-size:200px 200px;
+/* ── Grain overlay ── */
+body::before {
+  content: '';
+  position: fixed; inset: 0;
+  pointer-events: none; z-index: 9998;
+  opacity: .032;
+  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 512 512' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='g'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23g)'/%3E%3C/svg%3E");
+  background-size: 256px;
 }
 
-.demo-hero{
-  height:100vh;display:flex;align-items:center;justify-content:center;
-  font-family:var(--mono);font-size:11px;letter-spacing:3px;
-  color:var(--dim);text-transform:uppercase;
-  border-bottom:1px solid var(--t12);
+@media(hover:none){ }
+
+/* ── Demo hero ── */
+.demo-hero {
+  height: 100vh; display: flex; align-items: center; justify-content: center;
+  font-family: var(--mono); font-size: 10px; letter-spacing: 4px;
+  color: var(--dim); text-transform: uppercase;
+  border-bottom: 1px solid var(--t08);
 }
 
-/* ══════════════════════════════════════════
-   SECTION
-══════════════════════════════════════════ */
-#works{
-  position:relative;
-  padding:120px 0 140px;
-  overflow:hidden;
+/* ═══════════════════════════════════════
+   SECTION SHELL
+═══════════════════════════════════════ */
+#works {
+  position: relative;
+  padding: 130px 0 160px;
+  overflow: hidden;
 }
 
-/* ── HEADER ── */
-.w-header{
-  display:flex;align-items:flex-end;justify-content:space-between;
-  padding:0 clamp(24px,5vw,80px);
-  margin-bottom:52px;
-  gap:20px;flex-wrap:wrap;
+/* ── ambient glow behind section ── */
+#works::before {
+  content: '';
+  position: absolute; top: -200px; left: 50%; transform: translateX(-50%);
+  width: 900px; height: 600px;
+  background: radial-gradient(ellipse, rgba(0,221,200,.04) 0%, transparent 70%);
+  pointer-events: none;
 }
 
-.w-label{display:flex;flex-direction:column;gap:10px}
-
-.w-eyebrow{
-  font-family:var(--mono);font-size:10px;
-  letter-spacing:4px;color:var(--teal);text-transform:uppercase;
-  display:flex;align-items:center;gap:10px;
-  opacity:0;transform:translateY(12px);
-}
-.w-eyebrow::before{
-  content:'';display:inline-block;
-  width:20px;height:1px;
-  background:var(--teal);box-shadow:0 0 6px var(--teal);
+/* ═══════════════════════════════════════
+   HEADER
+═══════════════════════════════════════ */
+.w-header {
+  display: flex; align-items: flex-end; justify-content: space-between;
+  padding: 0 clamp(28px,6vw,96px);
+  margin-bottom: 64px;
+  gap: 24px; flex-wrap: wrap;
 }
 
-.w-title{
-  font-family:var(--disp);font-weight:700;
-  font-size:clamp(42px,6vw,82px);
-  line-height:.95;letter-spacing:-1.5px;
-  opacity:0;transform:translateY(16px);
-}
-.w-title span{color:var(--teal)}
+.w-label { display: flex; flex-direction: column; gap: 14px; }
 
-/* ── NAV ROW ── */
-.w-nav{
-  display:flex;align-items:center;gap:20px;
-  padding-bottom:6px;
+.w-eyebrow {
+  font-family: var(--mono); font-size: 9px; letter-spacing: 5px;
+  color: var(--teal); text-transform: uppercase;
+  display: flex; align-items: center; gap: 12px;
+  clip-path: inset(0 100% 0 0);
 }
-
-.w-progress{
-  display:flex;align-items:center;gap:10px;
-  opacity:0;
-}
-.prog-nums{
-  font-family:var(--mono);font-size:10px;letter-spacing:2px;color:var(--dim);
-  white-space:nowrap;
-}
-.prog-track{
-  width:80px;height:2px;
-  background:var(--t12);border-radius:2px;overflow:hidden;
-}
-.prog-fill{
-  height:100%;width:0%;
-  background:linear-gradient(90deg,var(--t40),var(--teal));
-  border-radius:2px;
-  transition:width .5s var(--eout);
-  box-shadow:0 0 8px var(--t40);
+.w-eyebrow::before {
+  content: ''; display: inline-block; width: 24px; height: 1px;
+  background: var(--teal); box-shadow: 0 0 8px var(--teal);
 }
 
-.w-arrows{
-  display:flex;gap:8px;
-  opacity:0;
+.w-title {
+  font-family: var(--disp); font-weight: 800;
+  font-size: clamp(52px,7vw,104px);
+  line-height: .92; letter-spacing: -3px;
+  clip-path: inset(0 0 100% 0);
 }
-.arr-btn{
-  width:38px;height:38px;border-radius:9px;
-  border:1px solid var(--t12);background:transparent;
-  display:flex;align-items:center;justify-content:center;
-  cursor:pointer;
-  transition:border-color .25s,background .25s,transform .15s;
-}
-.arr-btn:hover{border-color:var(--teal);background:var(--t06)}
-.arr-btn:active{transform:scale(.93)}
-.arr-btn:disabled{opacity:.22;cursor:not-allowed;pointer-events:none}
-.arr-btn svg{width:14px;height:14px;stroke:var(--mid);fill:none;stroke-width:2;stroke-linecap:round;stroke-linejoin:round}
-.arr-btn:hover svg{stroke:var(--teal)}
-
-/* ── TRACK WRAPPER ── */
-.track-wrapper{
-  position:relative;
-  padding:0 clamp(24px,5vw,80px);
-}
-.track-wrapper::before,
-.track-wrapper::after{
-  content:'';
-  position:absolute;top:0;bottom:0;width:clamp(24px,5vw,80px);
-  pointer-events:none;z-index:2;
-}
-.track-wrapper::before{
-  left:0;
-  background:linear-gradient(90deg,var(--bg) 0%,transparent 100%);
-}
-.track-wrapper::after{
-  right:0;
-  background:linear-gradient(270deg,var(--bg) 0%,transparent 100%);
+.w-title em {
+  font-family: var(--serif); font-weight: 300;
+  font-style: italic; color: var(--teal);
+  letter-spacing: -1px;
 }
 
-/* ── SCROLL TRACK ── */
-.track{
-  display:flex;gap:20px;
-  overflow-x:auto;
-  scroll-snap-type:x mandatory;
-  scroll-padding-inline:50%;
-  -webkit-overflow-scrolling:touch;
-  scrollbar-width:none;
-  cursor:grab;
-  padding-bottom:4px;
-}
-.track::-webkit-scrollbar{display:none}
-.track.grabbing{cursor:grabbing}
-
-/* ── CARD ── */
-.proj-card{
-  flex:0 0 calc((100% - 40px) / 3);
-  min-width:280px;
-  scroll-snap-align:center;
-  background:rgba(6,13,26,.82);
-  border:1px solid var(--t12);
-  border-radius:16px;
-  overflow:hidden;
-  cursor:pointer;
-  transition:border-color .35s,box-shadow .35s;
-  will-change:transform;
-  transform-style:preserve-3d;
-  opacity:0;transform:translateY(32px);
-}
-.proj-card:hover{
-  border-color:rgba(0,221,200,.38);
-  box-shadow:0 20px 60px rgba(0,0,0,.55),0 0 0 1px rgba(0,221,200,.07);
+/* ── right nav ── */
+.w-nav {
+  display: flex; align-items: center; gap: 16px;
+  padding-bottom: 8px;
+  opacity: 0;
 }
 
-/* card art */
-.card-art{
-  height:176px;position:relative;overflow:hidden;
-  background:var(--bg2);
+.prog-wrap {
+  display: flex; align-items: center; gap: 10px;
 }
-.card-art img{
-  width:100%;height:100%;object-fit:cover;
-  display:block;
-  transition:transform .5s var(--eout);
+.prog-nums {
+  font-family: var(--mono); font-size: 9px; letter-spacing: 3px; color: var(--dim);
 }
-.proj-card:hover .card-art img{transform:scale(1.04)}
-.card-art svg{width:100%;height:100%}
-.card-art::after{
-  content:'';
-  position:absolute;bottom:0;left:0;right:0;height:64px;
-  background:linear-gradient(transparent,rgba(6,13,26,.82));
-  pointer-events:none;
+.prog-track {
+  width: 72px; height: 1px;
+  background: var(--t16); border-radius: 1px; overflow: hidden;
+}
+.prog-fill {
+  height: 100%; width: 0%;
+  background: var(--teal);
+  box-shadow: 0 0 12px var(--teal);
+  transition: width .6s var(--ease);
 }
 
-/* card body */
-.card-body{
-  padding:20px 22px 18px;
-  display:flex;flex-direction:column;gap:8px;
-}
-.card-num{
-  font-family:var(--mono);font-size:9px;
-  letter-spacing:3px;color:var(--teal);opacity:.55;
-}
-.card-title{
-  font-family:var(--disp);font-weight:700;
-  font-size:clamp(17px,2vw,24px);
-  line-height:1.08;letter-spacing:-.2px;
-  transition:color .3s;
-}
-.proj-card:hover .card-title{color:var(--teal)}
-.card-desc{
-  font-size:13px;line-height:1.62;
-  color:var(--mid);font-weight:300;
-  display:-webkit-box;-webkit-line-clamp:3;-webkit-box-orient:vertical;overflow:hidden;
-}
-.card-tags{
-  display:flex;flex-wrap:wrap;gap:5px;margin-top:2px;
-}
-.ctag{
-  font-family:var(--mono);font-size:9px;letter-spacing:1.5px;
-  text-transform:uppercase;color:var(--teal);
-  padding:2px 7px;border:1px solid var(--t20);border-radius:3px;background:var(--t06);
-}
-.card-footer{
-  display:flex;align-items:center;justify-content:space-between;
-  padding-top:10px;border-top:1px solid var(--t12);margin-top:2px;
-}
-.card-links{display:flex;gap:8px;flex-wrap:wrap}
-.cl{
-  font-family:var(--mono);font-size:9px;letter-spacing:2px;
-  color:var(--mid);text-decoration:none;text-transform:uppercase;
-  display:flex;align-items:center;gap:5px;transition:color .25s;
-}
-.cl:hover{color:var(--teal)}
-.cl svg{width:11px;height:11px;stroke:currentColor;fill:none;stroke-width:2;stroke-linecap:round;stroke-linejoin:round}
-.cl.live{
-  color:var(--teal);background:var(--t06);
-  border:1px solid var(--t20);padding:3px 9px;border-radius:4px;
-}
-.cl.live:hover{background:var(--t12)}
-.open-hint{
-  font-family:var(--mono);font-size:8px;letter-spacing:2px;
-  color:var(--dim);text-transform:uppercase;
-  opacity:0;transition:opacity .3s;
-  display:flex;align-items:center;gap:4px;
-  flex-shrink:0;
-}
-.open-hint svg{width:9px;height:9px;stroke:currentColor;fill:none;stroke-width:2;stroke-linecap:round;stroke-linejoin:round}
-.proj-card:hover .open-hint{opacity:1}
+.arr-wrap { display: flex; gap: 10px; align-items: center; }
 
-/* ── DOT INDICATORS ── */
-.dot-row{
-  display:flex;justify-content:center;gap:6px;
-  margin-top:32px;
-  opacity:0;
-}
-.dot{
-  width:5px;height:5px;border-radius:50%;
-  background:var(--t12);border:1px solid var(--t20);
-  transition:background .35s,box-shadow .35s,transform .35s var(--eout),width .35s var(--eout);
-  cursor:pointer;
-}
-.dot.active{
-  width:20px;border-radius:3px;
-  background:var(--teal);border-color:var(--teal);
-  box-shadow:0 0 8px var(--teal);
+.arr {
+  position: relative;
+  width: 88px; height: 36px;
+  border-radius: 100px;
+  border: 1px solid var(--t16);
+  background: transparent;
+  display: flex; align-items: center; justify-content: center; gap: 8px;
+  cursor: pointer;
+  overflow: hidden;
+  transition: border-color .35s, color .35s;
+  color: var(--mid);
 }
 
-/* ══════════════════════════════════════════
+/* fill sweep on hover */
+.arr::before {
+  content: '';
+  position: absolute; inset: 0;
+  background: var(--teal);
+  transform: scaleX(0);
+  transform-origin: left center;
+  transition: transform .45s cubic-bezier(.76,0,.24,1);
+  border-radius: 100px;
+}
+.arr:hover::before { transform: scaleX(1); }
+.arr:hover { border-color: var(--teal); color: var(--bg); }
+.arr:active { transform: scale(.95); }
+.arr:disabled { opacity: .2; pointer-events: none; }
+
+.arr-label {
+  position: relative; z-index: 1;
+  font-family: var(--mono); font-size: 8px;
+  letter-spacing: 2px; text-transform: uppercase;
+  transition: color .35s;
+}
+.arr svg {
+  position: relative; z-index: 1;
+  width: 11px; height: 11px;
+  stroke: currentColor; fill: none;
+  stroke-width: 2; stroke-linecap: round; stroke-linejoin: round;
+  transition: transform .3s var(--ease);
+}
+.arr:hover svg { transform: translateX(3px); }
+#btn-prev:hover svg { transform: translateX(-3px); }
+#btn-prev::before { transform-origin: right center; }
+#btn-prev:hover::before { transform: scaleX(1); }
+
+/* ═══════════════════════════════════════
+   TRACK
+═══════════════════════════════════════ */
+.track-shell {
+  position: relative;
+  padding: 0 clamp(28px,6vw,96px);
+}
+.track-shell::before, .track-shell::after {
+  content: ''; position: absolute; top: 0; bottom: 0;
+  width: clamp(28px,6vw,96px); pointer-events: none; z-index: 4;
+}
+.track-shell::before { left: 0; background: linear-gradient(90deg, var(--bg), transparent); }
+.track-shell::after  { right:0; background: linear-gradient(270deg, var(--bg), transparent); }
+
+.track {
+  display: flex;
+  overflow: hidden;
+  padding-bottom: 2px;
+  touch-action: pan-y;
+}
+.track-inner {
+  display: flex;
+  gap: 18px;
+  will-change: transform;
+  flex-shrink: 0;
+}
+
+/* ═══════════════════════════════════════
+   CARD
+═══════════════════════════════════════ */
+.proj-card {
+  flex: 0 0 clamp(300px, 30vw, 420px);
+  border-radius: 20px;
+  border: 1px solid var(--t08);
+  background: var(--surface);
+  backdrop-filter: blur(20px);
+  overflow: hidden;
+  cursor: pointer;
+  opacity: 0; transform: translateY(40px);
+  will-change: transform, opacity;
+  transition: border-color .4s, box-shadow .4s;
+  position: relative;
+}
+.proj-card:hover {
+  border-color: var(--t32);
+  box-shadow: 0 32px 80px rgba(0,0,0,.5), 0 0 0 1px var(--t08);
+}
+
+/* ── art zone ── */
+.card-art {
+  height: 200px; position: relative; overflow: hidden;
+  background: var(--bg2);
+}
+.card-art svg { width: 100%; height: 100%; }
+.card-art img {
+  width: 100%; height: 100%; object-fit: cover; display: block;
+  transition: transform .7s var(--ease);
+}
+.proj-card:hover .card-art img { transform: scale(1.06); }
+
+/* Art gradient overlay */
+.card-art::after {
+  content: ''; position: absolute; bottom: 0; left: 0; right: 0; height: 80px;
+  background: linear-gradient(transparent, var(--bg2));
+  pointer-events: none;
+}
+
+/* index badge */
+.card-idx {
+  position: absolute; top: 14px; left: 14px; z-index: 3;
+  font-family: var(--mono); font-size: 8px; letter-spacing: 3px;
+  color: var(--teal); background: rgba(3,6,14,.75);
+  backdrop-filter: blur(8px);
+  padding: 4px 9px; border-radius: 4px;
+  border: 1px solid var(--t16);
+}
+
+/* live pill */
+.card-live {
+  position: absolute; top: 14px; right: 14px; z-index: 3;
+  font-family: var(--mono); font-size: 8px; letter-spacing: 2px; text-transform: uppercase;
+  color: var(--bg); background: var(--teal);
+  padding: 4px 9px; border-radius: 4px;
+  display: flex; align-items: center; gap: 5px;
+}
+.card-live::before {
+  content: ''; width: 5px; height: 5px; border-radius: 50%;
+  background: var(--bg);
+  animation: pulse-dot 1.6s ease infinite;
+}
+@keyframes pulse-dot {
+  0%,100%{ opacity:1; transform:scale(1); }
+  50%{ opacity:.5; transform:scale(.7); }
+}
+
+/* ── card body ── */
+.card-body {
+  padding: 22px 24px 20px;
+  display: flex; flex-direction: column; gap: 10px;
+}
+
+.card-title {
+  font-family: var(--disp); font-weight: 700;
+  font-size: clamp(18px,2.2vw,26px);
+  letter-spacing: -.5px; line-height: 1.05;
+  transition: color .3s;
+}
+.proj-card:hover .card-title { color: var(--teal); }
+
+.card-desc {
+  font-size: 12.5px; line-height: 1.7;
+  color: var(--mid); font-family: var(--mono); font-weight: 300;
+  display: -webkit-box; -webkit-line-clamp: 3; line-clamp: 3;
+  -webkit-box-orient: vertical; overflow: hidden;
+}
+
+.card-tags {
+  display: flex; flex-wrap: wrap; gap: 5px; margin-top: 2px;
+}
+.tag-pill {
+  font-family: var(--mono); font-size: 8px; letter-spacing: 1.5px;
+  text-transform: uppercase; color: var(--teal);
+  padding: 3px 8px; border: 1px solid var(--t16);
+  border-radius: 100px; background: var(--t04);
+}
+
+/* ── card footer ── */
+.card-footer {
+  display: flex; align-items: center; justify-content: space-between;
+  padding-top: 12px; margin-top: 4px;
+  border-top: 1px solid var(--t08);
+}
+.card-links { display: flex; gap: 8px; flex-wrap: wrap; }
+.clink {
+  font-family: var(--mono); font-size: 8px; letter-spacing: 2px;
+  color: var(--mid); text-decoration: none; text-transform: uppercase;
+  display: flex; align-items: center; gap: 4px;
+  transition: color .25s;
+}
+.clink:hover { color: var(--teal); }
+.clink svg { width: 10px; height: 10px; stroke: currentColor; fill: none; stroke-width: 2; stroke-linecap: round; stroke-linejoin: round; }
+.clink.live-btn {
+  color: var(--teal); border: 1px solid var(--t16);
+  background: var(--t04); padding: 3px 10px; border-radius: 100px;
+}
+.clink.live-btn:hover { background: var(--t08); }
+.card-view {
+  font-family: var(--mono); font-size: 8px; letter-spacing: 2px;
+  color: var(--dim); text-transform: uppercase;
+  opacity: 0; transform: translateX(-6px);
+  transition: opacity .3s, transform .3s, color .3s;
+  display: flex; align-items: center; gap: 4px; flex-shrink: 0;
+  cursor: pointer;
+}
+.card-view svg { width: 10px; height: 10px; stroke: currentColor; fill: none; stroke-width: 2; stroke-linecap: round; stroke-linejoin: round; }
+.proj-card:hover .card-view { opacity: 1; transform: translateX(0); }
+
+/* ═══════════════════════════════════════
+   DOT ROW — premium numbered indicators
+═══════════════════════════════════════ */
+.dot-row {
+  display: flex; justify-content: center; align-items: center; gap: 6px;
+  margin-top: 40px; opacity: 0;
+}
+
+.dot {
+  position: relative;
+  height: 2px;
+  width: var(--dot-w, 18px);
+  border-radius: 2px;
+  background: var(--t16);
+  cursor: pointer;
+  transition: width .5s var(--ease), background .4s, box-shadow .4s;
+  overflow: hidden;
+  flex-shrink: 0;
+}
+
+.dot::before {
+  content: '';
+  position: absolute; inset: 0;
+  background: var(--teal);
+  border-radius: 2px;
+  transform: scaleX(0);
+  transform-origin: left;
+  transition: transform .5s var(--ease);
+}
+
+.dot.active {
+  width: var(--dot-active, 40px);
+  background: var(--t16);
+  box-shadow: 0 0 10px var(--t32);
+}
+.dot.active::before { transform: scaleX(1); }
+.dot:hover:not(.active) { background: var(--t32); }
+
+/* ═══════════════════════════════════════
    MODAL
-══════════════════════════════════════════ */
-#modal-overlay{
-  position:fixed;inset:0;z-index:10000;
-  background:rgba(3,6,14,.94);
-  backdrop-filter:blur(24px);
-  display:flex;align-items:center;justify-content:center;
-  padding:24px;
-  opacity:0;pointer-events:none;
-  transition:opacity .3s;
+═══════════════════════════════════════ */
+#modal-overlay {
+  position: fixed; inset: 0; z-index: 10000;
+  background: rgba(3,6,14,.92);
+  backdrop-filter: blur(32px) saturate(1.2);
+  display: flex; align-items: center; justify-content: center;
+  padding: 24px;
+  opacity: 0; pointer-events: none;
+  transition: opacity .4s;
 }
-#modal-overlay.open{opacity:1;pointer-events:all}
+#modal-overlay.open { opacity: 1; pointer-events: all; }
 
-#modal{
-  position:relative;
-  width:100%;max-width:700px;max-height:88vh;
-  background:rgba(6,13,26,.97);
-  border:1px solid var(--t20);border-radius:20px;
-  overflow-y:auto;overflow-x:hidden;
-  transform:translateY(24px) scale(.97);
-  transition:transform .4s var(--eout);
-  box-shadow:0 48px 96px rgba(0,0,0,.7),0 0 0 1px rgba(0,221,200,.05);
-  scrollbar-width:none;
+#modal {
+  position: relative;
+  width: 100%; max-width: 720px; max-height: 90vh;
+  background: var(--bg2);
+  border: 1px solid var(--t16);
+  border-radius: 24px;
+  overflow-y: auto; overflow-x: hidden;
+  transform: translateY(32px) scale(.96);
+  transition: transform .5s var(--ease);
+  scrollbar-width: none;
+  box-shadow: 0 60px 120px rgba(0,0,0,.8), 0 0 0 1px var(--t08);
 }
-#modal::-webkit-scrollbar{display:none}
-#modal::before{
-  content:'';position:absolute;top:0;left:40px;right:40px;height:1px;
-  background:linear-gradient(90deg,transparent,var(--t40),transparent);
-}
-#modal-overlay.open #modal{transform:translateY(0) scale(1)}
+#modal::-webkit-scrollbar { display: none; }
+#modal-overlay.open #modal { transform: translateY(0) scale(1); }
 
-.m-art{
-  height:220px;position:relative;overflow:hidden;
-  border-radius:20px 20px 0 0;background:var(--bg2);
+/* top line */
+#modal::before {
+  content: ''; position: absolute;
+  top: 0; left: 60px; right: 60px; height: 1px;
+  background: linear-gradient(90deg, transparent, var(--t60), transparent);
 }
-.m-art img{
-  width:100%;height:100%;object-fit:cover;display:block;
-}
-.m-art svg{width:100%;height:100%}
-.m-body{padding:38px 44px 44px}
-.m-eyebrow{display:flex;align-items:center;gap:10px;margin-bottom:6px}
-.m-num{font-family:var(--mono);font-size:9px;letter-spacing:3px;color:var(--teal);opacity:.65}
-.m-badge{
-  font-family:var(--mono);font-size:9px;letter-spacing:2px;
-  color:var(--bg);background:var(--teal);
-  padding:2px 8px;border-radius:4px;text-transform:uppercase;
-}
-.m-title{
-  font-family:var(--disp);font-weight:700;
-  font-size:clamp(26px,4vw,48px);
-  line-height:1;letter-spacing:-.5px;margin-bottom:18px;
-}
-.m-desc{
-  font-size:15px;line-height:1.78;color:var(--mid);
-  font-weight:300;margin-bottom:26px;
-}
-.m-tags{display:flex;flex-wrap:wrap;gap:8px;margin-bottom:32px}
-.m-tag{
-  font-family:var(--mono);font-size:10px;letter-spacing:1.5px;
-  text-transform:uppercase;color:var(--teal);
-  padding:4px 12px;border:1px solid var(--t20);border-radius:6px;background:var(--t06);
-}
-.m-links{display:flex;gap:12px;flex-wrap:wrap}
-.m-gh{
-  font-family:var(--mono);font-size:11px;letter-spacing:2px;
-  color:var(--mid);text-decoration:none;text-transform:uppercase;
-  display:flex;align-items:center;gap:8px;
-  border:1px solid var(--t20);border-radius:8px;
-  padding:11px 22px;transition:color .25s,border-color .25s,background .25s;
-}
-.m-gh:hover{color:var(--teal);border-color:var(--teal);background:var(--t06)}
-.m-gh svg{width:14px;height:14px;stroke:currentColor;fill:none;stroke-width:1.8;stroke-linecap:round;stroke-linejoin:round}
-.m-demo{
-  font-family:var(--mono);font-size:11px;letter-spacing:2px;
-  color:var(--bg);background:var(--teal);text-decoration:none;text-transform:uppercase;
-  display:flex;align-items:center;gap:8px;
-  border-radius:8px;padding:11px 22px;font-weight:600;
-  transition:box-shadow .3s,transform .2s;
-}
-.m-demo:hover{box-shadow:0 0 28px rgba(0,221,200,.45);transform:translateY(-1px)}
-.m-demo svg{width:13px;height:13px;stroke:var(--bg);fill:none;stroke-width:2;stroke-linecap:round;stroke-linejoin:round}
-.m-close{
-  position:absolute;top:18px;right:18px;
-  width:36px;height:36px;border-radius:50%;
-  border:1px solid var(--t20);background:rgba(3,9,22,.85);
-  display:flex;align-items:center;justify-content:center;
-  cursor:pointer;transition:border-color .25s,background .25s;z-index:5;
-}
-.m-close:hover{border-color:var(--teal);background:var(--t06)}
-.m-close svg{width:13px;height:13px;stroke:var(--mid);fill:none;stroke-width:2;stroke-linecap:round}
 
-/* ══════════════════════════════════════════
+.m-art {
+  height: 260px; overflow: hidden;
+  border-radius: 24px 24px 0 0;
+  background: var(--bg);
+  position: relative;
+}
+.m-art svg { width: 100%; height: 100%; }
+.m-art img { width: 100%; height: 100%; object-fit: cover; display: block; }
+
+.m-body { padding: 40px 48px 48px; }
+
+.m-meta {
+  display: flex; align-items: center; gap: 10px; margin-bottom: 8px;
+}
+.m-num {
+  font-family: var(--mono); font-size: 9px; letter-spacing: 3px;
+  color: var(--teal); opacity: .6;
+}
+.m-badge {
+  font-family: var(--mono); font-size: 8px; letter-spacing: 2px;
+  color: var(--bg); background: var(--teal);
+  padding: 3px 9px; border-radius: 100px; text-transform: uppercase;
+  display: none;
+}
+
+.m-title {
+  font-family: var(--disp); font-weight: 800;
+  font-size: clamp(30px,5vw,56px);
+  letter-spacing: -2px; line-height: .95;
+  margin-bottom: 20px;
+}
+
+.m-desc {
+  font-family: var(--mono); font-size: 13.5px;
+  line-height: 1.82; color: var(--mid); font-weight: 300;
+  margin-bottom: 28px;
+}
+
+.m-tags { display: flex; flex-wrap: wrap; gap: 8px; margin-bottom: 36px; }
+.m-tag {
+  font-family: var(--mono); font-size: 9px; letter-spacing: 1.5px;
+  text-transform: uppercase; color: var(--teal);
+  padding: 5px 14px; border: 1px solid var(--t16);
+  border-radius: 100px; background: var(--t04);
+}
+
+.m-links { display: flex; gap: 12px; flex-wrap: wrap; }
+.m-gh {
+  font-family: var(--mono); font-size: 10px; letter-spacing: 2px;
+  color: var(--mid); text-decoration: none; text-transform: uppercase;
+  display: flex; align-items: center; gap: 8px;
+  border: 1px solid var(--t16); border-radius: 100px;
+  padding: 11px 24px;
+  transition: color .25s, border-color .25s, background .25s;
+}
+.m-gh:hover { color: var(--teal); border-color: var(--teal); background: var(--t08); }
+.m-gh svg { width: 13px; height: 13px; stroke: currentColor; fill: none; stroke-width: 1.8; stroke-linecap: round; stroke-linejoin: round; }
+
+.m-demo {
+  font-family: var(--mono); font-size: 10px; letter-spacing: 2px;
+  color: var(--bg); background: var(--teal); text-decoration: none;
+  text-transform: uppercase; display: flex; align-items: center; gap: 8px;
+  border-radius: 100px; padding: 11px 24px; font-weight: 500;
+  transition: box-shadow .3s, transform .25s;
+}
+.m-demo:hover { box-shadow: 0 0 40px rgba(0,221,200,.4); transform: translateY(-2px); }
+.m-demo svg { width: 12px; height: 12px; stroke: var(--bg); fill: none; stroke-width: 2; stroke-linecap: round; stroke-linejoin: round; }
+
+.m-close {
+  position: absolute; top: 16px; right: 16px;
+  width: 38px; height: 38px; border-radius: 50%;
+  border: 1px solid var(--t16); background: rgba(3,6,14,.8);
+  backdrop-filter: blur(8px);
+  display: flex; align-items: center; justify-content: center;
+  cursor: pointer; z-index: 5;
+  transition: border-color .25s, background .25s, transform .2s;
+}
+.m-close:hover { border-color: var(--teal); background: var(--t08); transform: rotate(90deg); }
+.m-close svg { width: 12px; height: 12px; stroke: var(--mid); fill: none; stroke-width: 2; stroke-linecap: round; }
+
+/* ═══════════════════════════════════════
    MOBILE
-══════════════════════════════════════════ */
+═══════════════════════════════════════ */
 @media(max-width:768px){
-  .proj-card{flex:0 0 78vw;min-width:260px}
-  .w-nav{gap:12px}
-  .prog-track{width:56px}
-  .m-body{padding:24px 22px 32px}
-  .m-art{height:170px}
-  #works{padding:80px 0 100px}
+  .proj-card { flex: 0 0 82vw; }
+  .w-nav { gap: 10px; }
+  .prog-track { width: 48px; }
+  .m-body { padding: 24px 24px 36px; }
+  .m-art { height: 200px; }
+  #works { padding: 80px 0 100px; }
+  .arr { width: 36px; height: 36px; }
 }
 @media(max-width:480px){
-  .proj-card{flex:0 0 88vw}
-  .w-header{margin-bottom:32px}
+  .proj-card { flex: 0 0 90vw; }
+  .w-header { margin-bottom: 36px; }
+  .m-title { letter-spacing: -1px; }
 }
 </style>
 </head>
@@ -399,34 +526,33 @@ body::after{
 
 <section id="works">
 
-  <!-- HEADER -->
   <div class="w-header">
     <div class="w-label">
-      <div class="w-eyebrow" id="w-eye">Portfolio</div>
-      <h2 class="w-title" id="w-ttl">Selected<br><span>Work</span></h2>
+      <div class="w-eyebrow" id="w-eye">Selected Work</div>
+      <h2 class="w-title" id="w-ttl">What I've<br><em>Built</em></h2>
     </div>
-    <div class="w-nav">
-      <div class="w-progress" id="w-prog">
+    <div class="w-nav" id="w-nav">
+      <div class="prog-wrap">
         <span class="prog-nums"><span id="pn-cur">01</span> / <span id="pn-tot">08</span></span>
         <div class="prog-track"><div class="prog-fill" id="prog-fill"></div></div>
       </div>
-      <div class="w-arrows" id="w-arr">
-        <button class="arr-btn" id="btn-prev" disabled>
+      <div class="arr-wrap">
+        <button class="arr" id="btn-prev" disabled>
           <svg viewBox="0 0 14 14"><polyline points="9,2 4,7 9,12"/></svg>
+          <span class="arr-label">Prev</span>
         </button>
-        <button class="arr-btn" id="btn-next">
+        <button class="arr" id="btn-next">
+          <span class="arr-label">Next</span>
           <svg viewBox="0 0 14 14"><polyline points="5,2 10,7 5,12"/></svg>
         </button>
       </div>
     </div>
   </div>
 
-  <!-- TRACK -->
-  <div class="track-wrapper">
-    <div class="track" id="track"></div>
+  <div class="track-shell">
+    <div class="track" id="track"><div class="track-inner" id="track-inner"></div></div>
   </div>
 
-  <!-- DOTS -->
   <div class="dot-row" id="dot-row"></div>
 
 </section>
@@ -435,13 +561,13 @@ body::after{
 <div id="modal-overlay">
   <div id="modal">
     <button class="m-close" id="m-close">
-      <svg viewBox="0 0 13 13"><line x1="2" y1="2" x2="11" y2="11"/><line x1="11" y1="2" x2="2" y2="11"/></svg>
+      <svg viewBox="0 0 12 12"><line x1="1" y1="1" x2="11" y2="11"/><line x1="11" y1="1" x2="1" y2="11"/></svg>
     </button>
     <div class="m-art" id="m-art"></div>
     <div class="m-body">
-      <div class="m-eyebrow">
+      <div class="m-meta">
         <span class="m-num" id="m-num"></span>
-        <span class="m-badge" id="m-badge" style="display:none">Live</span>
+        <span class="m-badge" id="m-badge">Live</span>
       </div>
       <div class="m-title" id="m-title"></div>
       <div class="m-desc"  id="m-desc"></div>
@@ -454,405 +580,795 @@ body::after{
 <script>
 gsap.registerPlugin(ScrollTrigger);
 
-/* ══════════════════════════════════════════
-   DATA
-   githubLinks: array of { label, url }
-   demo: url string or null
-   image: url string or null (null = generated art)
-══════════════════════════════════════════ */
+/* ═══════════════════════════════════
+   SVG ILLUSTRATIONS — domain-matched
+═══════════════════════════════════ */
+const SVG_ART = {
+
+  // 1. Akelny — food ordering: plate + fork/knife + rings
+  akelny: (w,h,hue=28) => `
+  <svg viewBox="0 0 ${w} ${h}" xmlns="http://www.w3.org/2000/svg">
+    <defs>
+      <radialGradient id="ag1" cx="55%" cy="45%" r="60%">
+        <stop offset="0%" stop-color="hsl(${hue},60%,9%)"/>
+        <stop offset="100%" stop-color="#03060e"/>
+      </radialGradient>
+      <filter id="ag2"><feGaussianBlur stdDeviation="4"/></filter>
+    </defs>
+    <rect width="${w}" height="${h}" fill="url(#ag1)"/>
+    <!-- glow blob -->
+    <circle cx="${w*.58}" cy="${h*.45}" r="70" fill="hsl(${hue},80%,45%)" opacity=".06" filter="url(#ag2)"/>
+    <!-- plate -->
+    <circle cx="${w*.58}" cy="${h*.46}" r="52" fill="none" stroke="hsl(${hue},75%,55%)" stroke-width="1.2" opacity=".35"/>
+    <circle cx="${w*.58}" cy="${h*.46}" r="40" fill="none" stroke="hsl(${hue},75%,55%)" stroke-width=".6" opacity=".2"/>
+    <circle cx="${w*.58}" cy="${h*.46}" r="20" fill="hsl(${hue},70%,48%)" opacity=".12"/>
+    <!-- fork -->
+    <g stroke="hsl(${hue},75%,60%)" stroke-width="1.4" stroke-linecap="round" opacity=".7">
+      <line x1="${w*.36}" y1="${h*.18}" x2="${w*.36}" y2="${h*.74}"/>
+      <line x1="${w*.33}" y1="${h*.18}" x2="${w*.33}" y2="${h*.38}"/>
+      <line x1="${w*.36}" y1="${h*.18}" x2="${w*.36}" y2="${h*.38}"/>
+      <line x1="${w*.39}" y1="${h*.18}" x2="${w*.39}" y2="${h*.38}"/>
+      <path d="M${w*.33},${h*.38} Q${w*.36},${h*.46} ${w*.39},${h*.38}" fill="none"/>
+    </g>
+    <!-- knife -->
+    <g stroke="hsl(${hue},75%,60%)" stroke-width="1.4" stroke-linecap="round" opacity=".7">
+      <line x1="${w*.44}" y1="${h*.18}" x2="${w*.44}" y2="${h*.74}"/>
+      <path d="M${w*.44},${h*.18} Q${w*.47},${h*.28} ${w*.44},${h*.42}" fill="hsl(${hue},50%,30%)" stroke="hsl(${hue},75%,60%)"/>
+    </g>
+    <!-- steam lines -->
+    <g stroke="hsl(${hue},60%,65%)" stroke-width="1" stroke-linecap="round" opacity=".28" fill="none">
+      <path d="M${w*.54},${h*.1} Q${w*.57},${h*.07} ${w*.54},${h*.04}"/>
+      <path d="M${w*.6},${h*.12} Q${w*.63},${h*.09} ${w*.6},${h*.06}"/>
+      <path d="M${w*.66},${h*.1} Q${w*.69},${h*.07} ${w*.66},${h*.04}"/>
+    </g>
+    <!-- dots scatter -->
+    <circle cx="${w*.15}" cy="${h*.3}"  r="2" fill="hsl(${hue},80%,55%)" opacity=".3"/>
+    <circle cx="${w*.22}" cy="${h*.7}"  r="1.5" fill="hsl(${hue},80%,55%)" opacity=".2"/>
+    <circle cx="${w*.82}" cy="${h*.2}"  r="1.8" fill="hsl(${hue},80%,55%)" opacity=".25"/>
+    <circle cx="${w*.87}" cy="${h*.75}" r="1.2" fill="hsl(${hue},80%,55%)" opacity=".2"/>
+  </svg>`,
+
+  // 2. Inventory IMS — warehouse: grid of boxes + arrows
+  inventory: (w,h,hue=155) => `
+  <svg viewBox="0 0 ${w} ${h}" xmlns="http://www.w3.org/2000/svg">
+    <defs>
+      <radialGradient id="ig1" cx="50%" cy="40%" r="65%">
+        <stop offset="0%" stop-color="hsl(${hue},55%,8%)"/>
+        <stop offset="100%" stop-color="#03060e"/>
+      </radialGradient>
+      <filter id="ig2"><feGaussianBlur stdDeviation="5"/></filter>
+    </defs>
+    <rect width="${w}" height="${h}" fill="url(#ig1)"/>
+    <circle cx="${w*.5}" cy="${h*.4}" r="80" fill="hsl(${hue},70%,40%)" opacity=".05" filter="url(#ig2)"/>
+    <!-- warehouse shelves: 3x3 grid of boxes -->
+    ${[0,1,2].map(row=>[0,1,2].map(col=>{
+      const bx = w*.28 + col*52, by = h*.16 + row*40;
+      const op = .15 + Math.random()*.25;
+      return `<rect x="${bx}" y="${by}" width="38" height="28" rx="3"
+        fill="hsl(${hue},60%,35%)" stroke="hsl(${hue},70%,50%)" stroke-width=".8" opacity="${(row*3+col)%3===0?.38:.18}"/>
+        <line x1="${bx+6}" y1="${by+8}" x2="${bx+20}" y2="${by+8}" stroke="hsl(${hue},70%,60%)" stroke-width=".6" opacity=".35"/>
+        <line x1="${bx+6}" y1="${by+14}" x2="${bx+16}" y2="${by+14}" stroke="hsl(${hue},70%,60%)" stroke-width=".6" opacity=".25"/>`;
+    }).join('')).join('')}
+    <!-- transfer arrow -->
+    <g stroke="hsl(${hue},80%,55%)" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round" opacity=".7">
+      <path d="M${w*.17},${h*.5} L${w*.24},${h*.5}" fill="none"/>
+      <polyline points="${w*.21},${h*.46} ${w*.24},${h*.5} ${w*.21},${h*.54}"/>
+    </g>
+    <!-- right side big arrow -->
+    <g stroke="hsl(${hue},80%,55%)" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" opacity=".55">
+      <path d="M${w*.74},${h*.35} L${w*.87},${h*.35} L${w*.87},${h*.62} L${w*.74},${h*.62}" fill="none"/>
+      <polyline points="${w*.83},${h*.58} ${w*.87},${h*.62} ${w*.83},${h*.66}"/>
+    </g>
+    <!-- label chip -->
+    <rect x="${w*.17}" y="${h*.62}" width="60" height="14" rx="3" fill="rgba(3,6,14,.8)" stroke="hsl(${hue},70%,50%)" stroke-width=".5" opacity=".5"/>
+    <text x="${w*.17+30}" y="${h*.62+9.5}" text-anchor="middle" font-family="DM Mono" font-size="6.5" fill="hsl(${hue},80%,60%)" opacity=".7" letter-spacing="1">WAREHOUSE</text>
+    <!-- dots -->
+    <circle cx="${w*.1}"  cy="${h*.2}"  r="2"   fill="hsl(${hue},80%,55%)" opacity=".2"/>
+    <circle cx="${w*.9}"  cy="${h*.8}"  r="1.5" fill="hsl(${hue},80%,55%)" opacity=".2"/>
+  </svg>`,
+
+  // 3. Examination System — timer + radio bubbles + checkmark
+  exam: (w,h,hue=245) => `
+  <svg viewBox="0 0 ${w} ${h}" xmlns="http://www.w3.org/2000/svg">
+    <defs>
+      <radialGradient id="eg1" cx="55%" cy="45%" r="60%">
+        <stop offset="0%" stop-color="hsl(${hue},55%,10%)"/>
+        <stop offset="100%" stop-color="#03060e"/>
+      </radialGradient>
+      <filter id="eg2"><feGaussianBlur stdDeviation="5"/></filter>
+    </defs>
+    <rect width="${w}" height="${h}" fill="url(#eg1)"/>
+    <circle cx="${w*.55}" cy="${h*.45}" r="75" fill="hsl(${hue},60%,45%)" opacity=".06" filter="url(#eg2)"/>
+    <!-- clock face -->
+    <circle cx="${w*.58}" cy="${h*.45}" r="44" fill="none" stroke="hsl(${hue},65%,55%)" stroke-width="1.2" opacity=".35"/>
+    <!-- clock hands -->
+    <line x1="${w*.58}" y1="${h*.45}" x2="${w*.58}" y2="${h*.26}" stroke="hsl(${hue},70%,65%)" stroke-width="2" stroke-linecap="round" opacity=".7"/>
+    <line x1="${w*.58}" y1="${h*.45}" x2="${w*.72}" y2="${h*.52}" stroke="hsl(${hue},70%,65%)" stroke-width="1.5" stroke-linecap="round" opacity=".55"/>
+    <circle cx="${w*.58}" cy="${h*.45}" r="3.5" fill="hsl(${hue},70%,60%)" opacity=".8"/>
+    <!-- tick marks -->
+    ${[0,1,2,3,4,5,6,7,8,9,10,11].map(i=>{
+      const a=(i/12)*Math.PI*2-Math.PI/2;
+      const r1=38,r2=i%3===0?31:35;
+      return `<line x1="${(w*.58+Math.cos(a)*r1).toFixed(1)}" y1="${(h*.45+Math.sin(a)*r1).toFixed(1)}" x2="${(w*.58+Math.cos(a)*r2).toFixed(1)}" y2="${(h*.45+Math.sin(a)*r2).toFixed(1)}" stroke="hsl(${hue},60%,55%)" stroke-width="${i%3===0?1.2:.6}" opacity="${i%3===0?.5:.25}"/>`;
+    }).join('')}
+    <!-- MCQ radio options (left side) -->
+    ${[0,1,2,3].map((i)=>{
+      const cy=h*.2+i*h*.175;
+      const checked=i===1;
+      return `<circle cx="${w*.2}" cy="${cy}" r="6" fill="none" stroke="hsl(${hue},65%,55%)" stroke-width="1" opacity="${checked?.7:.3}"/>
+      ${checked?`<circle cx="${w*.2}" cy="${cy}" r="3.5" fill="hsl(${hue},70%,60%)" opacity=".8"/>`:''}
+      <line x1="${w*.22+6}" y1="${cy}" x2="${w*.22+6+16+i*4}" y2="${cy}" stroke="hsl(${hue},50%,60%)" stroke-width=".8" opacity="${checked?.45:.2}"/>`;
+    }).join('')}
+    <!-- checkmark -->
+    <g stroke="hsl(${hue},80%,65%)" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" opacity=".65">
+      <polyline points="${w*.13},${h*.82} ${w*.18},${h*.88} ${w*.28},${h*.76}"/>
+    </g>
+    <!-- dots -->
+    <circle cx="${w*.08}" cy="${h*.15}" r="1.8" fill="hsl(${hue},75%,60%)" opacity=".25"/>
+    <circle cx="${w*.9}"  cy="${h*.85}" r="1.5" fill="hsl(${hue},75%,60%)" opacity=".2"/>
+  </svg>`,
+
+  // 4. SIMplify — mobile frame + gpa curve + cap
+  simplify: (w,h,hue=195) => `
+  <svg viewBox="0 0 ${w} ${h}" xmlns="http://www.w3.org/2000/svg">
+    <defs>
+      <radialGradient id="sg1" cx="50%" cy="45%" r="62%">
+        <stop offset="0%" stop-color="hsl(${hue},55%,9%)"/>
+        <stop offset="100%" stop-color="#03060e"/>
+      </radialGradient>
+      <filter id="sg2"><feGaussianBlur stdDeviation="5"/></filter>
+    </defs>
+    <rect width="${w}" height="${h}" fill="url(#sg1)"/>
+    <circle cx="${w*.55}" cy="${h*.45}" r="70" fill="hsl(${hue},65%,45%)" opacity=".06" filter="url(#sg2)"/>
+    <!-- phone frame -->
+    <rect x="${w*.52}" y="${h*.09}" width="${w*.26}" height="${h*.82}" rx="10"
+      fill="rgba(7,16,31,.6)" stroke="hsl(${hue},65%,55%)" stroke-width="1.2" opacity=".5"/>
+    <!-- phone notch -->
+    <rect x="${w*.6}" y="${h*.09}" width="${w*.1}" height="${h*.04}" rx="2"
+      fill="hsl(${hue},50%,12%)" opacity=".8"/>
+    <!-- phone screen lines -->
+    ${[0,1,2,3].map(i=>`<rect x="${w*.56}" y="${h*.18+i*h*.14}" width="${w*.18}" height="${h*.07}" rx="3"
+      fill="hsl(${hue},55%,40%)" opacity="${.08+i*.04}"/>
+    <rect x="${w*.56}" y="${h*.19+i*h*.14}" width="${w*.1+i*.01}" height="${h*.015}" rx="1"
+      fill="hsl(${hue},70%,55%)" opacity="${.15+i*.05}"/>`).join('')}
+    <!-- GPA line chart (left) -->
+    <polyline points="${w*.08},${h*.72} ${w*.15},${h*.58} ${w*.22},${h*.62} ${w*.3},${h*.44} ${w*.37},${h*.38} ${w*.44},${h*.3}"
+      fill="none" stroke="hsl(${hue},75%,55%)" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" opacity=".6"/>
+    <!-- dots on chart -->
+    ${[[.08,.72],[.15,.58],[.22,.62],[.3,.44],[.37,.38],[.44,.3]].map(([x,y])=>
+      `<circle cx="${w*x}" cy="${h*y}" r="2.5" fill="hsl(${hue},80%,60%)" opacity=".65"/>`
+    ).join('')}
+    <!-- graduation cap -->
+    <g opacity=".55">
+      <polygon points="${w*.2},${h*.2} ${w*.1},${h*.26} ${w*.3},${h*.26}" fill="hsl(${hue},65%,45%)"/>
+      <rect x="${w*.16}" y="${h*.26}" width="${w*.08}" height="${h*.07}" rx="1" fill="hsl(${hue},55%,40%)"/>
+      <line x1="${w*.3}" y1="${h*.26}" x2="${w*.3}" y2="${h*.36}" stroke="hsl(${hue},70%,60%)" stroke-width="1.2" stroke-linecap="round"/>
+      <circle cx="${w*.3}" cy="${h*.37}" r="2.5" fill="hsl(${hue},75%,60%)"/>
+    </g>
+    <circle cx="${w*.88}" cy="${h*.15}" r="2" fill="hsl(${hue},75%,60%)" opacity=".25"/>
+    <circle cx="${w*.08}" cy="${h*.85}" r="1.5" fill="hsl(${hue},75%,60%)" opacity=".2"/>
+  </svg>`,
+
+  // 5. Order Management — API nodes + connection graph
+  orders: (w,h,hue=320) => `
+  <svg viewBox="0 0 ${w} ${h}" xmlns="http://www.w3.org/2000/svg">
+    <defs>
+      <radialGradient id="og1" cx="50%" cy="45%" r="65%">
+        <stop offset="0%" stop-color="hsl(${hue},55%,9%)"/>
+        <stop offset="100%" stop-color="#03060e"/>
+      </radialGradient>
+      <filter id="og2"><feGaussianBlur stdDeviation="5"/></filter>
+    </defs>
+    <rect width="${w}" height="${h}" fill="url(#og1)"/>
+    <circle cx="${w*.5}" cy="${h*.45}" r="80" fill="hsl(${hue},60%,40%)" opacity=".05" filter="url(#og2)"/>
+    <!-- nodes with labels -->
+    ${[
+      [.5,.16,'API'],
+      [.22,.38,'Customer'],
+      [.78,.38,'Product'],
+      [.22,.68,'Order'],
+      [.78,.68,'Invoice'],
+      [.5,.86,'Auth'],
+    ].map(([x,y,lbl],i)=>{
+      const cx=w*x, cy=h*y;
+      const isCenter=i===0;
+      return `
+        <circle cx="${cx}" cy="${cy}" r="${isCenter?14:10}" fill="hsl(${hue},50%,12%)"
+          stroke="hsl(${hue},70%,55%)" stroke-width="${isCenter?1.4:1}" opacity="${isCenter?.8:.55}"/>
+        <text x="${cx}" y="${cy+3}" text-anchor="middle" font-family="DM Mono" font-size="${isCenter?6:5}"
+          fill="hsl(${hue},80%,70%)" opacity="${isCenter?.9:.65}">${lbl}</text>`;
+    }).join('')}
+    <!-- connection lines -->
+    ${[
+      [.5,.16,.22,.38],[.5,.16,.78,.38],
+      [.22,.38,.22,.68],[.78,.38,.78,.68],
+      [.22,.68,.5,.86],[.78,.68,.5,.86],
+      [.5,.16,.5,.86]
+    ].map(([x1,y1,x2,y2])=>
+      `<line x1="${w*x1}" y1="${h*y1}" x2="${w*x2}" y2="${h*y2}"
+        stroke="hsl(${hue},60%,50%)" stroke-width=".8" opacity=".22"
+        stroke-dasharray="3 4"/>`
+    ).join('')}
+    <!-- animated data packet dots (static) -->
+    <circle cx="${w*.36}" cy="${h*.27}" r="2" fill="hsl(${hue},85%,65%)" opacity=".55"/>
+    <circle cx="${w*.64}" cy="${h*.53}" r="1.5" fill="hsl(${hue},85%,65%)" opacity=".4"/>
+    <circle cx="${w*.22}" cy="${h*.53}" r="2" fill="hsl(${hue},85%,65%)" opacity=".45"/>
+  </svg>`,
+
+  // 6. IKEA Clone — 3-layer architecture stack
+  ikea: (w,h,hue=40) => `
+  <svg viewBox="0 0 ${w} ${h}" xmlns="http://www.w3.org/2000/svg">
+    <defs>
+      <radialGradient id="ik1" cx="50%" cy="50%" r="65%">
+        <stop offset="0%" stop-color="hsl(${hue},55%,9%)"/>
+        <stop offset="100%" stop-color="#03060e"/>
+      </radialGradient>
+      <filter id="ik2"><feGaussianBlur stdDeviation="5"/></filter>
+    </defs>
+    <rect width="${w}" height="${h}" fill="url(#ik1)"/>
+    <ellipse cx="${w*.55}" cy="${h*.5}" rx="90" ry="55" fill="hsl(${hue},70%,40%)" opacity=".05" filter="url(#ik2)"/>
+    <!-- 3 isometric-style layers -->
+    ${[
+      {y:.22,lbl:'PL — Presentation',op:.7,hl:1},
+      {y:.45,lbl:'BLL — Business Logic',op:.55,hl:0},
+      {y:.68,lbl:'DAL — Data Access',op:.45,hl:0},
+    ].map(({y,lbl,op,hl})=>{
+      const bx=w*.2, by=h*y;
+      const bw=w*.6, bh=h*.18;
+      return `
+        <rect x="${bx}" y="${by}" width="${bw}" height="${bh}" rx="6"
+          fill="hsl(${hue},45%,${hl?12:8}%)"
+          stroke="hsl(${hue},70%,${hl?60:50}%)" stroke-width="${hl?1.4:.8}" opacity="${op}"/>
+        <text x="${bx+bw/2}" y="${by+bh/2+4}" text-anchor="middle"
+          font-family="DM Mono" font-size="7.5" fill="hsl(${hue},80%,70%)" opacity="${op}"
+          letter-spacing="1">${lbl}</text>`;
+    }).join('')}
+    <!-- arrows between layers -->
+    <g stroke="hsl(${hue},70%,55%)" stroke-width="1.2" stroke-linecap="round" stroke-linejoin="round" opacity=".45">
+      <line x1="${w*.5}" y1="${h*.4}" x2="${w*.5}" y2="${h*.45}"/>
+      <polyline points="${w*.47},${h*.43} ${w*.5},${h*.45} ${w*.53},${h*.43}"/>
+      <line x1="${w*.5}" y1="${h*.63}" x2="${w*.5}" y2="${h*.68}"/>
+      <polyline points="${w*.47},${h*.66} ${w*.5},${h*.68} ${w*.53},${h*.66}"/>
+    </g>
+    <!-- tiny icon left: building -->
+    <g opacity=".3" stroke="hsl(${hue},70%,55%)" stroke-width=".8" fill="none">
+      <rect x="${w*.07}" y="${h*.35}" width="${w*.08}" height="${h*.3}" rx="1"/>
+      <rect x="${w*.09}" y="${h*.42}" width="${w*.015}" height="${h*.06}" rx="1" fill="hsl(${hue},50%,30%)"/>
+      <rect x="${w*.115}" y="${h*.42}" width="${w*.015}" height="${h*.06}" rx="1" fill="hsl(${hue},50%,30%)"/>
+    </g>
+    <circle cx="${w*.88}" cy="${h*.15}" r="2"   fill="hsl(${hue},80%,60%)" opacity=".25"/>
+    <circle cx="${w*.12}" cy="${h*.82}" r="1.5" fill="hsl(${hue},80%,60%)" opacity=".2"/>
+  </svg>`,
+
+  // 7. VOYA — globe with flight path + location pin
+  voya: (w,h,hue=38) => `
+  <svg viewBox="0 0 ${w} ${h}" xmlns="http://www.w3.org/2000/svg">
+    <defs>
+      <radialGradient id="vg1" cx="55%" cy="45%" r="65%">
+        <stop offset="0%" stop-color="hsl(${hue},55%,9%)"/>
+        <stop offset="100%" stop-color="#03060e"/>
+      </radialGradient>
+      <filter id="vg2"><feGaussianBlur stdDeviation="5"/></filter>
+      <clipPath id="vclip">
+        <circle cx="${w*.56}" cy="${h*.46}" r="48"/>
+      </clipPath>
+    </defs>
+    <rect width="${w}" height="${h}" fill="url(#vg1)"/>
+    <circle cx="${w*.56}" cy="${h*.46}" r="75" fill="hsl(${hue},65%,40%)" opacity=".05" filter="url(#vg2)"/>
+    <!-- globe outline -->
+    <circle cx="${w*.56}" cy="${h*.46}" r="48" fill="hsl(${hue},40%,7%)"
+      stroke="hsl(${hue},70%,55%)" stroke-width="1.2" opacity=".5"/>
+    <!-- latitude lines -->
+    ${[-24,-12,0,12,24].map(off=>`
+      <ellipse cx="${w*.56}" cy="${h*.46+off*.8}" rx="48" ry="${Math.abs(4+off*.3)+2}"
+        fill="none" stroke="hsl(${hue},60%,50%)" stroke-width=".5" opacity=".18"
+        clip-path="url(#vclip)"/>`
+    ).join('')}
+    <!-- longitude arc -->
+    <ellipse cx="${w*.56}" cy="${h*.46}" rx="24" ry="48" fill="none"
+      stroke="hsl(${hue},60%,50%)" stroke-width=".5" opacity=".2" clip-path="url(#vclip)"/>
+    <ellipse cx="${w*.56}" cy="${h*.46}" rx="48" ry="48" fill="none"
+      stroke="hsl(${hue},60%,50%)" stroke-width=".5" opacity=".2" clip-path="url(#vclip)"/>
+    <!-- flight path arc -->
+    <path d="M${w*.2},${h*.72} Q${w*.38},${h*.12} ${w*.78},${h*.3}"
+      fill="none" stroke="hsl(${hue},85%,60%)" stroke-width="1.4"
+      stroke-linecap="round" stroke-dasharray="4 3" opacity=".7"/>
+    <!-- origin dot -->
+    <circle cx="${w*.2}"  cy="${h*.72}" r="3.5" fill="hsl(${hue},80%,55%)" opacity=".7"/>
+    <!-- destination pin -->
+    <g transform="translate(${w*.76},${h*.22})">
+      <path d="M0,-12 Q6,-12 6,-6 Q6,0 0,10 Q-6,0 -6,-6 Q-6,-12 0,-12 Z"
+        fill="hsl(${hue},85%,55%)" opacity=".8"/>
+      <circle cx="0" cy="-6" r="3" fill="var(--bg)" opacity=".7"/>
+    </g>
+    <!-- plane icon -->
+    <g transform="translate(${w*.43},${h*.35}) rotate(-35)" opacity=".65">
+      <path d="M0,-6 Q3,-3 3,0 Q3,3 0,6 Q-1,2 -3,3 L-3,-3 Q-1,-2 0,-6Z"
+        fill="hsl(${hue},80%,60%)"/>
+    </g>
+    <!-- left card: weather snippet -->
+    <rect x="${w*.06}" y="${h*.28}" width="58" height="32" rx="5"
+      fill="rgba(7,16,31,.7)" stroke="hsl(${hue},60%,50%)" stroke-width=".6" opacity=".45"/>
+    <text x="${w*.06+8}"  y="${h*.28+12}" font-family="DM Mono" font-size="6" fill="hsl(${hue},80%,70%)" opacity=".6">PARIS</text>
+    <text x="${w*.06+8}"  y="${h*.28+22}" font-family="DM Mono" font-size="8" fill="hsl(${hue},90%,75%)" opacity=".8">22°C ☀</text>
+  </svg>`,
+
+  // 8. ATMOSPHERA — weather layers + sun arc + rain drops
+  atmosphera: (w,h,hue=210) => `
+  <svg viewBox="0 0 ${w} ${h}" xmlns="http://www.w3.org/2000/svg">
+    <defs>
+      <radialGradient id="atg1" cx="50%" cy="30%" r="70%">
+        <stop offset="0%" stop-color="hsl(${hue},60%,10%)"/>
+        <stop offset="100%" stop-color="#03060e"/>
+      </radialGradient>
+      <filter id="atg2"><feGaussianBlur stdDeviation="6"/></filter>
+      <linearGradient id="atg3" x1="0%" y1="0%" x2="100%" y2="0%">
+        <stop offset="0%" stop-color="hsl(25,90%,55%)"/>
+        <stop offset="100%" stop-color="hsl(45,95%,60%)"/>
+      </linearGradient>
+    </defs>
+    <rect width="${w}" height="${h}" fill="url(#atg1)"/>
+    <!-- sky glow -->
+    <ellipse cx="${w*.5}" cy="${h*.2}" rx="110" ry="60" fill="hsl(${hue},65%,40%)" opacity=".07" filter="url(#atg2)"/>
+    <!-- sun arc track -->
+    <path d="M${w*.12},${h*.68} A${w*.38},${h*.58} 0 0 1 ${w*.88},${h*.68}"
+      fill="none" stroke="rgba(255,255,255,.06)" stroke-width="2.5"/>
+    <!-- sun arc fill (partial) -->
+    <path d="M${w*.12},${h*.68} A${w*.38},${h*.58} 0 0 1 ${w*.62},${h*.22}"
+      fill="none" stroke="url(#atg3)" stroke-width="2.5" stroke-linecap="round" opacity=".65"/>
+    <!-- sun dot -->
+    <circle cx="${w*.62}" cy="${h*.22}" r="9" fill="hsl(45,95%,65%)" opacity=".85"/>
+    <circle cx="${w*.62}" cy="${h*.22}" r="14" fill="hsl(45,95%,65%)" opacity=".12" filter="url(#atg2)"/>
+    <!-- cloud -->
+    <g opacity=".45">
+      <ellipse cx="${w*.32}" cy="${h*.44}" rx="26" ry="14" fill="hsl(${hue},40%,40%)"/>
+      <ellipse cx="${w*.22}" cy="${h*.48}" rx="16" ry="12" fill="hsl(${hue},35%,42%)"/>
+      <ellipse cx="${w*.42}" cy="${h*.47}" rx="14" ry="11" fill="hsl(${hue},35%,42%)"/>
+    </g>
+    <!-- rain drops -->
+    ${[0,1,2,3,4,5,6].map(i=>{
+      const rx=w*.18+i*w*.04, ry=h*.6+i%3*h*.06;
+      return `<line x1="${rx}" y1="${ry}" x2="${rx-2}" y2="${ry+8}"
+        stroke="hsl(${hue},70%,65%)" stroke-width="1.2" stroke-linecap="round" opacity="${.3+i%3*.1}"/>`;
+    }).join('')}
+    <!-- pressure gauge hint: arc -->
+    <path d="M${w*.66},${h*.72} A${w*.14},${w*.14} 0 0 1 ${w*.88},${h*.72}"
+      fill="none" stroke="rgba(255,255,255,.08)" stroke-width="8" stroke-linecap="round"/>
+    <path d="M${w*.66},${h*.72} A${w*.14},${w*.14} 0 0 1 ${w*.8},${h*.6}"
+      fill="none" stroke="hsl(${hue},80%,60%)" stroke-width="8" stroke-linecap="round" opacity=".5"/>
+    <text x="${w*.77}" y="${h*.76}" text-anchor="middle" font-family="DM Mono" font-size="8"
+      fill="hsl(${hue},80%,70%)" opacity=".6">1013 hPa</text>
+    <!-- temp pill -->
+    <rect x="${w*.67}" y="${h*.1}" width="52" height="22" rx="11"
+      fill="rgba(7,16,31,.75)" stroke="hsl(${hue},65%,55%)" stroke-width=".7" opacity=".6"/>
+    <text x="${w*.693}" y="${h*.1+14.5}" font-family="DM Mono" font-size="9" fill="hsl(${hue},85%,72%)" opacity=".85">18°C ☁</text>
+  </svg>`,
+};
+
+/* ═══════════════════════════════════
+   PROJECTS DATA
+═══════════════════════════════════ */
 const PROJECTS = [
   {
-    title: "Akelny",
-    desc: "A food ordering platform built to empower small business owners and gather scattered food creators from all platforms into one unified place.",
-    longDesc: "Akelny was built with a mission: give every small food business owner a stage, and bring all food creators — scattered across social platforms — into one powerful hub. Developed with ASP.NET Core Web API, Entity Framework Core, Angular, and SQL Server to manage restaurants, menus, and customer orders. Features secure authentication via JWT and Google OAuth, role-based access control, and Onion Architecture for long-term scalability.",
-    tags: ["ASP.NET Core", "Angular", "SQL Server", "JWT", "Entity Framework"],
-    githubLinks: [
-      { label: "Backend", url: "https://github.com/abdelrahmanelsaadany1/Akelni-Backend" },
-      { label: "Frontend", url: "https://github.com/Abdelrahman-2222/AKELNY-Front" }
+    id:'akelny',
+    title:"Akelny",
+    desc:"Food ordering platform unifying small business owners and scattered food creators into one powerful hub.",
+    longDesc:"Akelny was built with a mission: give every small food business owner a stage, and bring all food creators — scattered across social platforms — into one powerful hub. Developed with ASP.NET Core Web API, Entity Framework Core, Angular, and SQL Server to manage restaurants, menus, and customer orders. Features secure authentication via JWT and Google OAuth, role-based access control, and Onion Architecture for long-term scalability.",
+    tags:["ASP.NET Core","Angular","SQL Server","JWT","Entity Framework"],
+    githubLinks:[
+      {label:"Backend",url:"https://github.com/abdelrahmanelsaadany1/Akelni-Backend"},
+      {label:"Frontend",url:"https://github.com/Abdelrahman-2222/AKELNY-Front"}
     ],
-    demo: "https://akelny-front.vercel.app/main",
-    hasDemo: true,
-    image: null,   // ← replace with screenshot URL when ready
-    hue: 28,
+    demo:"https://akelny-front.vercel.app/main",hasDemo:true,image:null,hue:28,
   },
   {
+    id:'inventory',
     title:"Inventory IMS",
     desc:"Multi-warehouse inventory system with role-based access, stock validation, inter-warehouse transfers, and real-time monitoring.",
-    longDesc:"A full-featured Inventory Management System built with ASP.NET Core MVC and Entity Framework Core. Supports multi-warehouse operations with inter-warehouse product transfers, real-time stock monitoring, and expiry/stale product reporting. Modules cover Customers, Suppliers, Products, Warehouses, Supply Orders, Release Orders, and detailed reporting dashboards. Role-based access control ensures managers and staff see only what they need.",
+    longDesc:"A full-featured Inventory Management System built with ASP.NET Core MVC and Entity Framework Core. Supports multi-warehouse operations with inter-warehouse product transfers, real-time stock monitoring, and expiry/stale product reporting. Modules cover Customers, Suppliers, Products, Warehouses, Supply Orders, Release Orders, and detailed reporting dashboards.",
     tags:["ASP.NET Core MVC","Entity Framework Core","SQL Server","Role-Based Access","Multi-Warehouse"],
     githubLinks:[{label:"Code",url:"https://github.com/abdelrahmanelsaadany1/Inventory_Management_System"}],
     demo:null,hasDemo:false,image:null,hue:155,
   },
   {
+    id:'exam',
     title:"Examination System",
-    desc:"A full exam platform with secure login, dynamic questions via JSON API, countdown timer, auto-submit, and real-time scoring.",
-    longDesc:"A browser-based Examination System built with vanilla HTML5, CSS3, and JavaScript ES6. Features secure authentication with LocalStorage, dynamic question loading from a REST/JSON API with shuffle logic, a 2-minute countdown timer that auto-submits on expiry, question flagging with a marked-questions sidebar, and a rich result page showing pass/fail status, score percentage, confetti on success, and animated feedback. Zero frameworks — pure JS engineering.",
+    desc:"Full exam platform — secure login, dynamic questions via JSON API, countdown timer, auto-submit, and real-time scoring.",
+    longDesc:"A browser-based Examination System built with vanilla HTML5, CSS3, and JavaScript ES6. Features secure authentication with LocalStorage, dynamic question loading from a REST/JSON API with shuffle logic, a 2-minute countdown timer that auto-submits on expiry, question flagging with a marked-questions sidebar, and a rich result page showing pass/fail status, score percentage, confetti on success, and animated feedback.",
     tags:["HTML5","CSS3","JavaScript ES6","JSON API","LocalStorage"],
     githubLinks:[{label:"Code",url:"https://github.com/abdelrahmanelsaadany1/Examination-System"}],
     demo:"https://abdelrahmanelsaadany1.github.io/Examination-System/",hasDemo:true,image:null,hue:245,
   },
   {
+    id:'simplify',
     title:"SIMplify",
-    desc:"Graduation project — a comprehensive student management platform for course tracking, GPA calculation, and personalized academic resources.",
+    desc:"Graduation project — student management platform for course tracking, GPA calculation, and personalized academic resources.",
     longDesc:"SIMplify is a full-stack mobile platform developed as a Computer Science graduation project (CGPA: 3.2, 2019–2023). Built for students to manage courses, track academic progress, calculate GPA, and access learning resources with personalized recommendations. Features secure authentication and a clean mobile-first experience. Role: Flutter Developer working alongside a Laravel backend and MySQL database.",
     tags:["Flutter","Laravel","MySQL","REST API","Mobile"],
     githubLinks:[{label:"Code",url:"https://github.com/abdelrahmanelsaadany1/Graduation-project"}],
     demo:null,hasDemo:false,image:null,hue:195,
   },
   {
+    id:'orders',
     title:"Order Management",
-    desc:".NET Web API for end-to-end order management with Clean Architecture, covering customers, products, orders, invoices, and authentication.",
+    desc:".NET Web API with Clean Architecture — full order lifecycle from customer and product management to invoices and auth.",
     longDesc:"A .NET Web API built with Clean Architecture (Core, Infrastructure, Presentation, Shared layers). Manages the full order lifecycle — from customer and product management to order creation, invoice generation, and authentication. Service abstractions are clearly separated from implementations, with a dedicated persistence layer using repositories and migrations. Controllers cover Customer, Order, Invoice, Products, and Auth endpoints.",
     tags:[".NET Web API","Clean Architecture","Entity Framework","Repository Pattern","JWT Auth"],
     githubLinks:[{label:"Code",url:"https://github.com/abdelrahmanelsaadany1/OrderManagmentSystemRoute"}],
     demo:null,hasDemo:false,image:null,hue:320,
   },
   {
+    id:'ikea',
     title:"IKEA Clone",
-    desc:"Enterprise ASP.NET Core MVC app with 3-layer architecture, full Employee & Department CRUD, email auth, and reset password flows.",
-    longDesc:"A production-structured IKEA management system built on ASP.NET Core MVC with a clean 3-layer architecture: DAL (Data Access), BLL (Business Logic), and PL (Presentation). Features full CRUD for Employees and Departments, attachment handling, email-based authentication with forget/reset password flows, sign-up/sign-in with ASP.NET Identity, and AutoMapper-based view models. Follows enterprise patterns with strict separation of concerns throughout.",
+    desc:"Enterprise ASP.NET Core MVC with 3-layer architecture, Employee & Department CRUD, email auth, and reset password flows.",
+    longDesc:"A production-structured IKEA management system built on ASP.NET Core MVC with a clean 3-layer architecture: DAL (Data Access), BLL (Business Logic), and PL (Presentation). Features full CRUD for Employees and Departments, attachment handling, email-based authentication with forget/reset password flows, sign-up/sign-in with ASP.NET Identity, and AutoMapper-based view models.",
     tags:["ASP.NET Core MVC","Entity Framework","3-Layer Architecture","ASP.NET Identity","AutoMapper"],
     githubLinks:[{label:"Code",url:"https://github.com/abdelrahmanelsaadany1/IKEAProjectFinal"}],
     demo:null,hasDemo:false,image:null,hue:40,
   },
   {
+    id:'voya',
     title:"VOYA",
-    desc:"Travel discovery dashboard — search any city for live weather, attractions, maps, visa info, local phrases, jet lag calculator, and budget estimates.",
-    longDesc:"VOYA is a full travel intelligence dashboard built with pure HTML, CSS, and JavaScript. Search any city and instantly get live weather via Open-Meteo, an embedded OpenStreetMap, must-see attractions, a temperature & rain climate chart, best months to visit with scored bars, daily budget tiers, visa & entry requirements, essential local phrases with Web Speech API pronunciation, a jet lag calculator, and a safety & vibe index with animated SVG rings. Features a destinations carousel, animated particle background, parallax hero, and full light/dark theme.",
+    desc:"Travel discovery dashboard — live weather, attractions, maps, visa info, local phrases, jet lag calculator, and budget estimates.",
+    longDesc:"VOYA is a full travel intelligence dashboard built with pure HTML, CSS, and JavaScript. Search any city and instantly get live weather via Open-Meteo, an embedded OpenStreetMap, must-see attractions, a climate chart, best months to visit, daily budget tiers, visa & entry requirements, essential local phrases with Web Speech API pronunciation, a jet lag calculator, and a safety & vibe index with animated SVG rings.",
     tags:["HTML5","CSS3","JavaScript ES6","Open-Meteo API","OpenStreetMap"],
     githubLinks:[{label:"Code",url:"https://github.com/abdelrahmanelsaadany1/Voya"}],
     demo:"https://abdelrahmanelsaadany1.github.io/Voya/",hasDemo:true,image:null,hue:38,
   },
   {
+    id:'atmosphera',
     title:"ATMOSPHERA",
-    desc:"Premium weather app with animated rain/snow/lightning effects, sun arc, pressure gauge, outfit builder, activity scores, and ambient sound synthesis.",
-    longDesc:"ATMOSPHERA is a feature-rich weather dashboard built entirely with vanilla HTML, CSS, and JavaScript. Powered by the OpenWeatherMap API, it delivers current conditions, 5-day forecast, hourly timeline, an animated sun arc with real sunrise/sunset tracking, a pressure gauge, and dynamic rain/snow/lightning visual effects with a particle canvas background. Extra features include an outfit builder, activity score ratings, best time to go outside, °C/°F toggle, geolocation support, and a Web Audio API ambient sound player that synthesizes sounds matching the current weather condition.",
+    desc:"Premium weather app — animated rain/snow/lightning, sun arc, pressure gauge, outfit builder, and ambient sound synthesis.",
+    longDesc:"ATMOSPHERA is a feature-rich weather dashboard built with vanilla HTML, CSS, and JavaScript. Powered by the OpenWeatherMap API: current conditions, 5-day forecast, hourly timeline, animated sun arc with real sunrise/sunset tracking, a pressure gauge, dynamic rain/snow/lightning visual FX, and a particle canvas background. Extras include outfit builder, activity scores, best time to go outside, °C/°F toggle, geolocation, and a Web Audio API ambient sound player matching the current weather.",
     tags:["HTML5","CSS3","JavaScript ES6","OpenWeatherMap API","Web Audio API"],
     githubLinks:[{label:"Code",url:"https://github.com/abdelrahmanelsaadany1/ATMOSPHERA"}],
     demo:"https://abdelrahmanelsaadany1.github.io/ATMOSPHERA/",hasDemo:true,image:null,hue:210,
   },
 ];
 
-/* ══════════════════════════════════════════
-   ART GENERATOR (used when image:null)
-══════════════════════════════════════════ */
-function makeArt(p, w=460, h=190) {
-  const {hue} = p;
-  const s = (x,o=0) => { const v=Math.sin(hue*.09+x+o)*1e4; return v-Math.floor(v); };
-  const r = (mn,mx,o=0) => mn+s(o)*(mx-mn);
-  const c = `hsl(${hue},88%,52%)`;
-  const cf = `hsla(${hue},60%,52%,.06)`;
-  const id = `a${hue}`;
+/* ═══════════════════════════════════
+   ICON HELPERS
+═══════════════════════════════════ */
+const GH_ICON=`<svg viewBox="0 0 24 24"><path d="M9 19c-5 1.5-5-2.5-7-3m14 6v-3.87a3.37 3.37 0 0 0-.94-2.61c3.14-.35 6.44-1.54 6.44-7A5.44 5.44 0 0 0 20 4.77 5.07 5.07 0 0 0 19.91 1S18.73.65 16 2.48a13.38 13.38 0 0 0-7 0C6.27.65 5.09 1 5.09 1A5.07 5.07 0 0 0 5 4.77a5.44 5.44 0 0 0-1.5 3.78c0 5.42 3.3 6.61 6.44 7A3.37 3.37 0 0 0 9 18.13V22"/></svg>`;
+const EXT_ICON=`<svg viewBox="0 0 24 24"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg>`;
 
-  let svg = `<svg viewBox="0 0 ${w} ${h}" xmlns="http://www.w3.org/2000/svg">
-<defs>
-  <filter id="${id}gl"><feGaussianBlur stdDeviation="3" result="b"/><feMerge><feMergeNode in="b"/><feMergeNode in="SourceGraphic"/></feMerge></filter>
-  <radialGradient id="${id}bg" cx="60%" cy="38%" r="65%">
-    <stop offset="0%" stop-color="hsl(${hue},50%,7%)"/>
-    <stop offset="100%" stop-color="#03060e"/>
-  </radialGradient>
-</defs>
-<rect width="${w}" height="${h}" fill="url(#${id}bg)"/>
-<g opacity=".055" stroke="${c}" stroke-width=".5">`;
-  for(let x=30;x<w;x+=30) svg+=`<line x1="${x}" y1="0" x2="${x}" y2="${h}"/>`;
-  for(let y=30;y<h;y+=30) svg+=`<line x1="0" y1="${y}" x2="${w}" y2="${y}"/>`;
-  svg+=`</g>`;
-
-  const v=Math.floor(hue/45)%4;
-  if(v===0){
-    svg+=`<g filter="url(#${id}gl)">`;
-    for(let i=4;i>=1;i--)
-      svg+=`<circle cx="${w*.7}" cy="${h*.5}" r="${i*22}" fill="none" stroke="${c}" stroke-width="${1.3-i*.2}" opacity="${.1+i*.1}"/>`;
-    svg+=`<circle cx="${w*.7}" cy="${h*.5}" r="7" fill="${c}" opacity=".85"/></g>`;
-  } else if(v===1){
-    svg+=`<g stroke="${c}" fill="none" stroke-linecap="round">`;
-    const paths=[`M${w*.48},${h*.5} h38 v-48 h72`,`M${w*.48},${h*.5} h38 v36 h56`,`M${w*.48+38+72},${h*.5-48} h40`,`M${w*.48+38+56},${h*.5+36} h40 v-18`];
-    paths.forEach((d,i)=>{svg+=`<path d="${d}" stroke-width="${1+i*.15}" opacity="${.28+i*.1}"/>`;});
-    svg+=`</g>`;
-  } else if(v===2){
-    let pts='';
-    for(let x=16;x<w-16;x+=2){const y=h/2+Math.sin(x/20)*26+Math.sin(x/7)*9;pts+=`${x},${y} `;}
-    svg+=`<g filter="url(#${id}gl)"><polyline points="${pts}" fill="none" stroke="${c}" stroke-width="1.8" opacity=".55"/></g>`;
-  } else {
-    const cx=w*.7,cy=h*.5,R=44;
-    const hex=(r2)=>Array.from({length:6},(_,i)=>{const a=Math.PI/3*i-Math.PI/6;return `${cx+r2*Math.cos(a)},${cy+r2*Math.sin(a)}`;}).join(' ');
-    svg+=`<g filter="url(#${id}gl)">
-      <polygon points="${hex(R)}" fill="${cf}" stroke="${c}" stroke-width="1.2" opacity=".5"/>
-      <polygon points="${hex(R*.6)}" fill="rgba(0,221,200,.08)" stroke="${c}" stroke-width=".8" opacity=".6"/>
-      <circle cx="${cx}" cy="${cy}" r="6" fill="${c}" opacity=".9"/>
-    </g>`;
-  }
-
-  svg+=`<g filter="url(#${id}gl)">`;
-  for(let i=0;i<6;i++){
-    const x=r(18,w*.42,i*5),y=r(12,h-12,i*11),rd=r(1.2,3.2,i*7),op=r(.2,.6,i*3);
-    svg+=`<circle cx="${x.toFixed(1)}" cy="${y.toFixed(1)}" r="${rd.toFixed(1)}" fill="${c}" opacity="${op.toFixed(2)}"/>`;
-  }
-  svg+=`</g>`;
-
-  svg+=`<rect x="${w-104}" y="${h-28}" width="88" height="18" rx="3" fill="rgba(3,9,22,.85)" stroke="${c}" stroke-width=".5" stroke-opacity=".35"/>
-<text x="${w-60}" y="${h-16}" text-anchor="middle" font-family="'Share Tech Mono'" font-size="7.5" fill="${c}" opacity=".75" letter-spacing="1.2">${p.tags[0].toUpperCase()}</text>
-</svg>`;
-  return svg;
+/* ═══════════════════════════════════
+   RENDER ART
+═══════════════════════════════════ */
+function renderArt(p, w=460, h=200) {
+  if (p.image) return `<img src="${p.image}" alt="${p.title}" loading="lazy">`;
+  const fn = SVG_ART[p.id];
+  return fn ? fn(w, h, p.hue) : `<svg viewBox="0 0 ${w} ${h}" xmlns="http://www.w3.org/2000/svg"><rect width="${w}" height="${h}" fill="#07101f"/></svg>`;
 }
 
-/* helper: render art area (img or SVG) */
-function renderArt(p, w, h) {
-  if (p.image) {
-    return `<img src="${p.image}" alt="${p.title}" loading="lazy">`;
-  }
-  return makeArt(p, w, h);
-}
-
-/* helper: GitHub icon SVG */
-const ghIcon = `<svg viewBox="0 0 24 24"><path d="M9 19c-5 1.5-5-2.5-7-3m14 6v-3.87a3.37 3.37 0 0 0-.94-2.61c3.14-.35 6.44-1.54 6.44-7A5.44 5.44 0 0 0 20 4.77 5.07 5.07 0 0 0 19.91 1S18.73.65 16 2.48a13.38 13.38 0 0 0-7 0C6.27.65 5.09 1 5.09 1A5.07 5.07 0 0 0 5 4.77a5.44 5.44 0 0 0-1.5 3.78c0 5.42 3.3 6.61 6.44 7A3.37 3.37 0 0 0 9 18.13V22"/></svg>`;
-const extIcon = `<svg viewBox="0 0 24 24"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg>`;
-
-/* ══════════════════════════════════════════
-   BUILD CARDS + DOTS
-══════════════════════════════════════════ */
-const track   = document.getElementById('track');
-const dotRow  = document.getElementById('dot-row');
+/* ═══════════════════════════════════
+   BUILD DOM — append to track-inner
+═══════════════════════════════════ */
+const track      = document.getElementById('track');
+const trackInner = document.getElementById('track-inner');
+const dotRow     = document.getElementById('dot-row');
 document.getElementById('pn-tot').textContent = String(PROJECTS.length).padStart(2,'0');
 
 PROJECTS.forEach((p, i) => {
-  // build github links for card (show max 2)
-  const cardGhLinks = p.githubLinks.slice(0,2).map(gh =>
-    `<a href="${gh.url}" class="cl" onclick="event.stopPropagation()" target="_blank" rel="noopener">
-      ${ghIcon} ${gh.label}
-    </a>`
-  ).join('');
-
   const card = document.createElement('div');
   card.className = 'proj-card';
   card.dataset.index = i;
+
+  const ghLinks = p.githubLinks.slice(0,2).map(g =>
+    `<a href="${g.url}" class="clink" onclick="event.stopPropagation()" target="_blank" rel="noopener">${GH_ICON}${g.label}</a>`
+  ).join('');
+
   card.innerHTML = `
-    <div class="card-art">${renderArt(p)}</div>
+    <div class="card-art">
+      ${renderArt(p)}
+      <span class="card-idx">${String(i+1).padStart(2,'0')}</span>
+      ${p.hasDemo ? `<span class="card-live">Live</span>` : ''}
+    </div>
     <div class="card-body">
-      <div class="card-num">${String(i+1).padStart(2,'0')}</div>
       <div class="card-title">${p.title}</div>
       <div class="card-desc">${p.desc}</div>
-      <div class="card-tags">${p.tags.slice(0,3).map(t=>`<span class="ctag">${t}</span>`).join('')}</div>
+      <div class="card-tags">${p.tags.slice(0,3).map(t=>`<span class="tag-pill">${t}</span>`).join('')}</div>
       <div class="card-footer">
         <div class="card-links">
-          ${cardGhLinks}
-          ${p.hasDemo ? `<a href="${p.demo}" class="cl live" onclick="event.stopPropagation()" target="_blank" rel="noopener">
-            ${extIcon} Demo
-          </a>` : ''}
+          ${ghLinks}
+          ${p.hasDemo?`<a href="${p.demo}" class="clink live-btn" onclick="event.stopPropagation()" target="_blank" rel="noopener">${EXT_ICON}Demo</a>`:''}
         </div>
-        <div class="open-hint">Details<svg viewBox="0 0 10 10"><polyline points="2,5 8,5"/><polyline points="5,2 8,5 5,8"/></svg></div>
+        <div class="card-view" onclick="event.stopPropagation();openModal(${i})">Details
+          <svg viewBox="0 0 10 10"><line x1="2" y1="5" x2="8" y2="5"/><polyline points="5,2 8,5 5,8"/></svg>
+        </div>
       </div>
     </div>`;
-  card.addEventListener('click', ()=>openModal(i));
-  track.appendChild(card);
 
-  // dot
+  card.addEventListener('click', () => { if (!dragged) openModal(i); });
+  trackInner.appendChild(card);
+
+  // Dot — size scales with total count
+  const total = PROJECTS.length;
+  const inactiveW = Math.max(10, Math.min(24, Math.floor(220 / total)));
+  const activeW   = Math.max(28, Math.min(56, Math.floor(340 / total)));
+
   const dot = document.createElement('div');
   dot.className = 'dot' + (i===0?' active':'');
   dot.dataset.index = i;
-  dot.addEventListener('click', ()=>scrollToCard(i));
+  dot.style.setProperty('--dot-w',      inactiveW + 'px');
+  dot.style.setProperty('--dot-active', activeW   + 'px');
+  dot.addEventListener('click', () => goTo(i));
   dotRow.appendChild(dot);
 });
 
-/* ══════════════════════════════════════════
-   SCROLL STATE
-══════════════════════════════════════════ */
+/* ═══════════════════════════════════
+   GSAP CAROUSEL ENGINE
+═══════════════════════════════════ */
 let activeIdx = 0;
+let isAnimating = false;
 
-function getCardWidth() {
-  const first = track.querySelector('.proj-card');
-  if(!first) return 300;
-  return first.offsetWidth + 20;
+function cardWidth() {
+  const c = trackInner.querySelector('.proj-card');
+  if (!c) return 340;
+  return c.offsetWidth + 18; // card + gap
 }
 
-function scrollToCard(idx) {
-  idx = Math.max(0, Math.min(idx, PROJECTS.length-1));
-  track.scrollTo({ left: idx * getCardWidth(), behavior: 'smooth' });
+function getOffset(idx) {
+  // Center the active card within track viewport
+  const cw   = cardWidth();
+  const tw   = track.offsetWidth;
+  const cardW = trackInner.querySelector('.proj-card')?.offsetWidth || 340;
+  return -(idx * cw) + (tw / 2) - (cardW / 2);
 }
 
-function updateState(idx) {
-  if(idx === activeIdx && document.querySelector('.dot.active')) return;
-  activeIdx = idx;
-  document.querySelectorAll('.dot').forEach((d,i)=>d.classList.toggle('active', i===idx));
-  const pct = (idx / (PROJECTS.length-1)) * 100;
+function goTo(idx, dir) {
+  if (isAnimating) return;
+  idx = Math.max(0, Math.min(idx, PROJECTS.length - 1));
+  if (idx === activeIdx && trackInner.style.transform) return;
+
+  const prev = activeIdx;
+  activeIdx  = idx;
+  isAnimating = true;
+
+  // Determine slide direction
+  const direction = dir !== undefined ? dir : (idx > prev ? 1 : -1);
+
+  // Animate the track
+  gsap.to(trackInner, {
+    x: getOffset(idx),
+    duration: .75,
+    ease: 'expo.out',
+    onComplete: () => { isAnimating = false; }
+  });
+
+  // Cards depth effect
+  const cards = trackInner.querySelectorAll('.proj-card');
+  cards.forEach((card, i) => {
+    const dist = Math.abs(i - idx);
+    const isActive = i === idx;
+    const isLeaving = i === prev;
+
+    gsap.to(card, {
+      scale:   isActive ? 1 : Math.max(0.93, 1 - dist * 0.025),
+      opacity: isActive ? 1 : Math.max(0.38, 1 - dist * 0.25),
+      filter:  isActive ? 'blur(0px)' : `blur(${Math.min(2, dist * .8)}px)`,
+      duration: .65,
+      ease: 'expo.out',
+      overwrite: 'auto'
+    });
+
+    // Entrance animation for the incoming active card
+    if (isActive) {
+      gsap.fromTo(card,
+        { y: 18, rotateY: direction * -6 },
+        { y: 0,  rotateY: 0, duration: .75, ease: 'expo.out', overwrite: false }
+      );
+    }
+  });
+
+  // Update UI
+  document.querySelectorAll('.dot').forEach((d,i) => d.classList.toggle('active', i===idx));
+  const pct = (idx / (PROJECTS.length - 1)) * 100;
   document.getElementById('prog-fill').style.width = pct + '%';
   document.getElementById('pn-cur').textContent = String(idx+1).padStart(2,'0');
-  document.getElementById('btn-prev').disabled = idx===0;
-  document.getElementById('btn-next').disabled = idx===PROJECTS.length-1;
+  document.getElementById('btn-prev').disabled = idx === 0;
+  document.getElementById('btn-next').disabled = idx === PROJECTS.length - 1;
 }
 
-/* ══════════════════════════════════════════
-   BLUR / FADE TRANSITION
-══════════════════════════════════════════ */
-function applyBlurFade() {
-  const cards = track.querySelectorAll('.proj-card');
+// Set initial position immediately (no animation)
+function initCarousel() {
+  gsap.set(trackInner, { x: getOffset(0) });
+  const cards = trackInner.querySelectorAll('.proj-card');
   cards.forEach((card, i) => {
-    const dist    = Math.abs(i - activeIdx);
-    const blur    = dist === 0 ? 0 : Math.min(2, dist * 1.2);
-    const opacity = dist === 0 ? 1 : Math.max(0.55, 1 - dist * 0.22);
-    const scale   = dist === 0 ? 1 : Math.max(0.96, 1 - dist * 0.02);
-    gsap.to(card, {
-      filter:   `blur(${blur.toFixed(2)}px)`,
-      opacity,
-      scale,
-      duration: 0.3,
-      ease:     'power2.out',
-      overwrite:'auto'
+    const dist = Math.abs(i);
+    gsap.set(card, {
+      scale:  i === 0 ? 1 : Math.max(0.93, 1 - dist * 0.025),
+      filter: i === 0 ? 'blur(0px)' : `blur(${Math.min(2, dist * .8)}px)`,
     });
   });
+  document.getElementById('btn-prev').disabled = true;
+  document.getElementById('btn-next').disabled = false;
 }
 
-/* ══════════════════════════════════════════
-   SCROLL LISTENER
-══════════════════════════════════════════ */
-let scrollTicking = false;
-track.addEventListener('scroll', ()=>{
-  if(!scrollTicking) {
-    requestAnimationFrame(()=>{
-      const idx = Math.round(track.scrollLeft / getCardWidth());
-      updateState(idx);
-      applyBlurFade();
-      scrollTicking = false;
-    });
-    scrollTicking = true;
-  }
-}, {passive:true});
+window.addEventListener('resize', () => {
+  gsap.set(trackInner, { x: getOffset(activeIdx) });
+});
 
-window.addEventListener('resize', applyBlurFade);
+/* ═══════════════════════════════════
+   DRAG — mouse + touch (NO page scroll hijack)
+═══════════════════════════════════ */
+let dragStartX   = null;
+let dragStartY   = null;
+let dragBaseX    = 0;
+let dragged      = false;
+let isHorizDrag  = null; // null = undecided, true = horizontal, false = vertical
 
-/* ══════════════════════════════════════════
-   DRAG TO SCROLL
-══════════════════════════════════════════ */
-let dragStart = null, dragScrollStart = 0, didDrag = false;
-
-track.addEventListener('mousedown', e=>{
-  dragStart = e.clientX;
-  dragScrollStart = track.scrollLeft;
-  didDrag = false;
-  track.classList.add('grabbing');
+track.addEventListener('mousedown', e => {
+  dragStartX  = e.clientX;
+  dragStartY  = e.clientY;
+  dragBaseX   = getOffset(activeIdx);
+  dragged     = false;
+  isHorizDrag = null;
   e.preventDefault();
 });
 
-document.addEventListener('mousemove', e=>{
-  if(dragStart===null) return;
-  const dx = dragStart - e.clientX;
-  if(Math.abs(dx)>4) didDrag=true;
-  track.scrollLeft = dragScrollStart + dx;
-  applyBlurFade();
+document.addEventListener('mousemove', e => {
+  if (dragStartX === null) return;
+  const dx = e.clientX - dragStartX;
+  const dy = e.clientY - dragStartY;
+
+  if (isHorizDrag === null) {
+    if (Math.abs(dx) > 6 || Math.abs(dy) > 6) {
+      isHorizDrag = Math.abs(dx) > Math.abs(dy);
+    }
+    return;
+  }
+  if (!isHorizDrag) return; // vertical → let page scroll
+
+  if (Math.abs(dx) > 6) dragged = true;
+  gsap.set(trackInner, { x: dragBaseX + dx * 0.6 });
 });
 
-document.addEventListener('mouseup', ()=>{
-  if(dragStart===null) return;
-  track.classList.remove('grabbing');
-  if(didDrag){ scrollToCard(Math.round(track.scrollLeft / getCardWidth())); }
-  dragStart=null;
+document.addEventListener('mouseup', e => {
+  if (dragStartX === null) return;
+  const dx = e.clientX - dragStartX;
+  if (dragged && isHorizDrag) {
+    const threshold = 60;
+    if      (dx < -threshold) goTo(activeIdx + 1,  1);
+    else if (dx >  threshold) goTo(activeIdx - 1, -1);
+    else                       goTo(activeIdx);
+  }
+  dragStartX  = null;
+  dragStartY  = null;
+  isHorizDrag = null;
 });
 
-/* ══════════════════════════════════════════
-   ARROW BUTTONS + KEYBOARD
-══════════════════════════════════════════ */
-document.getElementById('btn-prev').addEventListener('click',()=>scrollToCard(activeIdx-1));
-document.getElementById('btn-next').addEventListener('click',()=>scrollToCard(activeIdx+1));
+// Touch support
+track.addEventListener('touchstart', e => {
+  dragStartX  = e.touches[0].clientX;
+  dragStartY  = e.touches[0].clientY;
+  dragBaseX   = getOffset(activeIdx);
+  dragged     = false;
+  isHorizDrag = null;
+}, { passive: true });
 
-document.addEventListener('keydown', e=>{
-  if(document.getElementById('modal-overlay').classList.contains('open')) return;
-  if(e.key==='ArrowRight') scrollToCard(activeIdx+1);
-  if(e.key==='ArrowLeft')  scrollToCard(activeIdx-1);
+track.addEventListener('touchmove', e => {
+  if (dragStartX === null) return;
+  const dx = e.touches[0].clientX - dragStartX;
+  const dy = e.touches[0].clientY - dragStartY;
+
+  if (isHorizDrag === null) {
+    if (Math.abs(dx) > 8 || Math.abs(dy) > 8) {
+      isHorizDrag = Math.abs(dx) > Math.abs(dy);
+    }
+    return;
+  }
+  if (!isHorizDrag) return; // vertical scroll — don't touch it
+
+  e.preventDefault(); // only block scroll for horizontal drags
+  if (Math.abs(dx) > 8) dragged = true;
+  gsap.set(trackInner, { x: dragBaseX + dx * 0.6 });
+}, { passive: false });
+
+track.addEventListener('touchend', e => {
+  if (dragStartX === null) return;
+  const dx = e.changedTouches[0].clientX - dragStartX;
+  if (dragged && isHorizDrag) {
+    const threshold = 50;
+    if      (dx < -threshold) goTo(activeIdx + 1,  1);
+    else if (dx >  threshold) goTo(activeIdx - 1, -1);
+    else                       goTo(activeIdx);
+  }
+  dragStartX  = null;
+  dragStartY  = null;
+  isHorizDrag = null;
+}, { passive: true });
+
+/* ═══════════════════════════════════
+   ARROWS + KEYBOARD
+═══════════════════════════════════ */
+document.getElementById('btn-prev').addEventListener('click', () => goTo(activeIdx - 1, -1));
+document.getElementById('btn-next').addEventListener('click', () => goTo(activeIdx + 1,  1));
+
+document.addEventListener('keydown', e => {
+  if (document.getElementById('modal-overlay').classList.contains('open')) {
+    if (e.key === 'Escape') closeModal();
+    return;
+  }
+  if (e.key === 'ArrowRight') goTo(activeIdx + 1,  1);
+  if (e.key === 'ArrowLeft')  goTo(activeIdx - 1, -1);
 });
 
-/* ══════════════════════════════════════════
-   3D TILT
-══════════════════════════════════════════ */
-function setupTilt(){
-  document.querySelectorAll('.proj-card').forEach(card=>{
-    card.addEventListener('mousemove',e=>{
-      if(dragStart!==null) return;
-      const r=card.getBoundingClientRect();
-      const x=(e.clientX-r.left)/r.width-.5;
-      const y=(e.clientY-r.top)/r.height-.5;
-      gsap.to(card,{rotateX:-y*5,rotateY:x*5,transformPerspective:900,duration:.5,ease:'power2.out'});
-    });
-    card.addEventListener('mouseleave',()=>{
-      gsap.to(card,{rotateX:0,rotateY:0,duration:.7,ease:'power2.out'});
-    });
-  });
-}
-
-/* ══════════════════════════════════════════
+/* ═══════════════════════════════════
    MODAL
-══════════════════════════════════════════ */
-function openModal(idx){
+═══════════════════════════════════ */
+function openModal(idx) {
   const p = PROJECTS[idx];
   document.getElementById('m-num').textContent   = `PROJECT ${String(idx+1).padStart(2,'0')}`;
   document.getElementById('m-title').textContent = p.title;
   document.getElementById('m-desc').textContent  = p.longDesc;
 
-  // art
-  const mArt = document.getElementById('m-art');
-  mArt.innerHTML = p.image
-    ? `<img src="${p.image}" alt="${p.title}">`
-    : makeArt(p, 700, 220);
-
-  // badge
   const badge = document.getElementById('m-badge');
   badge.style.display = p.hasDemo ? 'inline-block' : 'none';
 
-  // tags
+  document.getElementById('m-art').innerHTML = p.image
+    ? `<img src="${p.image}" alt="${p.title}">`
+    : (() => { const fn = SVG_ART[p.id]; return fn ? fn(720, 260, p.hue) : ''; })();
+
   document.getElementById('m-tags').innerHTML =
-    p.tags.map(t=>`<span class="m-tag">${t}</span>`).join('');
+    p.tags.map(t => `<span class="m-tag">${t}</span>`).join('');
 
-  // links — all github repos + demo
-  const ghLinksHTML = p.githubLinks.map(gh =>
-    `<a href="${gh.url}" class="m-gh" target="_blank" rel="noopener">
-      ${ghIcon} ${gh.label} Repo
-    </a>`
+  const ghHTML = p.githubLinks.map(g =>
+    `<a href="${g.url}" class="m-gh" target="_blank" rel="noopener">${GH_ICON}${g.label} Repo</a>`
   ).join('');
-
   const demoHTML = p.hasDemo
-    ? `<a href="${p.demo}" class="m-demo" target="_blank" rel="noopener">
-        ${extIcon} Live Demo
-      </a>`
-    : `<span style="font-family:var(--mono);font-size:10px;letter-spacing:2px;color:var(--dim);text-transform:uppercase;align-self:center">No live demo</span>`;
+    ? `<a href="${p.demo}" class="m-demo" target="_blank" rel="noopener">${EXT_ICON}Live Demo</a>`
+    : `<span style="font-family:var(--mono);font-size:9px;letter-spacing:2px;color:var(--dim);text-transform:uppercase;align-self:center">No live demo</span>`;
 
-  document.getElementById('m-links').innerHTML = ghLinksHTML + demoHTML;
+  document.getElementById('m-links').innerHTML = ghHTML + demoHTML;
 
   document.getElementById('modal-overlay').classList.add('open');
   document.body.style.overflow = 'hidden';
 }
 
-function closeModal(){
+function closeModal() {
   document.getElementById('modal-overlay').classList.remove('open');
   document.body.style.overflow = '';
 }
-document.getElementById('m-close').addEventListener('click', closeModal);
-document.getElementById('modal-overlay').addEventListener('click', e=>{
-  if(e.target === document.getElementById('modal-overlay')) closeModal();
-});
-document.addEventListener('keydown', e=>{ if(e.key==='Escape') closeModal(); });
 
-/* ══════════════════════════════════════════
+document.getElementById('m-close').addEventListener('click', closeModal);
+document.getElementById('modal-overlay').addEventListener('click', e => {
+  if (e.target === document.getElementById('modal-overlay')) closeModal();
+});
+
+/* ═══════════════════════════════════
    SCROLL ENTRANCE
-══════════════════════════════════════════ */
+═══════════════════════════════════ */
 ScrollTrigger.create({
-  trigger:'#works', start:'top 75%',
-  onEnter(){
-    gsap.to('#w-eye',   {opacity:1,y:0,duration:.8,ease:'power3.out'});
-    gsap.to('#w-ttl',   {opacity:1,y:0,duration:.9,ease:'power3.out',delay:.1});
-    gsap.to('#w-prog',  {opacity:1,duration:.7,ease:'power2.out',delay:.22});
-    gsap.to('#w-arr',   {opacity:1,duration:.7,ease:'power2.out',delay:.28});
-    gsap.to('#dot-row', {opacity:1,duration:.6,ease:'power2.out',delay:.35});
-    gsap.to('.proj-card',{
-      opacity:1, y:0, duration:.65,
-      stagger:{each:.1,from:'start'},
-      ease:'power3.out', delay:.2,
-      onComplete: setupTilt
-    });
+  trigger: '#works', start: 'top 72%',
+  onEnter() {
+    gsap.to('#w-eye', { clipPath:'inset(0 0% 0 0)', duration:.9, ease:'power3.out' });
+    gsap.to('#w-ttl', { clipPath:'inset(0 0 0% 0)', duration:1,  ease:'power3.out', delay:.12 });
+    gsap.to('#w-nav', { opacity:1, duration:.7, ease:'power2.out', delay:.3 });
+    gsap.to('.dot-row', { opacity:1, duration:.6, ease:'power2.out', delay:.4 });
+
+    // stagger cards in from below, then init carousel position
+    gsap.fromTo('.proj-card',
+      { opacity: 0, y: 50 },
+      {
+        opacity: 1, y: 0,
+        duration: .8,
+        stagger: { each: .09, from: 'start' },
+        ease: 'expo.out', delay: .2,
+        onComplete() {}
+      }
+    );
   }
 });
 
-/* init */
-updateState(0);
-requestAnimationFrame(()=>{ requestAnimationFrame(applyBlurFade); });
+// Initial state before entrance
+gsap.set('.proj-card', { opacity: 0, y: 50 });
+document.getElementById('btn-prev').disabled = true;
+
+// Set carousel geometry immediately so it's correct before cards fade in
+window.addEventListener('load', () => {
+  initCarousel();
+});
 </script>
 </body>
 </html>
