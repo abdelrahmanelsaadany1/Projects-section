@@ -94,13 +94,12 @@ body::after{
 }
 .w-title span{color:var(--teal)}
 
-/* ── NAV ROW (right side of header) ── */
+/* ── NAV ROW ── */
 .w-nav{
   display:flex;align-items:center;gap:20px;
   padding-bottom:6px;
 }
 
-/* progress bar */
 .w-progress{
   display:flex;align-items:center;gap:10px;
   opacity:0;
@@ -121,7 +120,6 @@ body::after{
   box-shadow:0 0 8px var(--t40);
 }
 
-/* arrows */
 .w-arrows{
   display:flex;gap:8px;
   opacity:0;
@@ -140,7 +138,6 @@ body::after{
 .arr-btn:hover svg{stroke:var(--teal)}
 
 /* ── TRACK WRAPPER ── */
-/* left/right fade-out masks */
 .track-wrapper{
   position:relative;
   padding:0 clamp(24px,5vw,80px);
@@ -165,10 +162,11 @@ body::after{
   display:flex;gap:20px;
   overflow-x:auto;
   scroll-snap-type:x mandatory;
+  scroll-padding-inline:50%;
   -webkit-overflow-scrolling:touch;
   scrollbar-width:none;
   cursor:grab;
-  padding-bottom:4px; /* prevent clipping box-shadow */
+  padding-bottom:4px;
 }
 .track::-webkit-scrollbar{display:none}
 .track.grabbing{cursor:grabbing}
@@ -177,7 +175,7 @@ body::after{
 .proj-card{
   flex:0 0 calc((100% - 40px) / 3);
   min-width:280px;
-  scroll-snap-align:start;
+  scroll-snap-align:center;
   background:rgba(6,13,26,.82);
   border:1px solid var(--t12);
   border-radius:16px;
@@ -198,6 +196,12 @@ body::after{
   height:176px;position:relative;overflow:hidden;
   background:var(--bg2);
 }
+.card-art img{
+  width:100%;height:100%;object-fit:cover;
+  display:block;
+  transition:transform .5s var(--eout);
+}
+.proj-card:hover .card-art img{transform:scale(1.04)}
 .card-art svg{width:100%;height:100%}
 .card-art::after{
   content:'';
@@ -239,7 +243,7 @@ body::after{
   display:flex;align-items:center;justify-content:space-between;
   padding-top:10px;border-top:1px solid var(--t12);margin-top:2px;
 }
-.card-links{display:flex;gap:10px}
+.card-links{display:flex;gap:8px;flex-wrap:wrap}
 .cl{
   font-family:var(--mono);font-size:9px;letter-spacing:2px;
   color:var(--mid);text-decoration:none;text-transform:uppercase;
@@ -257,6 +261,7 @@ body::after{
   color:var(--dim);text-transform:uppercase;
   opacity:0;transition:opacity .3s;
   display:flex;align-items:center;gap:4px;
+  flex-shrink:0;
 }
 .open-hint svg{width:9px;height:9px;stroke:currentColor;fill:none;stroke-width:2;stroke-linecap:round;stroke-linejoin:round}
 .proj-card:hover .open-hint{opacity:1}
@@ -311,7 +316,13 @@ body::after{
 }
 #modal-overlay.open #modal{transform:translateY(0) scale(1)}
 
-.m-art{height:220px;position:relative;overflow:hidden;border-radius:20px 20px 0 0;background:var(--bg2)}
+.m-art{
+  height:220px;position:relative;overflow:hidden;
+  border-radius:20px 20px 0 0;background:var(--bg2);
+}
+.m-art img{
+  width:100%;height:100%;object-fit:cover;display:block;
+}
 .m-art svg{width:100%;height:100%}
 .m-body{padding:38px 44px 44px}
 .m-eyebrow{display:flex;align-items:center;gap:10px;margin-bottom:6px}
@@ -445,68 +456,85 @@ gsap.registerPlugin(ScrollTrigger);
 
 /* ══════════════════════════════════════════
    DATA
+   githubLinks: array of { label, url }
+   demo: url string or null
+   image: url string or null (null = generated art)
 ══════════════════════════════════════════ */
 const PROJECTS = [
   {
-    title:"Orbit Dashboard",
-    desc:"Real-time analytics for satellite telemetry. WebSocket-driven with a canvas visualization engine that handles 50k+ data points per second.",
-    longDesc:"Orbit Dashboard processes live telemetry streams from orbital assets and renders them in a performant canvas visualization. The system handles 50k+ data points per second with sub-100ms latency. Features include anomaly detection, historical playback, and configurable alert thresholds.",
-    tags:["React","Node.js","WebSocket","Canvas API","PostgreSQL"],
-    github:"#",demo:"#",hasDemo:true,hue:185,
+    title: "Akelny",
+    desc: "A food ordering platform built to empower small business owners and gather scattered food creators from all platforms into one unified place.",
+    longDesc: "Akelny was built with a mission: give every small food business owner a stage, and bring all food creators — scattered across social platforms — into one powerful hub. Developed with ASP.NET Core Web API, Entity Framework Core, Angular, and SQL Server to manage restaurants, menus, and customer orders. Features secure authentication via JWT and Google OAuth, role-based access control, and Onion Architecture for long-term scalability.",
+    tags: ["ASP.NET Core", "Angular", "SQL Server", "JWT", "Entity Framework"],
+    githubLinks: [
+      { label: "Backend", url: "https://github.com/abdelrahmanelsaadany1/Akelni-Backend" },
+      { label: "Frontend", url: "https://github.com/Abdelrahman-2222/AKELNY-Front" }
+    ],
+    demo: "https://akelny-front.vercel.app/main",
+    hasDemo: true,
+    image: null,   // ← replace with screenshot URL when ready
+    hue: 28,
   },
   {
-    title:"DeepForm",
-    desc:"Intelligent form builder that generates validation logic and accessible markup from natural language descriptions.",
-    longDesc:"DeepForm takes plain-English descriptions of forms and outputs production-ready HTML, validation logic, and accessibility attributes. Powered by a fine-tuned language model with a post-processing pipeline that enforces WCAG 2.1 compliance.",
-    tags:["Next.js","TypeScript","OpenAI API","Tailwind","Vercel"],
-    github:"#",demo:"#",hasDemo:true,hue:160,
+    title:"Inventory IMS",
+    desc:"Multi-warehouse inventory system with role-based access, stock validation, inter-warehouse transfers, and real-time monitoring.",
+    longDesc:"A full-featured Inventory Management System built with ASP.NET Core MVC and Entity Framework Core. Supports multi-warehouse operations with inter-warehouse product transfers, real-time stock monitoring, and expiry/stale product reporting. Modules cover Customers, Suppliers, Products, Warehouses, Supply Orders, Release Orders, and detailed reporting dashboards. Role-based access control ensures managers and staff see only what they need.",
+    tags:["ASP.NET Core MVC","Entity Framework Core","SQL Server","Role-Based Access","Multi-Warehouse"],
+    githubLinks:[{label:"Code",url:"https://github.com/abdelrahmanelsaadany1/Inventory_Management_System"}],
+    demo:null,hasDemo:false,image:null,hue:155,
   },
   {
-    title:"NightWatch",
-    desc:"Open-source uptime monitoring with a beautiful status page and multi-channel incident alerts.",
-    longDesc:"NightWatch pings endpoints on configurable intervals, tracks response times, and publishes a public status page. Supports Slack, email, and webhook notifications. Handles hundreds of monitors with a lightweight Go backend.",
-    tags:["Go","React","SQLite","Docker","REST API"],
-    github:"#",demo:null,hasDemo:false,hue:210,
+    title:"Examination System",
+    desc:"A full exam platform with secure login, dynamic questions via JSON API, countdown timer, auto-submit, and real-time scoring.",
+    longDesc:"A browser-based Examination System built with vanilla HTML5, CSS3, and JavaScript ES6. Features secure authentication with LocalStorage, dynamic question loading from a REST/JSON API with shuffle logic, a 2-minute countdown timer that auto-submits on expiry, question flagging with a marked-questions sidebar, and a rich result page showing pass/fail status, score percentage, confetti on success, and animated feedback. Zero frameworks — pure JS engineering.",
+    tags:["HTML5","CSS3","JavaScript ES6","JSON API","LocalStorage"],
+    githubLinks:[{label:"Code",url:"https://github.com/abdelrahmanelsaadany1/Examination-System"}],
+    demo:"https://abdelrahmanelsaadany1.github.io/Examination-System/",hasDemo:true,image:null,hue:245,
   },
   {
-    title:"Chroma UI",
-    desc:"Headless React component library focused on motion and accessibility. Zero runtime CSS, fully tree-shakeable.",
-    longDesc:"Chroma UI provides 40+ accessible, unstyled React components with built-in ARIA roles and keyboard navigation. Animation primitives are built on the Web Animations API. Ships as tree-shakeable ESM with full TypeScript generics support.",
-    tags:["React","TypeScript","Web Animations API","Rollup","Storybook"],
-    github:"#",demo:"#",hasDemo:true,hue:270,
+    title:"SIMplify",
+    desc:"Graduation project — a comprehensive student management platform for course tracking, GPA calculation, and personalized academic resources.",
+    longDesc:"SIMplify is a full-stack mobile platform developed as a Computer Science graduation project (CGPA: 3.2, 2019–2023). Built for students to manage courses, track academic progress, calculate GPA, and access learning resources with personalized recommendations. Features secure authentication and a clean mobile-first experience. Role: Flutter Developer working alongside a Laravel backend and MySQL database.",
+    tags:["Flutter","Laravel","MySQL","REST API","Mobile"],
+    githubLinks:[{label:"Code",url:"https://github.com/abdelrahmanelsaadany1/Graduation-project"}],
+    demo:null,hasDemo:false,image:null,hue:195,
   },
   {
-    title:"Cartographer",
-    desc:"Collaborative map annotation for field researchers. Works offline-first with automatic conflict resolution.",
-    longDesc:"Cartographer lets teams drop pins, draw regions, and annotate geographic data — even without internet. Built on CRDTs for conflict-free offline merging. The backend syncs changes when connectivity returns. Supports GeoJSON import/export.",
-    tags:["Vue 3","Mapbox GL","CRDT","IndexedDB","Express"],
-    github:"#",demo:null,hasDemo:false,hue:140,
+    title:"Order Management",
+    desc:".NET Web API for end-to-end order management with Clean Architecture, covering customers, products, orders, invoices, and authentication.",
+    longDesc:"A .NET Web API built with Clean Architecture (Core, Infrastructure, Presentation, Shared layers). Manages the full order lifecycle — from customer and product management to order creation, invoice generation, and authentication. Service abstractions are clearly separated from implementations, with a dedicated persistence layer using repositories and migrations. Controllers cover Customer, Order, Invoice, Products, and Auth endpoints.",
+    tags:[".NET Web API","Clean Architecture","Entity Framework","Repository Pattern","JWT Auth"],
+    githubLinks:[{label:"Code",url:"https://github.com/abdelrahmanelsaadany1/OrderManagmentSystemRoute"}],
+    demo:null,hasDemo:false,image:null,hue:320,
   },
   {
-    title:"Pulse API",
-    desc:"Rate-limiting and request-shaping middleware for high-traffic Node.js APIs with per-route granularity.",
-    longDesc:"Pulse API provides adaptive rate limiting that shapes traffic rather than simply rejecting it. Supports sliding window, token bucket, and leaky bucket algorithms. Per-route configuration, Redis-backed state, and a real-time metrics dashboard built in.",
-    tags:["Node.js","Redis","TypeScript","Express","Prometheus"],
-    github:"#",demo:null,hasDemo:false,hue:20,
+    title:"IKEA Clone",
+    desc:"Enterprise ASP.NET Core MVC app with 3-layer architecture, full Employee & Department CRUD, email auth, and reset password flows.",
+    longDesc:"A production-structured IKEA management system built on ASP.NET Core MVC with a clean 3-layer architecture: DAL (Data Access), BLL (Business Logic), and PL (Presentation). Features full CRUD for Employees and Departments, attachment handling, email-based authentication with forget/reset password flows, sign-up/sign-in with ASP.NET Identity, and AutoMapper-based view models. Follows enterprise patterns with strict separation of concerns throughout.",
+    tags:["ASP.NET Core MVC","Entity Framework","3-Layer Architecture","ASP.NET Identity","AutoMapper"],
+    githubLinks:[{label:"Code",url:"https://github.com/abdelrahmanelsaadany1/IKEAProjectFinal"}],
+    demo:null,hasDemo:false,image:null,hue:40,
   },
   {
-    title:"Void CMS",
-    desc:"Minimal headless CMS with a Git-based content store. No database, no lock-in, just Markdown.",
-    longDesc:"Void CMS stores all content as Markdown files in a Git repository, giving teams a full edit history and familiar PR-based workflows. A lightweight REST and GraphQL API serves content to any frontend. Webhooks trigger rebuilds on merge.",
-    tags:["TypeScript","Git API","GraphQL","REST","Markdown"],
-    github:"#",demo:"#",hasDemo:true,hue:300,
+    title:"VOYA",
+    desc:"Travel discovery dashboard — search any city for live weather, attractions, maps, visa info, local phrases, jet lag calculator, and budget estimates.",
+    longDesc:"VOYA is a full travel intelligence dashboard built with pure HTML, CSS, and JavaScript. Search any city and instantly get live weather via Open-Meteo, an embedded OpenStreetMap, must-see attractions, a temperature & rain climate chart, best months to visit with scored bars, daily budget tiers, visa & entry requirements, essential local phrases with Web Speech API pronunciation, a jet lag calculator, and a safety & vibe index with animated SVG rings. Features a destinations carousel, animated particle background, parallax hero, and full light/dark theme.",
+    tags:["HTML5","CSS3","JavaScript ES6","Open-Meteo API","OpenStreetMap"],
+    githubLinks:[{label:"Code",url:"https://github.com/abdelrahmanelsaadany1/Voya"}],
+    demo:"https://abdelrahmanelsaadany1.github.io/Voya/",hasDemo:true,image:null,hue:38,
   },
   {
-    title:"Threadline",
-    desc:"Visual thread manager for Twitter power users. Draft, schedule, and track post analytics in one place.",
-    longDesc:"Threadline reimagines the Twitter compose experience for long-form thinkers. Write threads visually, preview as they'll appear in timeline, schedule with timezone awareness, and track engagement analytics post-publish.",
-    tags:["Next.js","Twitter API v2","Prisma","Supabase","Tailwind"],
-    github:"#",demo:null,hasDemo:false,hue:200,
+    title:"ATMOSPHERA",
+    desc:"Premium weather app with animated rain/snow/lightning effects, sun arc, pressure gauge, outfit builder, activity scores, and ambient sound synthesis.",
+    longDesc:"ATMOSPHERA is a feature-rich weather dashboard built entirely with vanilla HTML, CSS, and JavaScript. Powered by the OpenWeatherMap API, it delivers current conditions, 5-day forecast, hourly timeline, an animated sun arc with real sunrise/sunset tracking, a pressure gauge, and dynamic rain/snow/lightning visual effects with a particle canvas background. Extra features include an outfit builder, activity score ratings, best time to go outside, °C/°F toggle, geolocation support, and a Web Audio API ambient sound player that synthesizes sounds matching the current weather condition.",
+    tags:["HTML5","CSS3","JavaScript ES6","OpenWeatherMap API","Web Audio API"],
+    githubLinks:[{label:"Code",url:"https://github.com/abdelrahmanelsaadany1/ATMOSPHERA"}],
+    demo:"https://abdelrahmanelsaadany1.github.io/ATMOSPHERA/",hasDemo:true,image:null,hue:210,
   },
 ];
 
 /* ══════════════════════════════════════════
-   ART GENERATOR
+   ART GENERATOR (used when image:null)
 ══════════════════════════════════════════ */
 function makeArt(p, w=460, h=190) {
   const {hue} = p;
@@ -555,7 +583,6 @@ function makeArt(p, w=460, h=190) {
     </g>`;
   }
 
-  // scattered dots (left half so they don't overlap main shape)
   svg+=`<g filter="url(#${id}gl)">`;
   for(let i=0;i<6;i++){
     const x=r(18,w*.42,i*5),y=r(12,h-12,i*11),rd=r(1.2,3.2,i*7),op=r(.2,.6,i*3);
@@ -563,12 +590,23 @@ function makeArt(p, w=460, h=190) {
   }
   svg+=`</g>`;
 
-  // tag chip
   svg+=`<rect x="${w-104}" y="${h-28}" width="88" height="18" rx="3" fill="rgba(3,9,22,.85)" stroke="${c}" stroke-width=".5" stroke-opacity=".35"/>
 <text x="${w-60}" y="${h-16}" text-anchor="middle" font-family="'Share Tech Mono'" font-size="7.5" fill="${c}" opacity=".75" letter-spacing="1.2">${p.tags[0].toUpperCase()}</text>
 </svg>`;
   return svg;
 }
+
+/* helper: render art area (img or SVG) */
+function renderArt(p, w, h) {
+  if (p.image) {
+    return `<img src="${p.image}" alt="${p.title}" loading="lazy">`;
+  }
+  return makeArt(p, w, h);
+}
+
+/* helper: GitHub icon SVG */
+const ghIcon = `<svg viewBox="0 0 24 24"><path d="M9 19c-5 1.5-5-2.5-7-3m14 6v-3.87a3.37 3.37 0 0 0-.94-2.61c3.14-.35 6.44-1.54 6.44-7A5.44 5.44 0 0 0 20 4.77 5.07 5.07 0 0 0 19.91 1S18.73.65 16 2.48a13.38 13.38 0 0 0-7 0C6.27.65 5.09 1 5.09 1A5.07 5.07 0 0 0 5 4.77a5.44 5.44 0 0 0-1.5 3.78c0 5.42 3.3 6.61 6.44 7A3.37 3.37 0 0 0 9 18.13V22"/></svg>`;
+const extIcon = `<svg viewBox="0 0 24 24"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg>`;
 
 /* ══════════════════════════════════════════
    BUILD CARDS + DOTS
@@ -578,12 +616,18 @@ const dotRow  = document.getElementById('dot-row');
 document.getElementById('pn-tot').textContent = String(PROJECTS.length).padStart(2,'0');
 
 PROJECTS.forEach((p, i) => {
-  // card
+  // build github links for card (show max 2)
+  const cardGhLinks = p.githubLinks.slice(0,2).map(gh =>
+    `<a href="${gh.url}" class="cl" onclick="event.stopPropagation()" target="_blank" rel="noopener">
+      ${ghIcon} ${gh.label}
+    </a>`
+  ).join('');
+
   const card = document.createElement('div');
   card.className = 'proj-card';
   card.dataset.index = i;
   card.innerHTML = `
-    <div class="card-art">${makeArt(p)}</div>
+    <div class="card-art">${renderArt(p)}</div>
     <div class="card-body">
       <div class="card-num">${String(i+1).padStart(2,'0')}</div>
       <div class="card-title">${p.title}</div>
@@ -591,14 +635,10 @@ PROJECTS.forEach((p, i) => {
       <div class="card-tags">${p.tags.slice(0,3).map(t=>`<span class="ctag">${t}</span>`).join('')}</div>
       <div class="card-footer">
         <div class="card-links">
-          <a href="${p.github}" class="cl" onclick="event.stopPropagation()" target="_blank" rel="noopener">
-            <svg viewBox="0 0 24 24"><path d="M9 19c-5 1.5-5-2.5-7-3m14 6v-3.87a3.37 3.37 0 0 0-.94-2.61c3.14-.35 6.44-1.54 6.44-7A5.44 5.44 0 0 0 20 4.77 5.07 5.07 0 0 0 19.91 1S18.73.65 16 2.48a13.38 13.38 0 0 0-7 0C6.27.65 5.09 1 5.09 1A5.07 5.07 0 0 0 5 4.77a5.44 5.44 0 0 0-1.5 3.78c0 5.42 3.3 6.61 6.44 7A3.37 3.37 0 0 0 9 18.13V22"/></svg>
-            Code
-          </a>
-          ${p.hasDemo?`<a href="${p.demo}" class="cl live" onclick="event.stopPropagation()" target="_blank" rel="noopener">
-            <svg viewBox="0 0 24 24"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg>
-            Demo
-          </a>`:''}
+          ${cardGhLinks}
+          ${p.hasDemo ? `<a href="${p.demo}" class="cl live" onclick="event.stopPropagation()" target="_blank" rel="noopener">
+            ${extIcon} Demo
+          </a>` : ''}
         </div>
         <div class="open-hint">Details<svg viewBox="0 0 10 10"><polyline points="2,5 8,5"/><polyline points="5,2 8,5 5,8"/></svg></div>
       </div>
@@ -622,59 +662,42 @@ let activeIdx = 0;
 function getCardWidth() {
   const first = track.querySelector('.proj-card');
   if(!first) return 300;
-  return first.offsetWidth + 20; // card + gap
+  return first.offsetWidth + 20;
 }
 
 function scrollToCard(idx) {
   idx = Math.max(0, Math.min(idx, PROJECTS.length-1));
-  const target = idx * getCardWidth();
-  track.scrollTo({ left: target, behavior: 'smooth' });
+  track.scrollTo({ left: idx * getCardWidth(), behavior: 'smooth' });
 }
 
 function updateState(idx) {
   if(idx === activeIdx && document.querySelector('.dot.active')) return;
   activeIdx = idx;
-
-  // dots
   document.querySelectorAll('.dot').forEach((d,i)=>d.classList.toggle('active', i===idx));
-
-  // progress
   const pct = (idx / (PROJECTS.length-1)) * 100;
   document.getElementById('prog-fill').style.width = pct + '%';
   document.getElementById('pn-cur').textContent = String(idx+1).padStart(2,'0');
-
-  // arrows
   document.getElementById('btn-prev').disabled = idx===0;
   document.getElementById('btn-next').disabled = idx===PROJECTS.length-1;
 }
 
 /* ══════════════════════════════════════════
    BLUR / FADE TRANSITION
-   Each card blurs + dims based on distance
-   from the track center. Center = sharp + full
-   opacity. Edges = blurred + dimmed.
 ══════════════════════════════════════════ */
 function applyBlurFade() {
-  const cards   = track.querySelectorAll('.proj-card');
-  const cw      = getCardWidth();
-  const center  = track.scrollLeft + track.clientWidth / 2;
-
+  const cards = track.querySelectorAll('.proj-card');
   cards.forEach((card, i) => {
-    const cardCenter = i * cw + card.offsetWidth / 2;
-    const dist = Math.abs(cardCenter - center) / cw;
-
-    const blur    = Math.min(6, dist * 4.8);
-    const opacity = Math.max(0.28, 1 - dist * 0.54);
-    const scale   = Math.max(0.93, 1 - dist * 0.04);
-
-    // Use GSAP for smooth interpolated transitions
+    const dist    = Math.abs(i - activeIdx);
+    const blur    = dist === 0 ? 0 : Math.min(2, dist * 1.2);
+    const opacity = dist === 0 ? 1 : Math.max(0.55, 1 - dist * 0.22);
+    const scale   = dist === 0 ? 1 : Math.max(0.96, 1 - dist * 0.02);
     gsap.to(card, {
-      filter:  `blur(${blur.toFixed(2)}px)`,
-      opacity: opacity,
-      scale:   scale,
-      duration: 0.25,
-      ease:    'power2.out',
-      overwrite: 'auto'
+      filter:   `blur(${blur.toFixed(2)}px)`,
+      opacity,
+      scale,
+      duration: 0.3,
+      ease:     'power2.out',
+      overwrite:'auto'
     });
   });
 }
@@ -718,24 +741,19 @@ document.addEventListener('mousemove', e=>{
   applyBlurFade();
 });
 
-document.addEventListener('mouseup', e=>{
+document.addEventListener('mouseup', ()=>{
   if(dragStart===null) return;
   track.classList.remove('grabbing');
-  if(didDrag){
-    // snap to nearest
-    const idx = Math.round(track.scrollLeft / getCardWidth());
-    scrollToCard(idx);
-  }
+  if(didDrag){ scrollToCard(Math.round(track.scrollLeft / getCardWidth())); }
   dragStart=null;
 });
 
 /* ══════════════════════════════════════════
-   ARROW BUTTONS
+   ARROW BUTTONS + KEYBOARD
 ══════════════════════════════════════════ */
 document.getElementById('btn-prev').addEventListener('click',()=>scrollToCard(activeIdx-1));
 document.getElementById('btn-next').addEventListener('click',()=>scrollToCard(activeIdx+1));
 
-/* keyboard */
 document.addEventListener('keydown', e=>{
   if(document.getElementById('modal-overlay').classList.contains('open')) return;
   if(e.key==='ArrowRight') scrollToCard(activeIdx+1);
@@ -764,37 +782,53 @@ function setupTilt(){
    MODAL
 ══════════════════════════════════════════ */
 function openModal(idx){
-  const p=PROJECTS[idx];
+  const p = PROJECTS[idx];
   document.getElementById('m-num').textContent   = `PROJECT ${String(idx+1).padStart(2,'0')}`;
   document.getElementById('m-title').textContent = p.title;
   document.getElementById('m-desc').textContent  = p.longDesc;
-  document.getElementById('m-art').innerHTML     = makeArt(p, 700, 220);
-  const badge=document.getElementById('m-badge');
-  badge.style.display = p.hasDemo?'inline-block':'none';
+
+  // art
+  const mArt = document.getElementById('m-art');
+  mArt.innerHTML = p.image
+    ? `<img src="${p.image}" alt="${p.title}">`
+    : makeArt(p, 700, 220);
+
+  // badge
+  const badge = document.getElementById('m-badge');
+  badge.style.display = p.hasDemo ? 'inline-block' : 'none';
+
+  // tags
   document.getElementById('m-tags').innerHTML =
     p.tags.map(t=>`<span class="m-tag">${t}</span>`).join('');
-  document.getElementById('m-links').innerHTML=`
-    <a href="${p.github}" class="m-gh" target="_blank" rel="noopener">
-      <svg viewBox="0 0 24 24"><path d="M9 19c-5 1.5-5-2.5-7-3m14 6v-3.87a3.37 3.37 0 0 0-.94-2.61c3.14-.35 6.44-1.54 6.44-7A5.44 5.44 0 0 0 20 4.77 5.07 5.07 0 0 0 19.91 1S18.73.65 16 2.48a13.38 13.38 0 0 0-7 0C6.27.65 5.09 1 5.09 1A5.07 5.07 0 0 0 5 4.77a5.44 5.44 0 0 0-1.5 3.78c0 5.42 3.3 6.61 6.44 7A3.37 3.37 0 0 0 9 18.13V22"/></svg>
-      View on GitHub
-    </a>
-    ${p.hasDemo?`<a href="${p.demo}" class="m-demo" target="_blank" rel="noopener">
-      <svg viewBox="0 0 24 24"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg>
-      Live Demo
-    </a>`:`<span style="font-family:var(--mono);font-size:10px;letter-spacing:2px;color:var(--dim);text-transform:uppercase;align-self:center">No live demo</span>`}`;
+
+  // links — all github repos + demo
+  const ghLinksHTML = p.githubLinks.map(gh =>
+    `<a href="${gh.url}" class="m-gh" target="_blank" rel="noopener">
+      ${ghIcon} ${gh.label} Repo
+    </a>`
+  ).join('');
+
+  const demoHTML = p.hasDemo
+    ? `<a href="${p.demo}" class="m-demo" target="_blank" rel="noopener">
+        ${extIcon} Live Demo
+      </a>`
+    : `<span style="font-family:var(--mono);font-size:10px;letter-spacing:2px;color:var(--dim);text-transform:uppercase;align-self:center">No live demo</span>`;
+
+  document.getElementById('m-links').innerHTML = ghLinksHTML + demoHTML;
+
   document.getElementById('modal-overlay').classList.add('open');
-  document.body.style.overflow='hidden';
+  document.body.style.overflow = 'hidden';
 }
 
 function closeModal(){
   document.getElementById('modal-overlay').classList.remove('open');
-  document.body.style.overflow='';
+  document.body.style.overflow = '';
 }
-document.getElementById('m-close').addEventListener('click',closeModal);
-document.getElementById('modal-overlay').addEventListener('click',e=>{
-  if(e.target===document.getElementById('modal-overlay')) closeModal();
+document.getElementById('m-close').addEventListener('click', closeModal);
+document.getElementById('modal-overlay').addEventListener('click', e=>{
+  if(e.target === document.getElementById('modal-overlay')) closeModal();
 });
-document.addEventListener('keydown',e=>{ if(e.key==='Escape') closeModal(); });
+document.addEventListener('keydown', e=>{ if(e.key==='Escape') closeModal(); });
 
 /* ══════════════════════════════════════════
    SCROLL ENTRANCE
@@ -807,8 +841,6 @@ ScrollTrigger.create({
     gsap.to('#w-prog',  {opacity:1,duration:.7,ease:'power2.out',delay:.22});
     gsap.to('#w-arr',   {opacity:1,duration:.7,ease:'power2.out',delay:.28});
     gsap.to('#dot-row', {opacity:1,duration:.6,ease:'power2.out',delay:.35});
-
-    // stagger cards in
     gsap.to('.proj-card',{
       opacity:1, y:0, duration:.65,
       stagger:{each:.1,from:'start'},
@@ -820,7 +852,6 @@ ScrollTrigger.create({
 
 /* init */
 updateState(0);
-// slight delay so cards are painted before first blur calc
 requestAnimationFrame(()=>{ requestAnimationFrame(applyBlurFade); });
 </script>
 </body>
